@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Jadwal Harian</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f0f4f0;
+    --surface: #ffffff;
+    --surface2: #f7faf7;
+    --green-dark: #2d6a4f;
+    --green-mid: #40916c;
+    --green-light: #74c69d;
+    --green-pale: #d8f3dc;
+    --green-paler: #eaf6ec;
+    --accent: #52b788;
+    --text-dark: #1b3a2d;
+    --text-mid: #4a6f5e;
+    --text-light: #7a9d8c;
+    --text-eng: #8fada0;
+    --shadow: 0 2px 12px rgba(45,106,79,0.10);
+    --radius: 16px;
+    --radius-sm: 10px;
+    --warn: #e07a2f;
+    --warn-bg: #fef3ec;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 100%; height: 100%; background: var(--bg); font-family: 'Nunito', sans-serif; color: var(--text-dark); overflow: hidden; }
+
+  /* ── LAYOUT ── */
+  .app { display: grid; grid-template-rows: auto auto 1fr; height: 100vh; max-width: 1366px; margin: 0 auto; padding: 14px 16px 10px; gap: 10px; }
+
+  /* ── LOADING SCREEN ── */
+  #loadingScreen {
+    position: fixed; inset: 0; background: var(--bg);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 16px; z-index: 999;
+    transition: opacity 0.4s ease;
+  }
+  #loadingScreen.hidden { opacity: 0; pointer-events: none; }
+  .loader-icon { font-size: 48px; animation: spin 1.5s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loader-text { font-size: 15px; font-weight: 700; color: var(--green-mid); }
+  .loader-sub { font-size: 11px; color: var(--text-eng); font-family: 'Quicksand', sans-serif; }
+
+  /* ── ERROR BANNER ── */
+  #errorBanner {
+    display: none; position: fixed; top: 12px; left: 50%; transform: translateX(-50%);
+    background: #fff0f0; border: 1.5px solid #f4a5a5; color: #c0392b;
+    padding: 10px 20px; border-radius: 12px; font-size: 12px; font-weight: 700;
+    z-index: 998; box-shadow: 0 4px 16px rgba(0,0,0,0.1); max-width: 90%;
+    text-align: center;
+  }
+
+  /* ── HEADER ── */
+  .header { display: flex; align-items: center; justify-content: space-between; }
+  .header-left h1 { font-size: 22px; font-weight: 800; color: var(--green-dark); line-height: 1.1; }
+  .header-left p { font-size: 11px; color: var(--text-eng); font-family: 'Quicksand', sans-serif; font-weight: 500; margin-top: 1px; }
+  .header-right { display: flex; align-items: center; gap: 10px; }
+  .date-badge { background: var(--green-pale); color: var(--green-dark); font-size: 12px; font-weight: 700; padding: 5px 12px; border-radius: 20px; }
+  .progress-ring-wrap { display: flex; align-items: center; gap: 6px; }
+  .progress-ring-wrap span { font-size: 11px; color: var(--text-mid); font-weight: 600; }
+  svg.ring { width: 36px; height: 36px; transform: rotate(-90deg); }
+  .ring-bg { fill: none; stroke: var(--green-pale); stroke-width: 4; }
+  .ring-fill { fill: none; stroke: var(--green-mid); stroke-width: 4; stroke-linecap: round; transition: stroke-dashoffset 0.5s ease; }
+
+  /* ── DAY SELECTOR ── */
+  .day-bar { display: flex; gap: 6px; background: var(--surface); padding: 6px; border-radius: 20px; box-shadow: var(--shadow); }
+  .day-btn { flex: 1; border: none; background: transparent; padding: 8px 4px; border-radius: 14px; cursor: pointer; transition: all 0.2s ease; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .day-btn .day-id { font-size: 13px; font-weight: 800; color: var(--text-mid); }
+  .day-btn .day-en { font-size: 9px; font-weight: 600; color: var(--text-light); font-family: 'Quicksand', sans-serif; }
+  .day-btn:hover { background: var(--green-paler); }
+  .day-btn.active { background: var(--green-dark); }
+  .day-btn.active .day-id { color: #fff; }
+  .day-btn.active .day-en { color: var(--green-light); }
+  .day-btn.today-marker .day-id::after { content: '•'; color: var(--green-light); font-size: 8px; margin-left: 2px; vertical-align: super; }
+
+  /* ── MAIN COLUMNS ── */
+  .columns { display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr; gap: 10px; min-height: 0; }
+  .panel { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); display: flex; flex-direction: column; overflow: hidden; }
+  .panel-header { padding: 12px 14px 8px; border-bottom: 1px solid var(--green-paler); flex-shrink: 0; }
+  .panel-header .panel-emoji { font-size: 18px; }
+  .panel-header h2 { font-size: 13px; font-weight: 800; color: var(--green-dark); margin-top: 2px; line-height: 1.2; }
+  .panel-header p { font-size: 10px; color: var(--text-eng); font-family: 'Quicksand', sans-serif; margin-top: 1px; }
+  .panel-body { flex: 1; overflow-y: auto; padding: 8px 10px 10px; scrollbar-width: thin; scrollbar-color: var(--green-pale) transparent; }
+  .panel-body::-webkit-scrollbar { width: 4px; }
+  .panel-body::-webkit-scrollbar-thumb { background: var(--green-pale); border-radius: 4px; }
+
+  /* ── SECTION LABEL ── */
+  .section-label { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: var(--green-light); margin: 8px 0 4px; padding: 0 2px; }
+  .section-label:first-child { margin-top: 2px; }
+
+  /* ── TASK ITEMS ── */
+  .task-item { display: flex; align-items: flex-start; gap: 8px; padding: 6px 8px; border-radius: var(--radius-sm); margin-bottom: 3px; cursor: pointer; transition: background 0.15s; user-select: none; }
+  .task-item:hover { background: var(--green-paler); }
+  .task-item.checked { opacity: 0.55; }
+  .task-check { width: 18px; height: 18px; border-radius: 5px; border: 2px solid var(--green-light); flex-shrink: 0; margin-top: 1px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; background: transparent; }
+  .task-item.checked .task-check { background: var(--green-mid); border-color: var(--green-mid); }
+  .task-item.checked .task-check::after { content: '✓'; color: white; font-size: 11px; font-weight: 800; }
+  .task-text { flex: 1; }
+  .task-text .id { font-size: 12px; font-weight: 700; color: var(--text-dark); line-height: 1.3; }
+  .task-text .en { font-size: 10px; color: var(--text-eng); font-family: 'Quicksand', sans-serif; margin-top: 1px; }
+  .task-item.checked .task-text .id { text-decoration: line-through; color: var(--text-light); }
+
+  /* ── REMINDER ITEM ── */
+  .task-item.reminder { background: var(--warn-bg); border-left: 3px solid var(--warn); border-radius: 0 8px 8px 0; cursor: default; }
+  .task-item.reminder:hover { background: var(--warn-bg); }
+  .task-item.reminder .task-text .id { color: var(--warn); }
+
+  /* ── SCHOOL BADGE ── */
+  .school-badge { background: var(--green-pale); border-radius: var(--radius-sm); padding: 8px 10px; margin-bottom: 6px; }
+  .school-badge .badge-title { font-size: 10px; font-weight: 800; color: var(--green-dark); }
+  .school-badge .badge-sub { font-size: 9px; color: var(--text-eng); font-family: 'Quicksand', sans-serif; margin-bottom: 4px; }
+  .school-badge .badge-val { font-size: 13px; font-weight: 700; color: var(--green-mid); }
+
+  /* ── ACTIVITY PILL ── */
+  .activity-pill { background: var(--green-paler); border-left: 3px solid var(--green-mid); border-radius: 0 8px 8px 0; padding: 6px 10px; margin-bottom: 5px; }
+  .activity-pill .act-name { font-size: 12px; font-weight: 700; color: var(--green-dark); }
+  .activity-pill .act-en { font-size: 9px; color: var(--text-eng); font-family: 'Quicksand', sans-serif; }
+
+  /* ── REST MSG ── */
+  .rest-msg { text-align: center; padding: 20px 10px; color: var(--text-light); font-size: 12px; }
+  .rest-msg .rest-icon { font-size: 28px; margin-bottom: 6px; }
+
+  /* ── PANEL HEADERS ── */
+  .panel-daily .panel-header  { background: linear-gradient(135deg, #eaf6ec 0%, #f7faf7 100%); }
+  .panel-clean .panel-header  { background: linear-gradient(135deg, #e3f0ea 0%, #f7faf7 100%); }
+  .panel-school .panel-header { background: linear-gradient(135deg, #dceee5 0%, #f7faf7 100%); }
+  .panel-activity .panel-header { background: linear-gradient(135deg, #d8f3dc 0%, #f7faf7 100%); }
+
+  /* ── RESET BTN ── */
+  .reset-btn { background: transparent; border: 1.5px solid var(--green-pale); color: var(--text-light); font-size: 11px; font-weight: 700; font-family: 'Nunito', sans-serif; padding: 5px 12px; border-radius: 20px; cursor: pointer; transition: all 0.2s; }
+  .reset-btn:hover { background: var(--green-pale); color: var(--green-dark); }
+
+  /* ── REFRESH BTN ── */
+  .refresh-btn { background: transparent; border: 1.5px solid var(--green-pale); color: var(--text-light); font-size: 11px; font-weight: 700; font-family: 'Nunito', sans-serif; padding: 5px 10px; border-radius: 20px; cursor: pointer; transition: all 0.2s; }
+  .refresh-btn:hover { background: var(--green-pale); color: var(--green-dark); }
+  .refresh-btn.spinning { animation: spinBtn 0.8s linear infinite; }
+  @keyframes spinBtn { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<!-- LOADING SCREEN -->
+<div id="loadingScreen">
+  <div class="loader-icon">🌿</div>
+  <div class="loader-text">Memuat jadwal…</div>
+  <div class="loader-sub">Loading your schedule from Supabase</div>
+</div>
+
+<!-- ERROR BANNER -->
+<div id="errorBanner"></div>
+
+<div class="app">
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <h1>📋 Jadwal Harian</h1>
+      <p>Daily Task Dashboard · Rumah Keluarga</p>
+    </div>
+    <div class="header-right">
+      <div class="date-badge" id="dateBadge"></div>
+      <div class="progress-ring-wrap">
+        <svg class="ring" viewBox="0 0 36 36">
+          <circle class="ring-bg" cx="18" cy="18" r="15.9"/>
+          <circle class="ring-fill" id="ringFill" cx="18" cy="18" r="15.9" stroke-dasharray="100 100" stroke-dashoffset="100"/>
+        </svg>
+        <span id="progressText">0%</span>
+      </div>
+      <button class="refresh-btn" id="refreshBtn" onclick="refreshData()" title="Reload data from Supabase">↻</button>
+      <button class="reset-btn" onclick="resetDay()">↺ Reset</button>
+    </div>
+  </div>
+
+  <!-- DAY SELECTOR -->
+  <div class="day-bar">
+    <button class="day-btn" data-day="0" onclick="selectDay(0)"><span class="day-id">Sen</span><span class="day-en">Monday</span></button>
+    <button class="day-btn" data-day="1" onclick="selectDay(1)"><span class="day-id">Sel</span><span class="day-en">Tuesday</span></button>
+    <button class="day-btn" data-day="2" onclick="selectDay(2)"><span class="day-id">Rab</span><span class="day-en">Wednesday</span></button>
+    <button class="day-btn" data-day="3" onclick="selectDay(3)"><span class="day-id">Kam</span><span class="day-en">Thursday</span></button>
+    <button class="day-btn" data-day="4" onclick="selectDay(4)"><span class="day-id">Jum</span><span class="day-en">Friday</span></button>
+    <button class="day-btn" data-day="5" onclick="selectDay(5)"><span class="day-id">Sab</span><span class="day-en">Saturday</span></button>
+    <button class="day-btn" data-day="6" onclick="selectDay(6)"><span class="day-id">Min</span><span class="day-en">Sunday</span></button>
+  </div>
+
+  <!-- PANELS -->
+  <div class="columns">
+    <div class="panel panel-daily">
+      <div class="panel-header"><div class="panel-emoji">🧹</div><h2>Tugas Harian</h2><p>Daily Tasks · Every Day</p></div>
+      <div class="panel-body" id="panelDaily"></div>
+    </div>
+    <div class="panel panel-clean">
+      <div class="panel-header"><div class="panel-emoji">✨</div><h2>Bersih Mendalam</h2><p>Deep Clean Focus · Today's Area</p></div>
+      <div class="panel-body" id="panelClean"></div>
+    </div>
+    <div class="panel panel-school">
+      <div class="panel-header"><div class="panel-emoji">🎒</div><h2>Persiapan Sekolah</h2><p>School Prep · Haris</p></div>
+      <div class="panel-body" id="panelSchool"></div>
+    </div>
+    <div class="panel panel-activity">
+      <div class="panel-header"><div class="panel-emoji">⚡</div><h2>Kegiatan Haris</h2><p>Haris' Activities · Afternoon</p></div>
+      <div class="panel-body" id="panelActivity"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+//  ⚙️  CONFIGURATION — paste your Supabase details here
+// ══════════════════════════════════════════════════════════════
+const SUPABASE_URL  = 'https://isfeajunhtpzcdorlgsj.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlzZmVhanVuaHRwemNkb3JsZ3NqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzc0OTAsImV4cCI6MjA5MDg1MzQ5MH0.16bBxd3tbEsxWefWbagvJwoON59Q26fqj9pVuLpk9oQ';
+// ══════════════════════════════════════════════════════════════
+
+// ── SUPABASE FETCH HELPER ─────────────────────────────────────
+async function sbFetch(table, params = '') {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${params}`, {
+    headers: {
+      'apikey': SUPABASE_ANON,
+      'Authorization': `Bearer ${SUPABASE_ANON}`,
+    }
+  });
+  if (!res.ok) throw new Error(`Supabase error on ${table}: ${res.status}`);
+  return res.json();
+}
+
+// ── STATE ─────────────────────────────────────────────────────
+let currentDay = 0;
+let checked    = {};
+let DB         = { daily: [], clean: [], school: [], activities: [] };
+
+// ── LOAD ALL DATA ─────────────────────────────────────────────
+async function loadData() {
+  showLoading(true);
+  try {
+    const [daily, clean, school, activities] = await Promise.all([
+      sbFetch('daily_tasks',  'active=eq.true&order=sort_order.asc'),
+      sbFetch('deep_clean',   'active=eq.true&order=day_index.asc,sort_order.asc'),
+      sbFetch('school_prep',  'active=eq.true&order=day_index.asc,sort_order.asc'),
+      sbFetch('activities',   'active=eq.true&order=day_index.asc,sort_order.asc'),
+    ]);
+    DB = { daily, clean, school, activities };
+    hideError();
+  } catch (err) {
+    showError('Tidak dapat terhubung ke Supabase. Periksa koneksi & konfigurasi. · ' + err.message);
+  }
+  showLoading(false);
+}
+
+// ── UI HELPERS ────────────────────────────────────────────────
+function showLoading(on) {
+  document.getElementById('loadingScreen').classList.toggle('hidden', !on);
+}
+function showError(msg) {
+  const b = document.getElementById('errorBanner');
+  b.textContent = '⚠️ ' + msg;
+  b.style.display = 'block';
+  setTimeout(() => b.style.display = 'none', 6000);
+}
+function hideError() {
+  document.getElementById('errorBanner').style.display = 'none';
+}
+
+// ── RENDER HELPERS ────────────────────────────────────────────
+function makeTask(keyPrefix, index, idText, enText, isReminder = false) {
+  const key = `${keyPrefix}-${index}`;
+  const isChecked = !!checked[key];
+  const el = document.createElement('div');
+  el.className = 'task-item' + (isChecked ? ' checked' : '') + (isReminder ? ' reminder' : '');
+  el.innerHTML = `
+    <div class="task-check"></div>
+    <div class="task-text">
+      <div class="id">${idText}</div>
+      ${enText ? `<div class="en">${enText}</div>` : ''}
+    </div>`;
+  if (!isReminder) {
+    el.onclick = () => {
+      checked[key] = !checked[key];
+      el.classList.toggle('checked', !!checked[key]);
+      updateProgress();
+    };
+  }
+  return el;
+}
+
+function sectionLabel(text) {
+  const d = document.createElement('div');
+  d.className = 'section-label';
+  d.textContent = text;
+  return d;
+}
+
+function restMsg(icon, line1, line2) {
+  const d = document.createElement('div');
+  d.className = 'rest-msg';
+  d.innerHTML = `<div class="rest-icon">${icon}</div><div>${line1}</div><div style="font-size:10px;color:var(--text-eng);font-family:Quicksand,sans-serif;margin-top:4px">${line2}</div>`;
+  return d;
+}
+
+// ── RENDER PANELS ─────────────────────────────────────────────
+function renderDaily() {
+  const panel = document.getElementById('panelDaily');
+  panel.innerHTML = '';
+  DB.daily.forEach((t, i) => panel.appendChild(makeTask('daily', i, t.bahasa, t.english)));
+}
+
+function renderClean(day) {
+  const panel = document.getElementById('panelClean');
+  panel.innerHTML = '';
+  const tasks = DB.clean.filter(t => t.day_index === day);
+  if (!tasks.length) { panel.appendChild(restMsg('🧹', 'Tidak ada tugas khusus', 'No specific deep clean today')); return; }
+
+  // Area header
+  const first = tasks[0];
+  panel.appendChild(sectionLabel('📍 ' + first.area_bahasa + ' · ' + first.area_english));
+  tasks.forEach((t, i) => panel.appendChild(makeTask('clean', i, t.bahasa, t.english)));
+
+  // Standard toilet tasks
+  panel.appendChild(sectionLabel('🚿 ' + first.toilet_label));
+  [
+    ['Bersihkan & gosok toilet', 'Scrub & clean toilet bowl'],
+    ['Pel lantai kamar mandi', 'Mop bathroom floor'],
+    ['Lap dinding kamar mandi', 'Wipe bathroom walls'],
+  ].forEach(([b, e], i) => panel.appendChild(makeTask('clean-toilet', i, b, e)));
+}
+
+function renderSchool(day) {
+  const panel = document.getElementById('panelSchool');
+  panel.innerHTML = '';
+  if (day >= 5) { panel.appendChild(restMsg('🏖️', 'Tidak ada sekolah', 'No school today')); return; }
+
+  const items = DB.school.filter(t => t.day_index === day);
+  if (!items.length) { panel.appendChild(restMsg('🏖️', 'Tidak ada sekolah', 'No school today')); return; }
+
+  const first = items[0];
+
+  // Uniform badge
+  const badge = document.createElement('div');
+  badge.className = 'school-badge';
+  badge.innerHTML = `<div class="badge-title">👕 Seragam · Uniform</div><div class="badge-sub">What to wear today</div><div class="badge-val">${first.uniform_bahasa}</div><div style="font-size:10px;color:var(--text-eng);font-family:Quicksand,sans-serif">${first.uniform_english}</div>`;
+  panel.appendChild(badge);
+
+  const packItems = items.filter(t => !t.is_swim_kit_item);
+  const swimItems = items.filter(t => t.is_swim_kit_item);
+
+  panel.appendChild(sectionLabel('📦 Yang Harus Dibawa · Pack'));
+  packItems.forEach((t, i) => panel.appendChild(makeTask('school-pack', i, t.item_bahasa, t.item_english)));
+
+  if (swimItems.length > 0) {
+    panel.appendChild(sectionLabel('🏊 Tas Renang DSA · Swim Kit'));
+    swimItems.forEach((t, i) => panel.appendChild(makeTask('school-swim', i, t.item_bahasa, t.item_english)));
+  }
+}
+
+function renderActivity(day) {
+  const panel = document.getElementById('panelActivity');
+  panel.innerHTML = '';
+  const acts = DB.activities.filter(t => t.day_index === day);
+  if (!acts.length) { panel.appendChild(restMsg('😴', 'Tidak ada kegiatan', 'Free day – rest & recharge')); return; }
+
+  const regular   = acts.filter(a => !a.is_reminder);
+  const reminders = acts.filter(a => a.is_reminder);
+
+  if (regular.length) {
+    panel.appendChild(sectionLabel('📅 Hari Ini · Today'));
+    regular.forEach(a => {
+      const pill = document.createElement('div');
+      pill.className = 'activity-pill';
+      pill.innerHTML = `<div class="act-name">${a.name_bahasa}</div><div class="act-en">${a.name_english}</div>`;
+      panel.appendChild(pill);
+    });
+  }
+
+  if (reminders.length) {
+    panel.appendChild(sectionLabel('⚠️ Persiapkan Malam Ini · Prep Tonight'));
+    reminders.forEach((a, i) => panel.appendChild(makeTask('activity-reminder', i, a.name_bahasa, a.name_english, true)));
+  }
+}
+
+// ── PROGRESS ──────────────────────────────────────────────────
+function updateProgress() {
+  const all  = document.querySelectorAll('.task-item:not(.reminder)');
+  const done = document.querySelectorAll('.task-item:not(.reminder).checked');
+  const pct  = all.length > 0 ? Math.round((done.length / all.length) * 100) : 0;
+  document.getElementById('progressText').textContent = pct + '%';
+  const circ   = 2 * Math.PI * 15.9;
+  const offset = circ - (pct / 100) * circ;
+  const ring   = document.getElementById('ringFill');
+  ring.style.strokeDasharray  = `${circ} ${circ}`;
+  ring.style.strokeDashoffset = offset;
+}
+
+// ── SELECT DAY ────────────────────────────────────────────────
+function selectDay(day) {
+  currentDay = day;
+  checked    = {};
+  document.querySelectorAll('.day-btn').forEach((btn, i) => btn.classList.toggle('active', i === day));
+  renderDaily();
+  renderClean(day);
+  renderSchool(day);
+  renderActivity(day);
+  updateProgress();
+}
+
+function resetDay() { checked = {}; selectDay(currentDay); }
+
+// ── REFRESH DATA FROM SUPABASE ────────────────────────────────
+async function refreshData() {
+  const btn = document.getElementById('refreshBtn');
+  btn.classList.add('spinning');
+  await loadData();
+  selectDay(currentDay);
+  btn.classList.remove('spinning');
+}
+
+// ── INIT ──────────────────────────────────────────────────────
+function getTodayDay() { const d = new Date().getDay(); return d === 0 ? 6 : d - 1; }
+
+async function init() {
+  const now  = new Date();
+  document.getElementById('dateBadge').textContent = now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long' });
+
+  const todayIdx = getTodayDay();
+  document.querySelectorAll('.day-btn')[todayIdx].classList.add('today-marker');
+
+  await loadData();
+  selectDay(todayIdx);
+}
+
+init();
+</script>
+</body>
+</html>
