@@ -549,17 +549,41 @@ function renderActivity(day) {
   panel.innerHTML = '';
   const acts = DB.activities.filter(t => t.day_index === day);
   if (!acts.length) { panel.appendChild(restMsg('😴','Tidak ada kegiatan','Free day – rest & recharge')); return; }
+
+  const reminders = acts.filter(a => a.is_reminder);
   const regular   = acts.filter(a => !a.is_reminder);
-  const reminders = acts.filter(a =>  a.is_reminder);
-  if (regular.length) {
+
+  // Split into grouped (has group_label) and ungrouped (pills)
+  const ungrouped = regular.filter(a => !a.group_label);
+  const grouped   = regular.filter(a =>  a.group_label);
+
+  // ── Ungrouped activities → show as pills under "Hari Ini"
+  if (ungrouped.length) {
     panel.appendChild(sectionLabel('📅 Hari Ini · Today'));
-    regular.forEach(a => {
+    ungrouped.forEach(a => {
       const pill = document.createElement('div');
       pill.className = 'activity-pill';
       pill.innerHTML = `<div class="act-name">${a.name_bahasa}</div><div class="act-en">${a.name_english}</div>`;
       panel.appendChild(pill);
     });
   }
+
+  // ── Grouped activities → section header + checkable task list
+  if (grouped.length) {
+    // Collect unique group labels in order
+    const groups = [];
+    grouped.forEach(a => {
+      if (!groups.includes(a.group_label)) groups.push(a.group_label);
+    });
+    groups.forEach(label => {
+      panel.appendChild(sectionLabel('📌 ' + label));
+      grouped
+        .filter(a => a.group_label === label)
+        .forEach((a, i) => panel.appendChild(makeTask('activity-group-' + label, i, a.name_bahasa, a.name_english)));
+    });
+  }
+
+  // ── Reminders → orange warning tasks
   if (reminders.length) {
     panel.appendChild(sectionLabel('⚠️ Persiapkan Malam Ini · Prep Tonight'));
     reminders.forEach((a, i) => panel.appendChild(makeTask('activity-reminder', i, a.name_bahasa, a.name_english, true)));
