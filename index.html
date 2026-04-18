@@ -2,1576 +2,748 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Jadwal Harian</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* ══════════════════════════════════════════
-   VARIABLES & RESET
-══════════════════════════════════════════ */
 :root {
-  --bg: #F2EDE6;
-  --card: #FAF7F2;
-  --dark: #1C1714;
-  --mid: #6B5B45;
-  --muted: #A89880;
-  --sand: #DDD3C4;
-  --accent: #B5600A;
-  --accent-light: #F5E6D8;
-  --green: #3D7A52;
-  --green-light: #E4F0E9;
-  --red: #B03A2E;
-  --red-light: #F5E4E2;
-  --blue: #2A5F8A;
-  --blue-light: #E0EDF5;
-  --purple: #6B4FA0;
-  --purple-light: #EDE8F5;
-  --shadow: 0 2px 12px rgba(28,23,20,0.08);
-  --shadow-md: 0 4px 24px rgba(28,23,20,0.12);
-  --r: 14px;
+  --bg:#F0EBE3; --surface:#FAF8F5; --surface-2:#FFFFFF; --dark:#1A1512; --dark-2:#2D2520;
+  --mid:#6B5B47; --muted:#9C8B78; --border:#E0D8CF;
+  --accent:#B5600A; --accent-dim:#F2E4D5;
+  --green:#2E7D52; --green-dim:#E3F1EA;
+  --blue:#1E5A8A; --blue-dim:#DCE9F5;
+  --purple:#6B3FA0; --purple-dim:#EDE6F8;
+  --amber:#B07C10; --amber-dim:#FBF0D8;
+  --r:16px; --r-sm:10px;
+  --shadow-sm:0 1px 4px rgba(26,21,18,.07);
+  --shadow:0 3px 14px rgba(26,21,18,.09);
+  --shadow-lg:0 8px 32px rgba(26,21,18,.13);
 }
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; }
-body { font-family: 'Instrument Sans', sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{height:100%;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--dark);min-height:100dvh;-webkit-font-smoothing:antialiased;}
 
-/* ── SCREENS ── */
-.screen { display: none; }
-.screen.active { display: flex; flex-direction: column; min-height: 100dvh; }
+/* LOGIN */
+#login{min-height:100dvh;background:var(--dark-2);display:flex;align-items:center;justify-content:center;padding:32px 20px;}
+#login.hidden{display:none;}
+.login-wrap{width:100%;max-width:400px;}
+.login-brand{text-align:center;margin-bottom:48px;}
+.login-brand h1{font-family:'DM Serif Display',serif;font-size:2.6rem;color:var(--surface);line-height:1;letter-spacing:-.5px;}
+.login-brand h1 em{color:var(--accent);font-style:italic;}
+.login-brand p{font-size:.72rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-top:6px;}
+.login-card{display:flex;align-items:center;gap:16px;padding:20px 22px;border-radius:var(--r);border:1.5px solid rgba(255,255,255,.07);background:rgba(255,255,255,.04);cursor:pointer;transition:all .2s ease;margin-bottom:12px;}
+.login-card:hover{border-color:var(--accent);background:rgba(181,96,10,.1);transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,0,0,.25);}
+.login-card-icon{width:48px;height:48px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;}
+.login-card-icon.helper{background:rgba(46,125,82,.18);}
+.login-card-icon.admin{background:rgba(181,96,10,.18);}
+.login-card-text h3{color:var(--surface);font-size:.98rem;font-weight:600;}
+.login-card-text p{color:var(--muted);font-size:.75rem;margin-top:2px;}
 
-/* ══════════════════════════════════════════
-   LOGIN
-══════════════════════════════════════════ */
-#screen-login { align-items: center; justify-content: center; background: var(--dark); padding: 40px 24px; }
-.login-box { width: 100%; max-width: 400px; text-align: center; }
-.login-logo { font-family: 'DM Serif Display', serif; font-size: 2.8rem; color: #FAF7F2; line-height: 1; margin-bottom: 4px; }
-.login-logo em { color: var(--accent); font-style: italic; }
-.login-sub { font-size: .75rem; color: var(--muted); letter-spacing: 2.5px; text-transform: uppercase; margin-bottom: 52px; }
-.login-cards { display: flex; flex-direction: column; gap: 14px; }
-.login-card { background: #2A2320; border: 1.5px solid #3A332E; border-radius: var(--r); padding: 22px 24px; cursor: pointer; transition: all .2s; text-align: left; display: flex; align-items: center; gap: 18px; }
-.login-card:hover { border-color: var(--accent); background: #32281F; transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,.3); }
-.login-icon { width: 50px; height: 50px; border-radius: 13px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; }
-.login-icon.admin { background: rgba(181,96,10,.2); }
-.login-icon.helper { background: rgba(61,122,82,.2); }
-.login-card-text h3 { color: #FAF7F2; font-size: 1rem; font-weight: 600; margin-bottom: 3px; }
-.login-card-text p { color: var(--muted); font-size: .78rem; }
+/* APP SHELL */
+#app{display:none;min-height:100dvh;flex-direction:column;}
+#app.visible{display:flex;}
+.topbar{background:var(--dark-2);padding:16px 24px 0;flex-shrink:0;position:sticky;top:0;z-index:100;}
+.topbar-inner{max-width:1100px;margin:0 auto;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
+.topbar-brand h1{font-family:'DM Serif Display',serif;font-size:clamp(1.2rem,3.5vw,1.65rem);color:var(--surface);line-height:1;}
+.topbar-brand h1 em{color:var(--accent);font-style:italic;}
+.topbar-date{display:flex;align-items:center;gap:8px;margin-top:6px;}
+.day-chip{background:var(--accent);color:white;font-size:.63rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:3px 10px;border-radius:20px;}
+.topbar-date-text{color:var(--muted);font-size:.73rem;}
+.topbar-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.role-badge{font-size:.62rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border-radius:6px;}
+.role-badge.admin{background:rgba(181,96,10,.22);color:#F0A060;}
+.role-badge.helper{background:rgba(46,125,82,.22);color:#6DC98A;}
+.btn-switch{background:transparent;border:1px solid rgba(255,255,255,.12);color:var(--muted);font-family:inherit;font-size:.72rem;padding:5px 12px;border-radius:8px;cursor:pointer;transition:all .15s;}
+.btn-switch:hover{border-color:rgba(255,255,255,.3);color:var(--surface);}
+.load-bar{height:2px;background:var(--dark-2);overflow:hidden;flex-shrink:0;}
+.load-bar-fill{height:100%;width:0;background:var(--accent);}
+.main{flex:1;overflow-y:auto;}
+.page{display:none;}
+.page.active{display:block;}
 
-/* ══════════════════════════════════════════
-   SHARED HEADER
-══════════════════════════════════════════ */
-.app-header { background: var(--dark); color: #FAF7F2; padding: 18px 24px 0; flex-shrink: 0; }
-.app-header-inner { max-width: 1060px; margin: 0 auto; display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
-.app-header h1 { font-family: 'DM Serif Display', serif; font-size: clamp(1.3rem, 3.5vw, 1.8rem); line-height: 1.1; }
-.app-header h1 em { color: var(--accent); font-style: italic; }
-.header-meta { margin-top: 5px; display: flex; align-items: center; gap: 8px; }
-.date-pill { background: var(--accent); color: white; font-size: .68rem; font-weight: 600; padding: 3px 10px; border-radius: 20px; }
-.date-text { color: var(--muted); font-size: .76rem; }
-.header-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; padding-top: 2px; }
-.user-badge { font-size: .65rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; padding: 4px 10px; border-radius: 6px; }
-.user-badge.admin { background: rgba(181,96,10,.25); color: #F0A060; }
-.user-badge.helper { background: rgba(61,122,82,.25); color: #72C492; }
-.btn-logout { background: none; border: 1px solid #3A332E; color: var(--muted); font-size: .72rem; padding: 5px 11px; border-radius: 8px; cursor: pointer; font-family: inherit; transition: all .15s; }
-.btn-logout:hover { border-color: var(--muted); color: #FAF7F2; }
+/* DAY STRIP */
+.day-strip-wrap{background:var(--dark-2);padding:10px 24px 14px;flex-shrink:0;}
+.day-strip{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;max-width:1100px;margin:0 auto;}
+.day-strip::-webkit-scrollbar{display:none;}
+.day-pill-btn{flex-shrink:0;padding:6px 15px;border-radius:20px;border:1.5px solid rgba(255,255,255,.1);background:transparent;color:var(--muted);font-family:inherit;font-size:.73rem;font-weight:600;cursor:pointer;transition:all .15s;}
+.day-pill-btn.today{border-color:var(--accent);color:var(--accent);}
+.day-pill-btn.selected{background:var(--accent);border-color:var(--accent);color:white;box-shadow:0 3px 10px rgba(181,96,10,.3);}
 
-/* ── TABS ── */
-.tabs { background: var(--dark); padding: 0 24px; flex-shrink: 0; }
-.tabs-inner { max-width: 1060px; margin: 0 auto; display: flex; gap: 0; border-top: 1px solid #2A2320; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
-.tabs-inner::-webkit-scrollbar { display: none; }
-.tab-btn { background: none; border: none; color: var(--muted); font-family: inherit; font-size: .78rem; font-weight: 500; padding: 10px 16px 9px; cursor: pointer; border-bottom: 2.5px solid transparent; transition: all .15s; white-space: nowrap; flex-shrink: 0; }
-.tab-btn.active { color: #FAF7F2; border-bottom-color: var(--accent); }
-.tab-btn:hover:not(.active) { color: #C0A890; }
+/* PROGRESS BAR (helper) */
+.progress-bar-wrap{background:var(--dark-2);padding:0 24px 14px;flex-shrink:0;}
+.progress-bar-inner{max-width:1100px;margin:0 auto;}
+.progress-bar-labels{display:flex;justify-content:space-between;margin-bottom:5px;}
+.progress-bar-labels span{font-size:.7rem;color:var(--muted);}
+.progress-bar-labels strong{font-size:.7rem;color:var(--surface);}
+.progress-track{background:rgba(255,255,255,.08);border-radius:20px;height:5px;overflow:hidden;}
+.progress-fill{height:100%;background:var(--green);border-radius:20px;transition:width .4s ease;}
 
-/* ── CONTENT ── */
-.content { flex: 1; overflow-y: auto; padding: 20px 24px; }
-.content-inner { max-width: 1060px; margin: 0 auto; }
-.tab-panel { display: none; }
-.tab-panel.active { display: block; }
+/* HELPER PAGE */
+#helper-page{max-width:1100px;margin:0 auto;padding:24px 20px 48px;}
+.helper-grid{display:grid;grid-template-columns:1fr 330px;gap:22px;align-items:start;}
+@media(max-width:780px){.helper-grid{grid-template-columns:1fr;}}
 
-/* ══════════════════════════════════════════
-   LOADING & ERROR
-══════════════════════════════════════════ */
-.loading-bar { height: 3px; background: var(--dark); overflow: hidden; flex-shrink: 0; }
-.loading-bar-fill { height: 100%; width: 0%; background: var(--accent); transition: width .3s; }
-.loading-bar-fill.indeterminate { animation: loadAnim 1.2s ease-in-out infinite; width: 40%; }
-@keyframes loadAnim { 0%{margin-left:-40%} 100%{margin-left:100%} }
-.error-toast { background: var(--red-light); border: 1px solid var(--red); color: var(--red); font-size: .8rem; padding: 10px 16px; border-radius: 10px; margin-bottom: 16px; display: none; }
-.error-toast.visible { display: block; }
+/* SECTION LABEL */
+.sec-label{display:flex;align-items:center;gap:10px;margin-bottom:13px;}
+.sec-label-icon{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;}
+.sec-label h2{font-family:'DM Serif Display',serif;font-size:1.02rem;line-height:1;}
+.sec-label p{font-size:.68rem;color:var(--muted);margin-top:1px;}
+.sec-label-badge{margin-left:auto;font-size:.68rem;font-weight:700;padding:3px 10px;border-radius:20px;flex-shrink:0;}
+.b-done{background:var(--green-dim);color:var(--green);}
+.b-part{background:var(--accent-dim);color:var(--accent);}
+.b-none{background:var(--border);color:var(--mid);}
 
-/* ══════════════════════════════════════════
-   SECTION HEADERS
-══════════════════════════════════════════ */
-.section-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 8px; }
-.section-title { font-family: 'DM Serif Display', serif; font-size: 1.25rem; }
-.section-sub { font-size: .76rem; color: var(--muted); margin-top: 2px; }
+/* TASK CARD */
+.task-card{background:var(--surface-2);border:1.5px solid var(--border);border-radius:var(--r);padding:4px 5px;box-shadow:var(--shadow-sm);margin-bottom:24px;}
+.group-head{font-size:.63rem;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);padding:9px 9px 5px;display:flex;align-items:center;gap:7px;}
+.group-head::after{content:'';flex:1;height:1px;background:var(--border);}
+.task-row{display:flex;align-items:flex-start;gap:11px;padding:10px 9px;border-radius:9px;cursor:pointer;transition:background .1s;-webkit-tap-highlight-color:transparent;user-select:none;}
+.task-row:hover{background:var(--bg);}
+.task-row:active{background:var(--border);}
+.task-row.done{background:var(--green-dim);}
+.task-row.done:hover{background:#d3e9dd;}
+.cb{width:21px;height:21px;border-radius:6px;border:2px solid var(--border);background:white;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;transition:all .16s;}
+.task-row.done .cb{background:var(--green);border-color:var(--green);}
+.cb svg{display:none;}
+.task-row.done .cb svg{display:block;}
+.t-label{font-size:.85rem;font-weight:500;line-height:1.4;}
+.t-en{font-size:.68rem;color:var(--muted);font-style:italic;margin-top:2px;}
+.t-time{font-size:.65rem;color:var(--green);font-weight:700;margin-top:3px;letter-spacing:.3px;}
 
-/* ══════════════════════════════════════════
-   HELPER: DAY SELECTOR
-══════════════════════════════════════════ */
-.day-selector { background: var(--dark); padding: 10px 24px 14px; flex-shrink: 0; }
-.day-selector-inner { max-width: 1060px; margin: 0 auto; display: flex; gap: 6px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
-.day-selector-inner::-webkit-scrollbar { display: none; }
-.day-sel-btn { flex-shrink: 0; padding: 6px 14px; border-radius: 20px; border: 1.5px solid #3A332E; background: none; color: var(--muted); font-family: inherit; font-size: .75rem; font-weight: 600; cursor: pointer; transition: all .15s; }
-.day-sel-btn.active { background: var(--accent); border-color: var(--accent); color: white; }
-.day-sel-btn.today { border-color: var(--accent); color: var(--accent); }
-.day-sel-btn.active.today { background: var(--accent); color: white; }
+/* DEEP CLEAN CARD */
+.deep-card{background:var(--surface-2);border:1.5px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow-sm);margin-bottom:24px;}
+.deep-card-hd{padding:13px 16px 12px;border-bottom:1.5px solid var(--border);background:linear-gradient(135deg,var(--purple-dim),#F5F2FC);display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap;}
+.deep-area-badge{background:var(--purple);color:white;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;padding:3px 9px;border-radius:20px;display:inline-block;margin-bottom:5px;}
+.deep-area-name{font-weight:700;font-size:.92rem;}
+.deep-area-en{font-size:.7rem;color:var(--mid);}
+.deep-toilet{font-size:.7rem;color:var(--purple);font-weight:600;margin-left:auto;flex-shrink:0;padding-top:2px;}
+.deep-card-body{padding:4px 5px;}
 
-/* ══════════════════════════════════════════
-   PROGRESS STRIP (helper)
-══════════════════════════════════════════ */
-.progress-strip { background: var(--dark); padding: 0 24px 14px; flex-shrink: 0; }
-.progress-inner { max-width: 1060px; margin: 0 auto; }
-.prog-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
-.prog-label { font-size: .74rem; color: var(--muted); }
-.prog-pct { font-size: .74rem; font-weight: 600; color: #FAF7F2; }
-.prog-bar-bg { background: #2A2320; border-radius: 20px; height: 5px; overflow: hidden; }
-.prog-bar-fill { height: 100%; background: var(--green); border-radius: 20px; transition: width .4s ease; }
+/* DONE BANNER */
+.done-banner{display:none;background:var(--green);color:white;border-radius:var(--r);padding:18px 22px;text-align:center;margin-bottom:20px;box-shadow:var(--shadow-lg);animation:pop .3s ease;}
+@keyframes pop{from{transform:scale(.95);opacity:0}to{transform:scale(1);opacity:1}}
+.done-banner.visible{display:block;}
+.done-banner h3{font-family:'DM Serif Display',serif;font-size:1.25rem;}
+.done-banner p{font-size:.78rem;opacity:.85;margin-top:4px;}
 
-/* ══════════════════════════════════════════
-   CATEGORY SECTIONS (helper)
-══════════════════════════════════════════ */
-.cat-section { margin-bottom: 24px; }
-.cat-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1.5px solid var(--sand); }
-.cat-icon { font-size: 1.3rem; }
-.cat-name { font-family: 'DM Serif Display', serif; font-size: 1.1rem; }
-.cat-name-en { font-size: .72rem; color: var(--muted); }
-.cat-count { margin-left: auto; font-size: .75rem; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
-.cat-count.all-done { background: var(--green-light); color: var(--green); }
-.cat-count.partial { background: var(--accent-light); color: var(--accent); }
-.cat-count.none { background: var(--sand); color: var(--mid); }
+/* INFO CARDS (right column) */
+.info-stack{display:flex;flex-direction:column;gap:16px;}
+.info-card{border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow-sm);}
+.info-card-hd{display:flex;align-items:center;gap:10px;padding:12px 15px;}
+.info-card-title{font-weight:700;font-size:.86rem;}
+.info-card-sub{font-size:.68rem;opacity:.72;margin-top:1px;}
+.info-card-body{background:white;padding:13px 15px;}
+.info-card.school .info-card-hd{background:var(--blue-dim);}
+.info-card.school .info-card-title{color:var(--blue);}
+.info-card.activity .info-card-hd{background:var(--amber-dim);}
+.info-card.activity .info-card-title{color:var(--amber);}
 
-/* ── TASK ITEMS ── */
-.task-list { display: flex; flex-direction: column; gap: 7px; }
-.task-item { display: flex; align-items: flex-start; gap: 12px; padding: 11px 14px; border-radius: 10px; border: 1.5px solid var(--sand); background: white; cursor: pointer; transition: all .15s; -webkit-tap-highlight-color: transparent; user-select: none; }
-.task-item:active { transform: scale(.99); }
-.task-item.done { background: var(--green-light); border-color: var(--green); }
-.task-item.reminder { background: var(--accent-light); border-color: #E0B090; }
-.task-item.reminder.done { background: var(--green-light); border-color: var(--green); }
-.task-check { width: 22px; height: 22px; border-radius: 6px; border: 2px solid var(--sand); background: white; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; transition: all .2s; }
-.task-item.done .task-check { background: var(--green); border-color: var(--green); }
-.task-item.reminder .task-check { border-color: var(--accent); }
-.task-check svg { display: none; }
-.task-item.done .task-check svg { display: block; }
-.task-content { flex: 1; min-width: 0; }
-.task-name { font-size: .86rem; font-weight: 500; line-height: 1.35; }
-.task-name-en { font-size: .71rem; color: var(--muted); font-style: italic; margin-top: 1px; }
-.task-time { font-size: .68rem; color: var(--green); font-weight: 600; margin-top: 3px; }
-.task-reminder-badge { font-size: .6rem; font-weight: 600; letter-spacing: .8px; text-transform: uppercase; background: var(--accent-light); color: var(--accent); padding: 2px 7px; border-radius: 5px; flex-shrink: 0; margin-top: 3px; }
+/* Uniform row */
+.uniform-row{display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--blue-dim);border-radius:var(--r-sm);margin-bottom:11px;}
+.uni-icon{font-size:1.2rem;}
+.uni-label{font-size:.63rem;color:var(--blue);font-weight:700;text-transform:uppercase;letter-spacing:.7px;}
+.uni-name{font-weight:700;font-size:.86rem;}
+.pack-head{font-size:.63rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--mid);margin-bottom:7px;}
+.pack-item{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--bg);font-size:.8rem;cursor:pointer;transition:all .12s;-webkit-tap-highlight-color:transparent;}
+.pack-item:last-child{border-bottom:none;}
+.pack-item.done{color:var(--muted);text-decoration:line-through;}
+.pack-dot{width:17px;height:17px;border-radius:5px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .14s;font-size:.65rem;}
+.pack-item.done .pack-dot{background:var(--green);border-color:var(--green);color:white;}
+.swim-label{font-size:.63rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--blue);margin:11px 0 7px;display:flex;align-items:center;gap:6px;}
+.swim-label::after{content:'';flex:1;height:1px;background:var(--blue-dim);}
+.swim-box{font-size:.76rem;color:var(--mid);line-height:1.55;padding:9px 11px;background:var(--blue-dim);border-radius:8px;}
 
-/* Deep clean sub-sections */
-.deep-clean-area { background: var(--card); border: 1.5px solid var(--sand); border-radius: var(--r); padding: 16px 18px; margin-bottom: 12px; box-shadow: var(--shadow); }
-.dca-header { margin-bottom: 12px; }
-.dca-area { font-weight: 600; font-size: .9rem; }
-.dca-toilet { font-size: .75rem; color: var(--muted); margin-top: 2px; }
+/* Activity items */
+.act-item{display:flex;align-items:flex-start;gap:9px;padding:8px 0;border-bottom:1px solid var(--bg);font-size:.81rem;}
+.act-item:last-child{border-bottom:none;}
+.act-time{font-size:.66rem;font-weight:700;color:var(--amber);flex-shrink:0;padding-top:2px;min-width:44px;}
+.act-dot{color:var(--amber);font-size:.6rem;padding-top:4px;flex-shrink:0;}
 
-/* School prep */
-.school-uniform { display: flex; align-items: center; gap: 10px; background: var(--blue-light); border: 1.5px solid #B0CCE0; border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; }
-.school-uniform-emoji { font-size: 1.4rem; }
-.school-uniform-text { }
-.school-uniform-label { font-size: .72rem; color: var(--blue); font-weight: 600; text-transform: uppercase; letter-spacing: .8px; }
-.school-uniform-name { font-weight: 600; font-size: .9rem; }
-.school-uniform-en { font-size: .72rem; color: var(--mid); }
-.swim-kit-header { font-size: .75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--blue); margin: 14px 0 8px; }
+.empty-msg{text-align:center;padding:18px 10px;color:var(--muted);font-size:.78rem;}
+.empty-msg .ei{font-size:1.5rem;margin-bottom:5px;}
 
-/* Empty state */
-.empty-state { text-align: center; padding: 48px 24px; color: var(--muted); }
-.empty-state-icon { font-size: 2.5rem; margin-bottom: 12px; }
-.empty-state h3 { font-family: 'DM Serif Display', serif; font-size: 1.15rem; color: var(--dark); margin-bottom: 6px; }
-.empty-state p { font-size: .8rem; line-height: 1.5; }
+/* ADMIN */
+#admin-page{max-width:1100px;margin:0 auto;padding:24px 20px 48px;}
+.admin-tabs{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap;}
+.asm-tab{font-size:.75rem;font-weight:600;font-family:inherit;padding:6px 14px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface-2);color:var(--mid);cursor:pointer;transition:all .14s;}
+.asm-tab.active{background:var(--dark);border-color:var(--dark);color:white;}
+.admin-panel{display:none;}
+.admin-panel.active{display:block;}
+.sec-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;}
+.sec-hd-title{font-family:'DM Serif Display',serif;font-size:1.12rem;}
+.sec-hd-sub{font-size:.72rem;color:var(--muted);margin-top:2px;}
+.sched-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;}
+.sched-card{background:var(--surface-2);border:1.5px solid var(--border);border-radius:var(--r);padding:14px;box-shadow:var(--shadow-sm);}
+.sched-card-hd{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.sched-room{font-weight:600;font-size:.86rem;}
+.sched-en{font-size:.67rem;color:var(--muted);}
+.day-toggles{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px;}
+.day-tog{width:30px;height:30px;border-radius:7px;border:1.5px solid var(--border);background:white;font-size:.66rem;font-weight:700;font-family:inherit;cursor:pointer;color:var(--mid);transition:all .13s;}
+.day-tog.on{background:var(--accent);border-color:var(--accent);color:white;}
+.preset-row{display:flex;gap:4px;flex-wrap:wrap;}
+.preset{font-size:.64rem;font-weight:600;font-family:inherit;padding:2px 7px;border-radius:5px;border:1px solid var(--border);background:white;color:var(--mid);cursor:pointer;transition:all .13s;}
+.preset:hover{border-color:var(--accent);color:var(--accent);}
+.review-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;}
+.r-card{background:var(--surface-2);border:1.5px solid var(--border);border-radius:var(--r);padding:14px;box-shadow:var(--shadow-sm);}
+.r-card-hd{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.r-icon{font-size:1rem;}
+.r-name{font-weight:600;font-size:.83rem;flex:1;}
+.r-prog{font-size:.68rem;font-weight:700;padding:3px 8px;border-radius:20px;flex-shrink:0;}
+.r-prog.full{background:var(--green-dim);color:var(--green);}
+.r-prog.part{background:var(--accent-dim);color:var(--accent);}
+.r-prog.none{background:var(--border);color:var(--mid);}
+.r-row{display:flex;align-items:center;gap:7px;font-size:.73rem;padding:4px 0;border-bottom:1px solid var(--bg);}
+.r-row:last-child{border-bottom:none;}
+.rdot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.rdot.done{background:var(--green);}
+.rdot.pending{background:var(--border);border:1.5px solid var(--muted);}
+.r-lbl{flex:1;}
+.r-t{font-size:.65rem;color:var(--green);font-weight:700;}
+.btn-reset{display:inline-flex;align-items:center;gap:6px;font-size:.75rem;font-weight:600;font-family:inherit;padding:7px 13px;border-radius:8px;border:1.5px solid #F5C9C4;background:#FBF0EE;color:#B03A2E;cursor:pointer;transition:all .13s;}
+.btn-reset:hover{background:#B03A2E;color:white;border-color:#B03A2E;}
 
-/* Done banner */
-.done-banner { display: none; margin-bottom: 20px; background: var(--green); color: white; border-radius: var(--r); padding: 22px; text-align: center; box-shadow: var(--shadow-md); }
-.done-banner.visible { display: block; }
-.done-banner h3 { font-family: 'DM Serif Display', serif; font-size: 1.3rem; margin-bottom: 5px; }
-.done-banner p { font-size: .8rem; opacity: .88; }
-
-/* ══════════════════════════════════════════
-   ADMIN: SCHEDULE TAB
-══════════════════════════════════════════ */
-.room-schedule-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; margin-bottom: 24px; }
-.room-schedule-card { background: var(--card); border: 1.5px solid var(--sand); border-radius: var(--r); padding: 16px; box-shadow: var(--shadow); }
-.rsc-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-.rsc-icon { font-size: 1.3rem; }
-.rsc-name { font-weight: 600; font-size: .9rem; }
-.rsc-name-en { font-size: .7rem; color: var(--muted); }
-.day-btns { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 10px; }
-.day-btn { width: 33px; height: 33px; border-radius: 8px; border: 1.5px solid var(--sand); background: white; font-size: .7rem; font-weight: 600; font-family: inherit; cursor: pointer; color: var(--mid); transition: all .15s; }
-.day-btn.on { background: var(--accent); border-color: var(--accent); color: white; }
-.day-btn:hover:not(.on) { border-color: var(--accent); color: var(--accent); }
-.preset-btns { display: flex; gap: 4px; flex-wrap: wrap; }
-.preset-btn { font-size: .66rem; font-weight: 600; font-family: inherit; padding: 3px 8px; border-radius: 6px; border: 1px solid var(--sand); background: white; color: var(--mid); cursor: pointer; transition: all .15s; }
-.preset-btn:hover { border-color: var(--accent); color: var(--accent); }
-
-/* ══════════════════════════════════════════
-   ADMIN: TASK EDITOR TAB
-══════════════════════════════════════════ */
-.editor-tabs { display: flex; gap: 6px; margin-bottom: 20px; flex-wrap: wrap; }
-.editor-tab-btn { font-size: .78rem; font-weight: 600; font-family: inherit; padding: 7px 14px; border-radius: 20px; border: 1.5px solid var(--sand); background: white; color: var(--mid); cursor: pointer; transition: all .15s; display: flex; align-items: center; gap: 5px; }
-.editor-tab-btn.active { background: var(--dark); border-color: var(--dark); color: white; }
-.editor-tab-btn:hover:not(.active) { border-color: var(--dark); color: var(--dark); }
-.editor-panel { display: none; }
-.editor-panel.active { display: block; }
-
-.editor-toolbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
-.editor-hint { font-size: .75rem; color: var(--muted); }
-
-.task-editor-list { display: flex; flex-direction: column; gap: 8px; }
-.task-editor-item { background: var(--card); border: 1.5px solid var(--sand); border-radius: 11px; padding: 12px 14px; display: flex; align-items: center; gap: 10px; box-shadow: var(--shadow); }
-.task-editor-item.inactive { opacity: .5; }
-.task-editor-drag { color: var(--sand); cursor: grab; font-size: 1rem; flex-shrink: 0; padding: 0 2px; }
-.task-editor-fields { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 5px; }
-.task-editor-field { display: flex; align-items: center; gap: 6px; }
-.field-lang { font-size: .62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); width: 20px; flex-shrink: 0; }
-.inline-input { flex: 1; font-family: inherit; font-size: .82rem; border: none; background: transparent; color: var(--dark); padding: 2px 4px; border-radius: 5px; transition: background .15s; }
-.inline-input:focus { outline: none; background: var(--bg); }
-.task-editor-actions { display: flex; gap: 6px; flex-shrink: 0; }
-.icon-btn { width: 30px; height: 30px; border-radius: 7px; border: 1.5px solid var(--sand); background: white; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: .85rem; transition: all .15s; }
-.icon-btn:hover { border-color: var(--muted); }
-.icon-btn.danger:hover { background: var(--red-light); border-color: var(--red); }
-.icon-btn.success { border-color: var(--green); color: var(--green); background: var(--green-light); }
-.icon-btn.toggle-active.off { opacity: .5; }
-
-/* Day filter bar for editor */
-.day-filter-bar { display: flex; gap: 6px; margin-bottom: 14px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding-bottom: 4px; }
-.day-filter-bar::-webkit-scrollbar { display: none; }
-.day-filter-btn { flex-shrink: 0; font-size: .72rem; font-weight: 600; font-family: inherit; padding: 5px 12px; border-radius: 20px; border: 1.5px solid var(--sand); background: white; color: var(--mid); cursor: pointer; transition: all .15s; }
-.day-filter-btn.active { background: var(--dark); border-color: var(--dark); color: white; }
-
-/* Add task form */
-.add-task-form { background: var(--card); border: 1.5px dashed var(--sand); border-radius: var(--r); padding: 16px; margin-top: 12px; }
-.add-task-form-title { font-size: .8rem; font-weight: 600; color: var(--mid); margin-bottom: 12px; }
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
-.form-group { display: flex; flex-direction: column; gap: 5px; }
-.form-label { font-size: .7rem; font-weight: 600; color: var(--mid); }
-.form-input, .form-select { font-family: inherit; font-size: .83rem; padding: 8px 11px; border: 1.5px solid var(--sand); border-radius: 9px; background: white; color: var(--dark); transition: border .15s; }
-.form-input:focus, .form-select:focus { outline: none; border-color: var(--accent); }
-.btn-add { font-family: inherit; font-size: .82rem; font-weight: 600; padding: 9px 18px; border-radius: 9px; border: none; background: var(--accent); color: white; cursor: pointer; transition: all .15s; }
-.btn-add:hover { background: #9A500A; }
-.btn-add:disabled { opacity: .5; cursor: not-allowed; }
-
-/* ══════════════════════════════════════════
-   ADMIN: AD-HOC TASKS TAB
-══════════════════════════════════════════ */
-.adhoc-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start; }
-@media (max-width: 640px) { .adhoc-layout { grid-template-columns: 1fr; } }
-.panel-card { background: var(--card); border: 1.5px solid var(--sand); border-radius: var(--r); padding: 18px; box-shadow: var(--shadow); }
-.panel-title { font-weight: 600; font-size: .88rem; margin-bottom: 3px; }
-.panel-sub { font-size: .73rem; color: var(--muted); margin-bottom: 14px; }
-.lib-filter { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 10px; }
-.lib-filter-btn { font-size: .68rem; font-weight: 600; padding: 3px 9px; border-radius: 20px; border: 1px solid var(--sand); background: white; color: var(--mid); cursor: pointer; font-family: inherit; transition: all .15s; }
-.lib-filter-btn.active { background: var(--dark); border-color: var(--dark); color: white; }
-.lib-list { display: flex; flex-direction: column; gap: 5px; max-height: 320px; overflow-y: auto; }
-.lib-item { display: flex; align-items: center; gap: 9px; padding: 9px 11px; border-radius: 9px; border: 1px solid var(--sand); background: white; cursor: pointer; transition: all .15s; }
-.lib-item:hover { border-color: var(--accent); background: var(--accent-light); }
-.lib-item-text { flex: 1; min-width: 0; }
-.lib-item-name { font-size: .8rem; font-weight: 500; }
-.lib-item-en { font-size: .68rem; color: var(--muted); }
-.lib-add-btn { font-size: .68rem; font-weight: 600; font-family: inherit; padding: 4px 9px; border-radius: 7px; border: 1.5px solid var(--sand); background: white; color: var(--mid); cursor: pointer; white-space: nowrap; transition: all .15s; flex-shrink: 0; }
-.lib-add-btn:hover { background: var(--accent); border-color: var(--accent); color: white; }
-.pending-list { display: flex; flex-direction: column; gap: 7px; margin-top: 14px; }
-.pending-item { display: flex; align-items: flex-start; gap: 9px; padding: 10px 12px; border-radius: 10px; border: 1.5px solid var(--accent-light); background: var(--accent-light); }
-.pending-item.done-item { border-color: var(--green-light); background: var(--green-light); opacity: .65; }
-.pending-item-text { flex: 1; min-width: 0; }
-.pending-item-name { font-size: .81rem; font-weight: 600; }
-.pending-item-meta { font-size: .7rem; color: var(--mid); margin-top: 2px; }
-.pending-remove { background: none; border: none; color: var(--muted); cursor: pointer; font-size: .82rem; padding: 2px 5px; border-radius: 5px; transition: all .15s; flex-shrink: 0; }
-.pending-remove:hover { background: var(--red-light); color: var(--red); }
-
-/* ══════════════════════════════════════════
-   ADMIN: REVIEW TAB
-══════════════════════════════════════════ */
-.review-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px; }
-.review-card { background: var(--card); border: 1.5px solid var(--sand); border-radius: var(--r); padding: 15px 17px; box-shadow: var(--shadow); }
-.review-card-header { display: flex; align-items: center; gap: 9px; margin-bottom: 11px; }
-.review-progress { font-size: .72rem; font-weight: 700; padding: 3px 9px; border-radius: 20px; margin-left: auto; flex-shrink: 0; }
-.review-progress.complete { background: var(--green-light); color: var(--green); }
-.review-progress.partial { background: var(--accent-light); color: var(--accent); }
-.review-progress.none { background: var(--sand); color: var(--mid); }
-.review-task-list { display: flex; flex-direction: column; gap: 4px; }
-.review-task-item { display: flex; align-items: center; gap: 7px; font-size: .76rem; padding: 4px 0; border-bottom: 1px solid var(--bg); }
-.review-task-item:last-child { border-bottom: none; }
-.review-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-.review-dot.done { background: var(--green); }
-.review-dot.pending { background: var(--sand); border: 1.5px solid var(--muted); }
-.review-task-name { flex: 1; }
-.review-task-time { font-size: .67rem; color: var(--green); font-weight: 600; }
-.btn-danger { display: inline-flex; align-items: center; gap: 6px; font-size: .78rem; font-weight: 600; font-family: inherit; padding: 7px 14px; border-radius: 9px; border: 1.5px solid var(--red-light); background: var(--red-light); color: var(--red); cursor: pointer; transition: all .15s; }
-.btn-danger:hover { background: var(--red); color: white; border-color: var(--red); }
-
-/* ── MODAL ── */
-.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 500; align-items: center; justify-content: center; padding: 24px; }
-.modal-overlay.open { display: flex; }
-.modal-box { background: white; border-radius: 18px; padding: 28px; max-width: 360px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,.3); }
-.modal-title { font-family: 'DM Serif Display', serif; font-size: 1.15rem; margin-bottom: 4px; }
-.modal-sub { font-size: .76rem; color: var(--muted); margin-bottom: 18px; }
-.modal-actions { display: flex; gap: 10px; margin-top: 18px; }
-.btn-primary { flex: 1; padding: 11px; border: none; border-radius: 10px; background: var(--accent); color: white; font-family: inherit; font-size: .88rem; font-weight: 600; cursor: pointer; transition: all .15s; }
-.btn-primary:hover { background: #9A500A; }
-.btn-secondary { flex: 1; padding: 11px; border: 1.5px solid var(--sand); background: white; border-radius: 10px; font-family: inherit; font-size: .88rem; cursor: pointer; transition: all .15s; }
-.btn-secondary:hover { background: var(--bg); }
-
-/* ── TOAST ── */
-.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--dark); color: #FAF7F2; font-size: .8rem; font-weight: 500; padding: 10px 20px; border-radius: 30px; box-shadow: var(--shadow-md); opacity: 0; transition: all .3s; pointer-events: none; white-space: nowrap; z-index: 999; }
-.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-/* ── SAVE INDICATOR ── */
-.save-indicator { font-size: .72rem; color: var(--green); font-weight: 600; display: none; }
-.save-indicator.visible { display: inline; }
-
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--sand); border-radius: 10px; }
+/* TOAST */
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--dark);color:var(--surface);font-size:.78rem;font-weight:600;padding:10px 22px;border-radius:30px;box-shadow:var(--shadow-lg);opacity:0;pointer-events:none;white-space:nowrap;transition:all .28s;z-index:9999;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:10px;}
 </style>
 </head>
 <body>
 
-<!-- ══════════════════════════════════════════
-     LOGIN
-══════════════════════════════════════════ -->
-<div id="screen-login" class="screen active">
-  <div class="login-box">
-    <div class="login-logo">Jadwal <em>Harian</em></div>
-    <div class="login-sub">Household Management System</div>
-    <div class="login-cards">
-      <div class="login-card" onclick="login('admin')">
-        <div class="login-icon admin">🏠</div>
-        <div class="login-card-text">
-          <h3>Pemilik Rumah</h3>
-          <p>Manage schedule, tasks & review · Admin</p>
-        </div>
+<div id="login">
+  <div class="login-wrap">
+    <div class="login-brand">
+      <h1>Jadwal <em>Harian</em></h1>
+      <p>Household Management</p>
+    </div>
+    <div class="login-card" onclick="enter('helper')">
+      <div class="login-card-icon helper">🧹</div>
+      <div class="login-card-text">
+        <h3>Asisten Rumah Tangga</h3>
+        <p>Lihat & tandai tugas hari ini · Helper</p>
       </div>
-      <div class="login-card" onclick="login('helper')">
-        <div class="login-icon helper">🧹</div>
-        <div class="login-card-text">
-          <h3>Asisten Rumah Tangga</h3>
-          <p>Lihat & tandai tugas selesai · Helper</p>
-        </div>
+    </div>
+    <div class="login-card" onclick="enter('admin')">
+      <div class="login-card-icon admin">🏠</div>
+      <div class="login-card-text">
+        <h3>Pemilik Rumah</h3>
+        <p>Manage schedule & review tasks · Admin</p>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════
-     HELPER SCREEN
-══════════════════════════════════════════ -->
-<div id="screen-helper" class="screen">
-  <div class="app-header">
-    <div class="app-header-inner">
-      <div>
+<div id="app">
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="topbar-brand">
         <h1>Jadwal <em>Harian</em></h1>
-        <div class="header-meta">
-          <span class="date-pill" id="helper-day-pill"></span>
-          <span class="date-text" id="helper-date-text"></span>
+        <div class="topbar-date">
+          <span class="day-chip" id="topDay"></span>
+          <span class="topbar-date-text" id="topDate"></span>
         </div>
       </div>
-      <div class="header-right">
-        <span class="user-badge helper">Helper</span>
-        <button class="btn-logout" onclick="logout()">← Tukar</button>
-      </div>
-    </div>
-  </div>
-  <div class="day-selector">
-    <div class="day-selector-inner" id="helperDaySelector"></div>
-  </div>
-  <div class="loading-bar"><div class="loading-bar-fill indeterminate" id="helperLoadBar"></div></div>
-  <div class="progress-strip">
-    <div class="progress-inner">
-      <div class="prog-top">
-        <span class="prog-label" id="helperProgLabel">Loading...</span>
-        <span class="prog-pct" id="helperProgPct">–</span>
-      </div>
-      <div class="prog-bar-bg"><div class="prog-bar-fill" id="helperProgBar" style="width:0%"></div></div>
-    </div>
-  </div>
-  <div class="content">
-    <div class="content-inner">
-      <div class="done-banner" id="helperDoneBanner">
-        <div style="font-size:2rem;margin-bottom:8px">✨</div>
-        <h3>Selesai! Luar Biasa!</h3>
-        <p>Semua tugas selesai hari ini. Terima kasih!<br><em style="opacity:.75">All tasks complete. Thank you!</em></p>
-      </div>
-      <div class="error-toast" id="helperError"></div>
-      <div id="helperContent"></div>
-    </div>
-  </div>
-</div>
-
-<!-- ══════════════════════════════════════════
-     ADMIN SCREEN
-══════════════════════════════════════════ -->
-<div id="screen-admin" class="screen">
-  <div class="app-header">
-    <div class="app-header-inner">
-      <div>
-        <h1>Jadwal <em>Harian</em></h1>
-        <div class="header-meta">
-          <span class="date-pill" id="admin-day-pill"></span>
-          <span class="date-text" id="admin-date-text"></span>
-        </div>
-      </div>
-      <div class="header-right">
-        <span class="user-badge admin">Admin</span>
-        <button class="btn-logout" onclick="logout()">← Tukar</button>
+      <div class="topbar-right">
+        <span class="role-badge" id="roleBadge"></span>
+        <button class="btn-switch" onclick="switchUser()">← Tukar</button>
       </div>
     </div>
   </div>
-  <div class="tabs">
-    <div class="tabs-inner">
-      <button class="tab-btn active" data-tab="schedule" onclick="switchAdminTab(this)">📅 Jadwal Ruangan</button>
-      <button class="tab-btn" data-tab="tasks-editor" onclick="switchAdminTab(this)">✏️ Edit Tugas</button>
-      <button class="tab-btn" data-tab="adhoc" onclick="switchAdminTab(this)">➕ Tugas Tambahan</button>
-      <button class="tab-btn" data-tab="review" onclick="switchAdminTab(this)">📋 Pantau Hari Ini</button>
+  <div class="load-bar"><div class="load-bar-fill" id="loadBar"></div></div>
+  <div class="day-strip-wrap" id="dayStripWrap" style="display:none">
+    <div class="day-strip" id="dayStrip"></div>
+  </div>
+  <div class="progress-bar-wrap" id="progressWrap" style="display:none">
+    <div class="progress-bar-inner">
+      <div class="progress-bar-labels">
+        <span id="progLabel">0 / 0 tugas selesai</span>
+        <strong id="progPct">0%</strong>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="progFill" style="width:0%"></div></div>
     </div>
   </div>
-  <div class="loading-bar"><div class="loading-bar-fill indeterminate" id="adminLoadBar"></div></div>
-  <div class="content">
-    <div class="content-inner">
-      <div class="error-toast" id="adminError"></div>
-
-      <!-- SCHEDULE TAB -->
-      <div class="tab-panel active" id="admin-tab-schedule">
-        <div class="section-head">
-          <div>
-            <div class="section-title">Jadwal Kebersihan Mingguan</div>
-            <div class="section-sub">Set which days each room is cleaned · Atur hari bersih per ruangan</div>
-          </div>
-        </div>
-        <div class="room-schedule-grid" id="scheduleGrid"></div>
-      </div>
-
-      <!-- TASK EDITOR TAB -->
-      <div class="tab-panel" id="admin-tab-tasks-editor">
-        <div class="section-head">
-          <div>
-            <div class="section-title">Edit Tugas</div>
-            <div class="section-sub">Add, edit or disable tasks in each category · Langsung edit di Supabase</div>
-          </div>
-          <span class="save-indicator" id="saveIndicator">✓ Tersimpan</span>
-        </div>
-        <div class="editor-tabs">
-          <button class="editor-tab-btn active" data-etab="daily" onclick="switchEditorTab(this)">📋 Tugas Harian</button>
-          <button class="editor-tab-btn" data-etab="deepclean" onclick="switchEditorTab(this)">✨ Bersih Mendalam</button>
-          <button class="editor-tab-btn" data-etab="school" onclick="switchEditorTab(this)">🎒 Persiapan Sekolah</button>
-        </div>
-
-        <!-- Daily tasks editor -->
-        <div class="editor-panel active" id="editor-daily">
-          <div class="editor-toolbar">
-            <span class="editor-hint">Klik teks untuk edit langsung. Toggle 👁 untuk aktif/nonaktif.</span>
-          </div>
-          <div class="task-editor-list" id="editorDailyList"></div>
-          <div class="add-task-form" id="addDailyForm">
-            <div class="add-task-form-title">+ Tambah Tugas Harian Baru</div>
-            <div class="form-row">
-              <div class="form-group">
-                <label class="form-label">Bahasa Indonesia</label>
-                <input class="form-input" id="newDailyId" placeholder="Nama tugas..." />
-              </div>
-              <div class="form-group">
-                <label class="form-label">English</label>
-                <input class="form-input" id="newDailyEn" placeholder="Task name..." />
-              </div>
-            </div>
-            <button class="btn-add" onclick="addDailyTask()">+ Tambah</button>
-          </div>
-        </div>
-
-        <!-- Deep clean editor -->
-        <div class="editor-panel" id="editor-deepclean">
-          <div class="day-filter-bar" id="dcDayFilter"></div>
-          <div class="task-editor-list" id="editorDeepList"></div>
-          <div class="add-task-form" id="addDeepForm">
-            <div class="add-task-form-title">+ Tambah Tugas Bersih Mendalam</div>
-            <div class="form-row">
-              <div class="form-group">
-                <label class="form-label">Bahasa Indonesia</label>
-                <input class="form-input" id="newDeepId" placeholder="Nama tugas..." />
-              </div>
-              <div class="form-group">
-                <label class="form-label">English</label>
-                <input class="form-input" id="newDeepEn" placeholder="Task name..." />
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label class="form-label">Area (ID)</label>
-                <input class="form-input" id="newDeepArea" placeholder="cth: Kamar Tidur Utama" />
-              </div>
-              <div class="form-group">
-                <label class="form-label">Area (EN)</label>
-                <input class="form-input" id="newDeepAreaEn" placeholder="e.g: Master Bedroom" />
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label class="form-label">Toilet Label</label>
-                <input class="form-input" id="newDeepToilet" placeholder="cth: Toilet Utama · Master Toilet" />
-              </div>
-              <div class="form-group">
-                <label class="form-label">Hari · Day</label>
-                <select class="form-select" id="newDeepDay">
-                  <option value="0">Senin</option><option value="1">Selasa</option>
-                  <option value="2">Rabu</option><option value="3">Kamis</option>
-                  <option value="4">Jumat</option><option value="5">Sabtu</option><option value="6">Minggu</option>
-                </select>
-              </div>
-            </div>
-            <button class="btn-add" onclick="addDeepTask()">+ Tambah</button>
-          </div>
-        </div>
-
-        <!-- School prep editor -->
-        <div class="editor-panel" id="editor-school">
-          <div class="day-filter-bar" id="schoolDayFilter"></div>
-          <div class="task-editor-list" id="editorSchoolList"></div>
-          <div class="add-task-form" id="addSchoolForm">
-            <div class="add-task-form-title">+ Tambah Item Persiapan Sekolah</div>
-            <div class="form-row">
-              <div class="form-group">
-                <label class="form-label">Bahasa Indonesia</label>
-                <input class="form-input" id="newSchoolId" placeholder="Nama item..." />
-              </div>
-              <div class="form-group">
-                <label class="form-label">English</label>
-                <input class="form-input" id="newSchoolEn" placeholder="Item name..." />
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label class="form-label">Hari · Day (Senin=0)</label>
-                <select class="form-select" id="newSchoolDay">
-                  <option value="0">Senin</option><option value="1">Selasa</option>
-                  <option value="2">Rabu</option><option value="3">Kamis</option><option value="4">Jumat</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Swim Kit Item?</label>
-                <select class="form-select" id="newSchoolSwim">
-                  <option value="false">No</option><option value="true">Yes</option>
-                </select>
-              </div>
-            </div>
-            <button class="btn-add" onclick="addSchoolTask()">+ Tambah</button>
-          </div>
+  <div class="main">
+    <div class="page" id="helper-page">
+      <div style="max-width:1100px;margin:0 auto;padding:20px 20px 0">
+        <div class="done-banner" id="doneBanner">
+          <div style="font-size:1.8rem;margin-bottom:5px">✨</div>
+          <h3>Selesai! Luar Biasa!</h3>
+          <p>Semua tugas hari ini sudah selesai. Terima kasih! · All done for today!</p>
         </div>
       </div>
-
-      <!-- AD-HOC TAB -->
-      <div class="tab-panel" id="admin-tab-adhoc">
-        <div class="section-head" style="margin-bottom:20px">
-          <div>
-            <div class="section-title">Tugas Tambahan</div>
-            <div class="section-sub">Add tasks from room library or create custom · Tugas di luar jadwal rutin</div>
-          </div>
-        </div>
-        <div class="adhoc-layout">
-          <div>
-            <div class="panel-card">
-              <div class="panel-title">📚 Perpustakaan Tugas · Task Library</div>
-              <div class="panel-sub">Assign any room task to a specific day</div>
-              <div class="lib-filter" id="libFilter"></div>
-              <div class="lib-list" id="libList"></div>
-            </div>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:14px">
-            <div class="panel-card">
-              <div class="panel-title">✏️ Tugas Kustom · Custom Task</div>
-              <div class="panel-sub">Buat tugas baru yang tidak ada di perpustakaan</div>
-              <div class="form-group" style="margin-bottom:10px">
-                <label class="form-label">Nama Tugas (Bahasa Indonesia)</label>
-                <input class="form-input" id="customTaskId" placeholder="cth: Lap AC..." />
-              </div>
-              <div class="form-group" style="margin-bottom:10px">
-                <label class="form-label">Task Name (English)</label>
-                <input class="form-input" id="customTaskEn" placeholder="e.g: Wipe AC unit..." />
-              </div>
-              <div class="form-group" style="margin-bottom:10px">
-                <label class="form-label">Ruangan · Room</label>
-                <select class="form-select" id="customTaskRoom"></select>
-              </div>
-              <div class="form-group" style="margin-bottom:14px">
-                <label class="form-label">Hari · Day</label>
-                <select class="form-select" id="customTaskDay">
-                  <option value="0">Minggu</option><option value="1">Senin</option>
-                  <option value="2">Selasa</option><option value="3">Rabu</option>
-                  <option value="4">Kamis</option><option value="5">Jumat</option><option value="6">Sabtu</option>
-                </select>
-              </div>
-              <button class="btn-primary" onclick="addCustomTask()">+ Tambah Tugas</button>
-            </div>
-            <div class="panel-card">
-              <div class="panel-title">📌 Tugas Hari Ini & Mendatang</div>
-              <div class="panel-sub">Ad-hoc tasks scheduled</div>
-              <div class="pending-list" id="pendingList"></div>
-            </div>
-          </div>
-        </div>
-        <div class="modal-overlay" id="libDayModal">
-          <div class="modal-box">
-            <div class="modal-title" id="libModalTaskName"></div>
-            <div class="modal-sub" id="libModalTaskEn"></div>
-            <div class="form-group">
-              <label class="form-label">Pilih Hari · Choose Day</label>
-              <select class="form-select" id="libModalDay">
-                <option value="0">Minggu</option><option value="1">Senin</option>
-                <option value="2">Selasa</option><option value="3">Rabu</option>
-                <option value="4">Kamis</option><option value="5">Jumat</option><option value="6">Sabtu</option>
-              </select>
-            </div>
-            <div class="modal-actions">
-              <button class="btn-primary" onclick="confirmLibTask()">Tambah</button>
-              <button class="btn-secondary" onclick="closeLibModal()">Batal</button>
-            </div>
-          </div>
+      <div id="helperWrap" style="max-width:1100px;margin:0 auto;padding:4px 20px 48px">
+        <div class="helper-grid">
+          <div id="helperLeft"></div>
+          <div class="info-stack" id="helperRight"></div>
         </div>
       </div>
-
-      <!-- REVIEW TAB -->
-      <div class="tab-panel" id="admin-tab-review">
-        <div class="section-head">
-          <div>
-            <div class="section-title">Pantau Hari Ini</div>
-            <div class="section-sub">Real-time progress for today · Kemajuan tugas hari ini</div>
-          </div>
-          <button class="btn-danger" onclick="resetAllTasks()">↺ Reset Semua</button>
+    </div>
+    <div class="page" id="admin-page">
+      <div style="max-width:1100px;margin:0 auto;padding:24px 20px 48px">
+        <div class="admin-tabs">
+          <button class="asm-tab active" onclick="aTab(this,'sched')">📅 Jadual Ruangan</button>
+          <button class="asm-tab" onclick="aTab(this,'review')">📋 Pantau Hari Ini</button>
         </div>
-        <div id="reviewContent"></div>
+        <div class="admin-panel active" id="panel-sched">
+          <div class="sec-hd"><div><div class="sec-hd-title">Jadual Kebersihan Mingguan</div><div class="sec-hd-sub">Set which days each room is cleaned</div></div></div>
+          <div class="sched-grid" id="schedGrid"></div>
+        </div>
+        <div class="admin-panel" id="panel-review">
+          <div class="sec-hd">
+            <div><div class="sec-hd-title">Pantau Hari Ini</div><div class="sec-hd-sub">Helper's real-time progress</div></div>
+            <button class="btn-reset" onclick="resetAll()">↺ Reset Semua</button>
+          </div>
+          <div class="review-grid" id="reviewGrid"></div>
+        </div>
       </div>
-
     </div>
   </div>
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script>
-/* ══════════════════════════════════════════
-   SUPABASE CONFIG
-══════════════════════════════════════════ */
-const SUPABASE_URL  = 'https://isfeajunhtpzcdorlgsj.supabase.co';
-const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlzZmVhanVuaHRwemNkb3JsZ3NqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUyNzc0OTAsImV4cCI6MjA5MDg1MzQ5MH0.16bBxd3tbEsxWefWbagvJwoON59Q26fqj9pVuLpk9oQ';
+/* ── DATA ── */
+const DAILY = [
+  {id:'d01',g:'Pagi · Morning',lbl:'Laundry jika perlu — cuci & gosok',en:'Laundry if needed — wash & iron'},
+  {id:'d02',g:'Pagi · Morning',lbl:'Buka pintu balcony & tingkap bilik',en:'Open balcony door & bedroom windows'},
+  {id:'d03',g:'Pagi · Morning',lbl:'Vacuum karpet ruang tamu',en:'Vacuum living room carpet'},
+  {id:'d04',g:'Pagi · Morning',lbl:'Sapu semua lantai',en:'Sweep all floors'},
+  {id:'d05',g:'Pagi · Morning',lbl:'Mop lantai',en:'Mop all floors'},
+  {id:'d06',g:'Pagi · Morning',lbl:'Sapu balcony',en:'Sweep balcony'},
+  {id:'d07',g:'Pagi · Morning',lbl:'Siram pokok depan & belakang',en:'Water plants front & back'},
+  {id:'d08',g:'Pagi · Morning',lbl:'Lap butang lift & panel besi (lorong)',en:'Wipe lift button & iron panel (hallway)'},
+  {id:'d09',g:'Pagi · Morning',lbl:'Lap cermin & switch lampu (lorong)',en:'Wipe mirrors & light switches (hallway)'},
+  {id:'d10',g:'Bilik · Bedrooms',lbl:'Sapu, lap & kemas semua bilik tidur',en:'Sweep, wipe & tidy all bedrooms'},
+  {id:'d11',g:'Bilik · Bedrooms',lbl:'Kemas katil',en:'Make the beds'},
+  {id:'d12',g:'Bilik · Bedrooms',lbl:'Lap switch lampu bilik',en:'Wipe bedroom light switches'},
+  {id:'d13',g:'Bilik · Bedrooms',lbl:'Simpan buku & barang bersepah',en:'Put away books & scattered items'},
+  {id:'d14',g:'Dapur & Tandas',lbl:'Lap dapur kering',en:'Wipe dry kitchen'},
+  {id:'d15',g:'Dapur & Tandas',lbl:'Lap sliding door dapur',en:'Wipe kitchen sliding door'},
+  {id:'d16',g:'Dapur & Tandas',lbl:'Buang sampah tandas',en:'Empty bathroom bins'},
+  {id:'d17',g:'Dapur & Tandas',lbl:'Lap sinki & cermin tandas',en:'Wipe bathroom sink & mirror'},
+  {id:'d18',g:'Dapur & Tandas',lbl:'Lap handle pintu & switch WC',en:'Wipe toilet door handles & light switches'},
+  {id:'d19',g:'Dapur & Tandas',lbl:'Lap flush & dudukan toilet',en:'Wipe flush & toilet seat'},
+  {id:'d20',g:'Dapur & Tandas',lbl:'Tukar kain lap tangan (ruang tamu)',en:'Replace hand towel (living room)'},
+  {id:'d21',g:'Petang · Evening',lbl:'Tutup tingkap bilik & pintu balcony',en:'Close bedroom windows & balcony door'},
+  {id:'d22',g:'Petang · Evening',lbl:'Siram pokok (petang)',en:'Water plants (evening)'},
+  {id:'d23',g:'Petang · Evening',lbl:'Masak makan malam',en:'Cook dinner'},
+  {id:'d24',g:'Petang · Evening',lbl:'Lap & kemas meja makan',en:'Wipe & clear dining table'},
+  {id:'d25',g:'Petang · Evening',lbl:'Bersihkan dapur selepas masak',en:'Clean kitchen after cooking'},
+  {id:'d26',g:'Petang · Evening',lbl:'Defrost daging untuk esok',en:'Defrost meat for tomorrow'},
+  {id:'d27',g:'Petang · Evening',lbl:'Buang sampah dapur',en:'Take out kitchen rubbish'},
+];
 
-async function sbFetch(table, params = '') {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${params}`, {
-    headers: { 'apikey': SUPABASE_ANON, 'Authorization': `Bearer ${SUPABASE_ANON}` }
-  });
-  if (!res.ok) throw new Error(`${table}: ${res.status}`);
-  return res.json();
-}
+// Deep clean: key = JS day (0=Sun,1=Mon,...,6=Sat)
+const DEEP = {
+  1:{area:'Bilik Tidur Utama',areaEn:'Master Bedroom',toilet:'Toilet Utama · Master Toilet',
+     tasks:['Lap belakang TV','Lap skirting board putih','Lap cermin almari','Vakum tilam atas & bawah','Ganti sprei','Cuci filter AC']},
+  2:{area:"Bilik Haris",areaEn:"Haris' Bedroom",toilet:'Toilet Haris · Haris Toilet',
+     tasks:['Ganti sprei bilik Haris & ruang tamu','Lap belakang TV bilik Haris','Vakum tilam bilik Haris','Lap & kemas perabot bilik Haris']},
+  3:{area:'Pejabat & Lorong',areaEn:'Office & Hallway',toilet:'Toilet Pejabat · Office Toilet',
+     tasks:['Lap semua kipas siling (5 siling + 2 dinding bilik)','Kemas & lap pejabat','Lap perabot lorong','Lap switch & handle lorong']},
+  4:{area:'Dapur Basah & Tandas Ruang Tamu',areaEn:'Wet Kitchen & Living Room Toilet',toilet:'Tandas Ruang Tamu',
+     tasks:['Scrub & bersihkan sinki dapur basah','Lap dalam kabinet bawah sinki','Lap eksterior semua almari dapur','Bersihkan drain dapur']},
+  5:{area:'Peti Sejuk & Balkoni',areaEn:'Fridge & Balcony',toilet:'Toilet Utama · Master Toilet',
+     tasks:['Bersihkan dalam peti sejuk — semua shelf & laci','Mop & gosok balkoni','Lap railing & kaca balkoni','Leather polish sofa']},
+  6:{area:'Dapur Luar & Sliding Doors',areaEn:'Outside Kitchen & Sliding Doors',toilet:'Toilet Pejabat · Office Toilet',
+     tasks:['Bersihkan dapur luar / kitchen dalam almari','Lap & cuci semua sliding doors & track','Lap tingkap (windows) seluruh rumah','Sapu & mop area luar']},
+  0:{area:'Dapur Belakang',areaEn:'Back Kitchen',toilet:'Tandas Ruang Tamu',
+     tasks:['Bersihkan dapur belakang sepenuhnya','Lap dinding tiles belakang','Sapu & mop lantai dapur belakang']},
+};
 
-async function sbInsert(table, data) {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
-    method: 'POST',
-    headers: { 'apikey': SUPABASE_ANON, 'Authorization': `Bearer ${SUPABASE_ANON}`, 'Content-Type': 'application/json', 'Prefer': 'return=representation' },
-    body: JSON.stringify(data)
-  });
-  if (!res.ok) throw new Error(`Insert ${table}: ${res.status} ${await res.text()}`);
-  return res.json();
-}
+// School: 1=Mon,2=Tue,3=Wed,4=Thu,5=Fri; null = no school
+const SCHOOL = {
+  1:{uniform:'Baju Uniform',uniformEn:'School Uniform',pack:['Snack pagi · Morning snack','Water bottle'],swim:null},
+  2:{uniform:'Baju PE (Sukan)',uniformEn:'PE Sports Attire',pack:['iPad','Snack pagi','Water bottle'],
+     swim:'Baju renang · towel · topi renang · goggles · slipper · seluar dalam dlm beg plastik asing'},
+  3:{uniform:'Baju Uniform',uniformEn:'School Uniform',pack:['iPad','Snack pagi','Water bottle'],swim:null},
+  4:{uniform:'Baju PE (Sukan)',uniformEn:'PE Sports Attire',pack:['iPad','Snack pagi','Water bottle'],swim:null},
+  5:{uniform:'Baju Uniform',uniformEn:'School Uniform',pack:['Snack pagi · Morning snack','Water bottle'],
+     swim:'Baju renang · towel · topi renang · goggles · slipper · seluar dalam dlm beg plastik asing'},
+};
+const SAT_PACK = ['Racket badminton','Kain putih x2','T-shirt sukan','Water bottle'];
 
-async function sbUpdate(table, id, data) {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?id=eq.${id}`, {
-    method: 'PATCH',
-    headers: { 'apikey': SUPABASE_ANON, 'Authorization': `Bearer ${SUPABASE_ANON}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
-  });
-  if (!res.ok) throw new Error(`Update ${table}: ${res.status}`);
-}
+// Activities per JS day
+const ACTS = {
+  1:[{t:'5pm',l:'Mengaji Online'},{t:'Petang',l:'Jemput sekolah & beri snack'}],
+  2:[{t:'Petang',l:'Swimming DSA'},{t:'Petang',l:'Jemput sekolah & beri snack + air'}],
+  3:[{t:'Petang',l:'Swimming DSA (kit renang diperlukan semalam)'},{t:'Petang',l:'Jemput sekolah & beri snack + air'}],
+  4:[{t:'Petang',l:'Kelas Ahlan'},{t:'Petang',l:'Jemput sekolah & beri snack + air'}],
+  5:[{t:'2pm',l:'Math CCA'},{t:'3:45pm',l:'Kelas Bahasa Malaysia'},{t:'Petang',l:'Sediakan snack untuk Haris'}],
+  6:[{t:'8:30am',l:'Badminton — sediakan beg semalam!'}],
+  0:[],
+};
 
-async function sbDelete(table, id) {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?id=eq.${id}`, {
-    method: 'DELETE',
-    headers: { 'apikey': SUPABASE_ANON, 'Authorization': `Bearer ${SUPABASE_ANON}` }
-  });
-  if (!res.ok) throw new Error(`Delete ${table}: ${res.status}`);
-}
-
-/* ══════════════════════════════════════════
-   ROOM DATA (for cleaning schedule + library)
-══════════════════════════════════════════ */
-const ROOMS = [
-  { id:'lobby', icon:'🚪', name:'Lobby Lift & Lorong', en:'Private Lift Lobby & Hallway', tasks:[
-    {id:'sapu-lobby',label:'Sapu lantai lobby & lorong',en:'Sweep lobby and hallway floor'},
-    {id:'pel-lobby',label:'Pel lantai lobby & lorong',en:'Mop lobby and hallway floor'},
-    {id:'lap-pintu-lift',label:'Lap pintu lift & panel tombol',en:'Wipe lift door and button panel'},
-    {id:'lap-cermin-lobby',label:'Lap cermin & dinding kaca di lobby',en:'Wipe mirrors and glass panels in lobby'},
-    {id:'lap-console-lobby',label:'Lap rak / konsol di lorong',en:'Wipe hallway shelf / console'},
-    {id:'cek-alas-kaki',label:'Bersihkan keset depan pintu',en:'Clean entrance doormat'},
+const ROOMS=[
+  {id:'lobby',icon:'🚪',name:'Lobby & Lorong',en:'Lift Lobby & Hallway',tasks:[
+    {id:'rl01',lbl:'Sapu lantai lobby & lorong',en:'Sweep lobby and hallway'},
+    {id:'rl02',lbl:'Mop lantai lobby & lorong',en:'Mop lobby and hallway'},
+    {id:'rl03',lbl:'Lap pintu lift & panel butang',en:'Wipe lift door & button panel'},
   ]},
-  { id:'rt', icon:'🛋️', name:'Ruang Tamu', en:'Living Room', tasks:[
-    {id:'rapikan-bantal',label:'Rapikan bantal & selimut sofa',en:'Straighten sofa cushions and throws'},
-    {id:'lap-meja-kopi',label:'Lap meja kopi, konsol TV & rak',en:'Dust coffee table, TV console and shelves'},
-    {id:'lap-tv',label:'Lap layar TV dengan kain microfiber',en:'Wipe TV screen with microfibre cloth'},
-    {id:'lap-remote',label:'Lap remote & saklar lampu',en:'Wipe remote controls and light switches'},
-    {id:'vakum-sofa',label:'Vakum sofa jika diperlukan',en:'Vacuum sofa if needed'},
-    {id:'vakum-lantai-rt',label:'Vakum karpet atau sapu lantai',en:'Vacuum carpet or sweep hard floor'},
-    {id:'pel-lantai-rt',label:'Pel lantai ruang tamu',en:'Mop living room floor'},
+  {id:'rt',icon:'🛋️',name:'Ruang Tamu',en:'Living Room',tasks:[
+    {id:'rt01',lbl:'Kemas bantal & selimut sofa',en:'Straighten sofa cushions & throws'},
+    {id:'rt02',lbl:'Lap TV, konsol & rak',en:'Wipe TV, console & shelves'},
+    {id:'rt03',lbl:'Vakum / sapu lantai',en:'Vacuum / sweep floor'},
+    {id:'rt04',lbl:'Mop lantai ruang tamu',en:'Mop living room floor'},
   ]},
-  { id:'kb1', icon:'🛏️', name:'Kamar Tidur Utama', en:'Master Bedroom', tasks:[
-    {id:'rapikan-tb-1',label:'Rapikan / ganti sprei',en:'Make / change bed linen'},
-    {id:'lap-meja-1',label:'Lap meja samping & lampu',en:'Dust bedside tables and lamps'},
-    {id:'lap-saklar-1',label:'Lap saklar lampu & gagang pintu',en:'Wipe light switches and door handles'},
-    {id:'vakum-1',label:'Vakum / sapu lantai termasuk kolong tempat tidur',en:'Vacuum / sweep floor including under bed'},
-    {id:'pel-1',label:'Pel lantai kamar',en:'Mop bedroom floor'},
-    {id:'rapikan-lemari-1',label:'Rapikan pintu lemari & cermin',en:'Tidy wardrobe doors and mirrors'},
+  {id:'kb1',icon:'🛏️',name:'Bilik Tidur Utama',en:'Master Bedroom',tasks:[
+    {id:'kb101',lbl:'Kemas / tukar sprei',en:'Make / change bedsheets'},
+    {id:'kb102',lbl:'Vakum / sapu lantai',en:'Vacuum / sweep floor'},
+    {id:'kb103',lbl:'Mop lantai bilik',en:'Mop bedroom floor'},
   ]},
-  { id:'kb2', icon:'🛏️', name:'Kamar Tidur 2', en:'Bedroom 2', tasks:[
-    {id:'rapikan-tb-2',label:'Rapikan / ganti sprei',en:'Make / change bed linen'},
-    {id:'lap-meja-2',label:'Lap meja samping & lampu',en:'Dust bedside tables and lamps'},
-    {id:'vakum-2',label:'Vakum / sapu lantai',en:'Vacuum / sweep floor'},
-    {id:'pel-2',label:'Pel lantai kamar',en:'Mop bedroom floor'},
+  {id:'kb2',icon:'🛏️',name:"Bilik Haris",en:"Haris' Bedroom",tasks:[
+    {id:'kb201',lbl:'Kemas / tukar sprei',en:'Make / change bedsheets'},
+    {id:'kb202',lbl:'Vakum / sapu lantai',en:'Vacuum / sweep floor'},
+    {id:'kb203',lbl:'Mop lantai bilik',en:'Mop bedroom floor'},
   ]},
-  { id:'kb3', icon:'🛏️', name:'Kamar Tidur 3', en:'Bedroom 3', tasks:[
-    {id:'rapikan-tb-3',label:'Rapikan / ganti sprei',en:'Make / change bed linen'},
-    {id:'lap-meja-3',label:'Lap meja samping & lampu',en:'Dust bedside tables and lamps'},
-    {id:'vakum-3',label:'Vakum / sapu lantai',en:'Vacuum / sweep floor'},
-    {id:'pel-3',label:'Pel lantai kamar',en:'Mop bedroom floor'},
+  {id:'km',icon:'🚿',name:'Semua Tandas',en:'All Bathrooms',tasks:[
+    {id:'km01',lbl:'Scrub & bilas toilet',en:'Scrub & rinse toilet bowl'},
+    {id:'km02',lbl:'Bersihkan sinki, kran & cermin',en:'Clean sink, taps & mirror'},
+    {id:'km03',lbl:'Bersihkan shower / bathtub',en:'Clean shower / bathtub'},
+    {id:'km04',lbl:'Mop lantai tandas',en:'Mop bathroom floor'},
+    {id:'km05',lbl:'Isi semula sabun & tisu tandas',en:'Refill soap & toilet paper'},
   ]},
-  { id:'km', icon:'🚿', name:'Semua Kamar Mandi', en:'All Bathrooms', tasks:[
-    {id:'gosok-toilet',label:'Gosok & bilas toilet',en:'Scrub and rinse toilet'},
-    {id:'bersihkan-wastafel',label:'Bersihkan wastafel & kran',en:'Clean sink basin and taps'},
-    {id:'lap-cermin-km',label:'Lap meja kamar mandi & cermin',en:'Wipe bathroom counter and mirror'},
-    {id:'bersihkan-shower',label:'Bersihkan dinding & lantai shower',en:'Clean shower walls and floor'},
-    {id:'pel-km',label:'Pel lantai kamar mandi',en:'Mop bathroom floor'},
-    {id:'isi-sabun',label:'Isi ulang sabun & tisu toilet',en:'Refill soap dispensers and toilet paper'},
-    {id:'ganti-handuk',label:'Ganti handuk & lap tangan',en:'Replace used towels and hand towels'},
+  {id:'db',icon:'🍳',name:'Dapur Basah',en:'Wet Kitchen',tasks:[
+    {id:'db01',lbl:'Cuci pinggan, periuk & kuali',en:'Wash dishes, pots & pans'},
+    {id:'db02',lbl:'Lap kompor & backsplash',en:'Wipe stove & splashback'},
+    {id:'db03',lbl:'Lap meja & permukaan dapur',en:'Wipe countertops & surfaces'},
+    {id:'db04',lbl:'Sapu & mop lantai dapur',en:'Sweep & mop kitchen floor'},
   ]},
-  { id:'db', icon:'🍳', name:'Dapur Basah', en:'Wet Kitchen', tasks:[
-    {id:'cuci-piring',label:'Cuci semua piring, panci & wajan',en:'Wash all dishes, pots and pans'},
-    {id:'lap-kompor',label:'Lap kompor & backsplash',en:'Wipe stove top and splashback'},
-    {id:'lap-meja-db',label:'Lap meja & permukaan dapur',en:'Wipe countertops and prep surfaces'},
-    {id:'lap-kulkas',label:'Lap luar kulkas',en:'Wipe fridge exterior'},
-    {id:'sapu-pel-db',label:'Sapu & pel lantai dapur basah',en:'Sweep and mop wet kitchen floor'},
-  ]},
-  { id:'dk', icon:'☕', name:'Dapur Kering', en:'Dry Kitchen', tasks:[
-    {id:'lap-meja-dk',label:'Lap meja dapur kering & area bar',en:'Wipe dry kitchen countertops and bar area'},
-    {id:'bersihkan-kopi',label:'Bersihkan mesin kopi',en:'Clean coffee machine'},
-    {id:'lap-meja-makan',label:'Lap meja makan & kursi',en:'Wipe dining table and chairs'},
-    {id:'sapu-pel-dk',label:'Sapu & pel lantai dapur kering',en:'Sweep and mop dry kitchen floor'},
-  ]},
-  { id:'balkon', icon:'🌿', name:'Balkon', en:'Balcony', tasks:[
-    {id:'sapu-balkon',label:'Sapu lantai balkon',en:'Sweep balcony floor'},
-    {id:'pel-balkon',label:'Pel lantai balkon',en:'Mop balcony floor'},
-    {id:'lap-furniture-balkon',label:'Lap furnitur & kursi balkon',en:'Wipe balcony furniture and chairs'},
-    {id:'lap-railing',label:'Lap railing & kaca pembatas',en:'Wipe railings and glass balustrade'},
+  {id:'balkon',icon:'🌿',name:'Balkoni',en:'Balcony',tasks:[
+    {id:'bk01',lbl:'Sapu balkoni',en:'Sweep balcony'},
+    {id:'bk02',lbl:'Mop balkoni',en:'Mop balcony'},
+    {id:'bk03',lbl:'Lap perabot & railing',en:'Wipe furniture & railings'},
   ]},
 ];
 
-/* ══════════════════════════════════════════
-   STATE
-══════════════════════════════════════════ */
-const DAYS_ID    = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
-const DAYS_SHORT = ['Min','Sen','Sel','Rab','Kam','Jum','Sab'];
+const DAYS_FULL=['Ahad','Isnin','Selasa','Rabu','Khamis','Jumaat','Sabtu'];
+const DAYS_SHORT=['Ahd','Isn','Sel','Rab','Kha','Jum','Sab'];
 
-let currentUser   = null;
-let helperDay     = new Date().getDay();
-let adminEditorDay = { deepclean: 0, school: 0 };
-let DB = { daily: [], clean: [], school: [] };
-let pendingLibTask = null;
-let libFilter = 'all';
-let editorTab = 'daily';
+let currentUser=null, helperDay=new Date().getDay();
 
-function getToday() { return new Date().getDay(); }
-function getTodayKey() { const d = new Date(); return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`; }
-function formatDate() { return new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'}); }
+function todayJS(){return new Date().getDay();}
+function todayKey(){const d=new Date();return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;}
+function fmtDate(){return new Date().toLocaleDateString('ms-MY',{weekday:'long',day:'numeric',month:'long',year:'numeric'});}
+function ls(k,def){try{const v=localStorage.getItem(k);return v?JSON.parse(v):def;}catch{return def;}}
+function lss(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch{}}
+function getChecked(){const s=ls('jh2_chk',null);return(s&&s.date===todayKey())?s.state:{};}
+function setChecked(s){lss('jh2_chk',{date:todayKey(),state:s});}
+function getPack(){const s=ls('jh2_pack',null);return(s&&s.date===todayKey())?s.state:{};}
+function setPack(s){lss('jh2_pack',{date:todayKey(),state:s});}
+function getSched(){const d={};ROOMS.forEach(r=>d[r.id]=[]);return ls('jh2_sched',d);}
+function saveSched(s){lss('jh2_sched',s);}
 
-function ls(key, def) { try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : def; } catch { return def; } }
-function lsSet(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch {} }
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
 
-function getSchedule() { const d = {}; ROOMS.forEach(r=>d[r.id]=[]); return ls('jh_schedule', d); }
-function saveSchedule(s) { lsSet('jh_schedule', s); }
-
-function getTaskState() {
-  const stored = ls('jh_tasks', null);
-  if (stored && stored.date === getTodayKey()) return stored.state;
-  return {};
-}
-function saveTaskState(s) { lsSet('jh_tasks', { date: getTodayKey(), state: s }); }
-
-function getAdhocTasks() { return ls('jh_adhoc', []); }
-function saveAdhocTasks(t) { lsSet('jh_adhoc', t); }
-
-/* ══════════════════════════════════════════
-   UTILS
-══════════════════════════════════════════ */
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2200);
+function ckBox(done){
+  return `<div class="cb">${done?`<svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`:''}</div>`;
 }
 
-function setLoading(id, on) {
-  const bar = document.getElementById(id);
-  if (!bar) return;
-  if (on) bar.classList.add('indeterminate');
-  else { bar.classList.remove('indeterminate'); bar.style.width = '0'; }
-}
-
-function showError(id, msg) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  el.textContent = msg;
-  el.classList.add('visible');
-}
-function hideError(id) { const el = document.getElementById(id); if(el) el.classList.remove('visible'); }
-
-function showSaved() {
-  const el = document.getElementById('saveIndicator');
-  if (!el) return;
-  el.classList.add('visible');
-  setTimeout(() => el.classList.remove('visible'), 2000);
-}
-
-/* ══════════════════════════════════════════
-   LOGIN / LOGOUT
-══════════════════════════════════════════ */
-async function login(user) {
-  currentUser = user;
-  document.getElementById('screen-login').classList.remove('active');
-  document.getElementById('screen-' + user).classList.add('active');
-  if (user === 'admin') await initAdmin();
-  else await initHelper();
-}
-
-function logout() {
-  document.getElementById('screen-' + currentUser).classList.remove('active');
-  document.getElementById('screen-login').classList.add('active');
-  currentUser = null;
-}
-
-function switchAdminTab(btn) {
-  document.querySelectorAll('#screen-admin .tab-btn').forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll('#screen-admin .tab-panel').forEach(p=>p.classList.remove('active'));
-  btn.classList.add('active');
-  const tab = btn.dataset.tab;
-  document.getElementById('admin-tab-' + tab).classList.add('active');
-  if (tab === 'review') renderReview();
-  if (tab === 'adhoc') renderPendingList();
-  if (tab === 'tasks-editor') renderEditorTab(editorTab);
-}
-
-function switchEditorTab(btn) {
-  document.querySelectorAll('.editor-tab-btn').forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll('.editor-panel').forEach(p=>p.classList.remove('active'));
-  btn.classList.add('active');
-  editorTab = btn.dataset.etab;
-  document.getElementById('editor-' + editorTab).classList.add('active');
-  renderEditorTab(editorTab);
-}
-
-/* ══════════════════════════════════════════
-   LOAD DATA FROM SUPABASE
-══════════════════════════════════════════ */
-async function loadSupabaseData() {
-  const [daily, clean, school] = await Promise.all([
-    sbFetch('daily_tasks', 'order=sort_order.asc'),
-    sbFetch('deep_clean',  'order=day_index.asc,sort_order.asc'),
-    sbFetch('school_prep', 'order=day_index.asc,sort_order.asc'),
-  ]);
-  DB = { daily, clean, school };
-}
-
-/* ══════════════════════════════════════════
-   HELPER INIT
-══════════════════════════════════════════ */
-async function initHelper() {
-  helperDay = getToday();
-  document.getElementById('helper-day-pill').textContent = DAYS_ID[helperDay];
-  document.getElementById('helper-date-text').textContent = formatDate();
-  buildHelperDaySelector();
-  setLoading('helperLoadBar', true);
-  hideError('helperError');
-  try {
-    await loadSupabaseData();
-    hideError('helperError');
-  } catch(e) {
-    showError('helperError', '⚠ Tidak dapat terhubung ke Supabase. Periksa koneksi internet.');
-  } finally {
-    setLoading('helperLoadBar', false);
+/* ── ENTER / SWITCH ── */
+function enter(user){
+  currentUser=user;
+  document.getElementById('login').classList.add('hidden');
+  document.getElementById('app').classList.add('visible');
+  document.getElementById('topDay').textContent=DAYS_FULL[todayJS()];
+  document.getElementById('topDate').textContent=fmtDate();
+  const rb=document.getElementById('roleBadge');
+  rb.className='role-badge '+user;
+  rb.textContent=user==='admin'?'Admin':'Helper';
+  if(user==='helper'){
+    document.getElementById('dayStripWrap').style.display='block';
+    document.getElementById('progressWrap').style.display='block';
+    helperDay=todayJS();
+    buildDayStrip();
+    document.getElementById('helper-page').classList.add('active');
+    renderHelper();
+  } else {
+    document.getElementById('admin-page').classList.add('active');
+    renderSchedGrid();
   }
-  renderHelperContent();
+}
+function switchUser(){
+  document.getElementById('app').classList.remove('visible');
+  document.getElementById('helper-page').classList.remove('active');
+  document.getElementById('admin-page').classList.remove('active');
+  document.getElementById('dayStripWrap').style.display='none';
+  document.getElementById('progressWrap').style.display='none';
+  document.getElementById('login').classList.remove('hidden');
+  currentUser=null;
 }
 
-function buildHelperDaySelector() {
-  const today = getToday();
-  const sel = document.getElementById('helperDaySelector');
-  sel.innerHTML = DAYS_SHORT.map((d,i) => `
-    <button class="day-sel-btn ${i===helperDay?'active':''} ${i===today?'today':''}"
-      onclick="helperSelectDay(${i})">${d}${i===today?' ·':''}</button>
-  `).join('');
+/* ── DAY STRIP ── */
+function buildDayStrip(){
+  const today=todayJS();
+  document.getElementById('dayStrip').innerHTML=DAYS_FULL.map((d,i)=>
+    `<button class="day-pill-btn ${i===today?'today':''} ${i===helperDay?'selected':''}" onclick="pickDay(${i})">${d}</button>`
+  ).join('');
 }
+function pickDay(d){helperDay=d;buildDayStrip();renderHelper();}
 
-function helperSelectDay(day) {
-  helperDay = day;
-  buildHelperDaySelector();
-  renderHelperContent();
-}
+/* ── HELPER RENDER ── */
+function renderHelper(){renderLeft();renderRight();updateProgress();}
 
-function renderHelperContent() {
-  const today = helperDay;
-  const sched = getSchedule();
-  const taskState = getTaskState();
-  const adhoc = getAdhocTasks().filter(t => t.day === today);
-  const todayRooms = ROOMS.filter(r => (sched[r.id]||[]).includes(today));
+function renderLeft(){
+  const chk=getChecked();
+  let html='';
 
-  const dailyActive = DB.daily.filter(t => t.active);
-  const deepActive  = DB.clean.filter(t => t.active && t.day_index === today);
-  const schoolActive = today <= 4 ? DB.school.filter(t => t.active && t.day_index === today) : [];
-
-  const el = document.getElementById('helperContent');
-
-  // Count total tasks
-  let total = 0, done = 0;
-  // Room cleaning tasks
-  todayRooms.forEach(r => {
-    const tasks = [...r.tasks, ...adhoc.filter(a=>a.roomId===r.id).map(a=>({id:a.id,label:a.label,en:a.en}))];
-    tasks.forEach(t => { total++; if(taskState[t.id]) done++; });
-  });
-  // Stand-alone adhoc
-  adhoc.filter(a=>!todayRooms.some(r=>r.id===a.roomId)).forEach(t=>{total++;if(taskState[t.id])done++;});
   // Daily tasks
-  dailyActive.forEach(t=>{total++;if(taskState['daily_'+t.id])done++;});
+  const dDone=DAILY.filter(t=>chk['d_'+t.id]).length;
+  const dTotal=DAILY.length;
+  const dBadge=dDone===dTotal?'b-done':dDone>0?'b-part':'b-none';
+
+  html+=`<div class="sec-label">
+    <div class="sec-label-icon" style="background:var(--accent-dim)">📋</div>
+    <div><h2>Tugas Harian</h2><p>Daily Tasks · setiap hari</p></div>
+    <span class="sec-label-badge ${dBadge}">${dDone}/${dTotal}</span>
+  </div>
+  <div class="task-card">`;
+
+  let grp=null;
+  DAILY.forEach(t=>{
+    const done=!!chk['d_'+t.id];
+    const time=chk['d_'+t.id+'_t']||'';
+    if(t.g!==grp){grp=t.g;html+=`<div class="group-head">${t.g}</div>`;}
+    html+=`<div class="task-row ${done?'done':''}" onclick="togTask('d_${t.id}')">
+      ${ckBox(done)}
+      <div style="flex:1;min-width:0">
+        <div class="t-label">${t.lbl}</div>
+        <div class="t-en">${t.en}</div>
+        ${done&&time?`<div class="t-time">✓ Pukul ${time}</div>`:''}
+      </div>
+    </div>`;
+  });
+  html+=`</div>`;
+
   // Deep clean
-  deepActive.forEach(t=>{total++;if(taskState['deep_'+t.id])done++;});
-  // School prep
-  schoolActive.forEach(t=>{total++;if(taskState['school_'+t.id])done++;});
-
-  updateHelperProgress(done, total);
-
-  let html = '';
-
-  // ── TUGAS HARIAN ──
-  if (dailyActive.length) {
-    const catDone = dailyActive.filter(t=>taskState['daily_'+t.id]).length;
-    const catClass = catDone === dailyActive.length ? 'all-done' : catDone > 0 ? 'partial' : 'none';
-    html += `<div class="cat-section">
-      <div class="cat-header">
-        <span class="cat-icon">📋</span>
-        <div><div class="cat-name">Tugas Harian</div><div class="cat-name-en">Daily Tasks</div></div>
-        <span class="cat-count ${catClass}">${catDone}/${dailyActive.length}</span>
-      </div>
-      <div class="task-list">
-        ${dailyActive.map(t => taskItemHTML('daily_'+t.id, t.bahasa, t.english, taskState, false)).join('')}
-      </div>
-    </div>`;
-  }
-
-  // ── BERSIH MENDALAM ──
-  if (deepActive.length) {
-    const catDone = deepActive.filter(t=>taskState['deep_'+t.id]).length;
-    const catClass = catDone === deepActive.length ? 'all-done' : catDone > 0 ? 'partial' : 'none';
-    // Group by area
-    const areas = {};
-    deepActive.forEach(t => {
-      const key = t.area_bahasa;
-      if (!areas[key]) areas[key] = { area_bahasa: t.area_bahasa, area_english: t.area_english, toilet_label: t.toilet_label, tasks: [] };
-      areas[key].tasks.push(t);
-    });
-    html += `<div class="cat-section">
-      <div class="cat-header">
-        <span class="cat-icon">✨</span>
-        <div><div class="cat-name">Bersih Mendalam</div><div class="cat-name-en">Deep Clean</div></div>
-        <span class="cat-count ${catClass}">${catDone}/${deepActive.length}</span>
-      </div>
-      ${Object.values(areas).map(area => `
-        <div class="deep-clean-area">
-          <div class="dca-header">
-            <div class="dca-area">${area.area_bahasa} · ${area.area_english}</div>
-            <div class="dca-toilet">🚽 ${area.toilet_label}</div>
-          </div>
-          <div class="task-list">
-            ${area.tasks.map(t => taskItemHTML('deep_'+t.id, t.bahasa, t.english, taskState, false)).join('')}
-          </div>
+  const dc=DEEP[helperDay];
+  if(dc){
+    const dcDone=dc.tasks.filter((_,i)=>chk[`dc_${helperDay}_${i}`]).length;
+    const dcT=dc.tasks.length;
+    const dcB=dcDone===dcT?'b-done':dcDone>0?'b-part':'b-none';
+    html+=`<div class="sec-label" style="margin-top:28px">
+      <div class="sec-label-icon" style="background:var(--purple-dim)">✨</div>
+      <div><h2>Bersih Mendalam</h2><p>Deep Clean · fokus hari ini</p></div>
+      <span class="sec-label-badge ${dcB}">${dcDone}/${dcT}</span>
+    </div>
+    <div class="deep-card">
+      <div class="deep-card-hd">
+        <div>
+          <span class="deep-area-badge">Fokus Hari Ini</span>
+          <div class="deep-area-name" style="margin-top:5px">${dc.area}</div>
+          <div class="deep-area-en">${dc.areaEn}</div>
         </div>
-      `).join('')}
-    </div>`;
-  }
-
-  // ── PERSIAPAN SEKOLAH ──
-  if (schoolActive.length) {
-    const catDone = schoolActive.filter(t=>taskState['school_'+t.id]).length;
-    const catClass = catDone === schoolActive.length ? 'all-done' : catDone > 0 ? 'partial' : 'none';
-    const uniformRow = schoolActive[0];
-    const swimItems = schoolActive.filter(t=>t.is_swim_kit_item);
-    const packItems = schoolActive.filter(t=>!t.is_swim_kit_item);
-    html += `<div class="cat-section">
-      <div class="cat-header">
-        <span class="cat-icon">🎒</span>
-        <div><div class="cat-name">Persiapan Sekolah</div><div class="cat-name-en">School Prep</div></div>
-        <span class="cat-count ${catClass}">${catDone}/${schoolActive.length}</span>
+        <div class="deep-toilet">🚽 ${dc.toilet}</div>
       </div>
-      <div class="school-uniform">
-        <div class="school-uniform-emoji">👔</div>
-        <div class="school-uniform-text">
-          <div class="school-uniform-label">Seragam Hari Ini</div>
-          <div class="school-uniform-name">${uniformRow.uniform_bahasa}</div>
-          <div class="school-uniform-en">${uniformRow.uniform_english}</div>
+      <div class="deep-card-body">`;
+    dc.tasks.forEach((task,i)=>{
+      const k=`dc_${helperDay}_${i}`;
+      const done=!!chk[k];
+      const time=chk[k+'_t']||'';
+      html+=`<div class="task-row ${done?'done':''}" onclick="togTask('${k}')">
+        ${ckBox(done)}
+        <div style="flex:1;min-width:0">
+          <div class="t-label">${task}</div>
+          ${done&&time?`<div class="t-time">✓ Pukul ${time}</div>`:''}
         </div>
-      </div>
-      <div class="task-list">
-        ${packItems.map(t => taskItemHTML('school_'+t.id, t.item_bahasa, t.item_english, taskState, false)).join('')}
-      </div>
-      ${swimItems.length ? `
-        <div class="swim-kit-header">🏊 Perlengkapan Renang · Swim Kit</div>
-        <div class="task-list">${swimItems.map(t => taskItemHTML('school_'+t.id, t.item_bahasa, t.item_english, taskState, false)).join('')}</div>
-      ` : ''}
-    </div>`;
-  }
-
-  // ── KEBERSIHAN RUANGAN ──
-  if (todayRooms.length || adhoc.filter(a=>!todayRooms.some(r=>r.id===a.roomId)).length) {
-    const allRoomTasks = [];
-    todayRooms.forEach(r => {
-      const tasks = [...r.tasks, ...adhoc.filter(a=>a.roomId===r.id).map(a=>({id:a.id,label:a.label,en:a.en}))];
-      tasks.forEach(t => allRoomTasks.push(t));
-    });
-    adhoc.filter(a=>!todayRooms.some(r=>r.id===a.roomId)).forEach(t=>allRoomTasks.push({id:t.id,label:t.label,en:t.en}));
-    const catDone = allRoomTasks.filter(t=>taskState[t.id]).length;
-    const catClass = catDone === allRoomTasks.length ? 'all-done' : catDone > 0 ? 'partial' : 'none';
-
-    html += `<div class="cat-section">
-      <div class="cat-header">
-        <span class="cat-icon">🧹</span>
-        <div><div class="cat-name">Kebersihan Ruangan</div><div class="cat-name-en">Room Cleaning</div></div>
-        <span class="cat-count ${catClass}">${catDone}/${allRoomTasks.length}</span>
-      </div>`;
-    todayRooms.forEach(room => {
-      const roomAdhoc = adhoc.filter(a=>a.roomId===room.id);
-      const allTasks = [...room.tasks.map(t=>({...t,isAdhoc:false})), ...roomAdhoc.map(a=>({id:a.id,label:a.label,en:a.en,isAdhoc:true}))];
-      const rDone = allTasks.filter(t=>taskState[t.id]).length;
-      html += `<div class="deep-clean-area">
-        <div class="dca-header">
-          <div class="dca-area">${room.icon} ${room.name}</div>
-          <div class="dca-toilet" style="color:var(--green)">${rDone}/${allTasks.length} selesai</div>
-        </div>
-        <div class="task-list">${allTasks.map(t=>taskItemHTML(t.id,t.label,t.en,taskState,t.isAdhoc)).join('')}</div>
       </div>`;
     });
-    const standalone = adhoc.filter(a=>!todayRooms.some(r=>r.id===a.roomId));
-    if (standalone.length) {
-      html += `<div class="deep-clean-area">
-        <div class="dca-header"><div class="dca-area">📌 Tugas Tambahan · Ad-hoc Tasks</div></div>
-        <div class="task-list">${standalone.map(t=>taskItemHTML(t.id,t.label,t.en,taskState,true)).join('')}</div>
+    html+=`</div></div>`;
+  }
+
+  document.getElementById('helperLeft').innerHTML=html;
+}
+
+function renderRight(){
+  const pack=getPack();
+  let html='';
+
+  // SCHOOL
+  const school=SCHOOL[helperDay];
+  html+=`<div class="info-card school">
+    <div class="info-card-hd">
+      <div><div class="info-card-title">🎒 Persiapan Sekolah</div><div class="info-card-sub">School Prep · Haris</div></div>
+    </div>
+    <div class="info-card-body">`;
+
+  if(school){
+    html+=`<div class="uniform-row">
+      <div class="uni-icon">👔</div>
+      <div>
+        <div class="uni-label">Seragam Hari Ini</div>
+        <div class="uni-name">${school.uniform}</div>
+        <div style="font-size:.7rem;color:var(--mid)">${school.uniformEn}</div>
+      </div>
+    </div>
+    <div class="pack-head">Pack List</div>`;
+    school.pack.forEach((item,i)=>{
+      const k=`pk_${helperDay}_${i}`;const done=!!pack[k];
+      html+=`<div class="pack-item ${done?'done':''}" onclick="togPack('${k}')">
+        <div class="pack-dot">${done?'✓':''}</div><span>${item}</span>
       </div>`;
+    });
+    if(school.swim){
+      html+=`<div class="swim-label">🏊 Swimming Kit</div>
+        <div class="swim-box">${school.swim}</div>`;
     }
-    html += `</div>`;
-  }
-
-  if (!html) {
-    html = `<div class="empty-state"><div class="empty-state-icon">☀️</div><h3>Tidak ada tugas hari ini!</h3><p>Tidak ada jadwal ruangan untuk hari ini.<br><em>No rooms scheduled. Check with Admin.</em></p></div>`;
-  }
-
-  el.innerHTML = html;
-}
-
-function taskItemHTML(id, label, en, taskState, isAdhoc) {
-  const done = !!taskState[id];
-  const time = taskState[id] || '';
-  return `<div class="task-item ${done?'done':''} ${isAdhoc?'reminder':''}" onclick="toggleTask('${id}')">
-    <div class="task-check">
-      <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
-        <path d="M1 5L4.5 8.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
+  } else if(helperDay===6){
+    html+=`<div class="uniform-row" style="background:var(--amber-dim)">
+      <div class="uni-icon">🏸</div>
+      <div><div class="uni-label" style="color:var(--amber)">8:30am</div><div class="uni-name">Badminton</div></div>
     </div>
-    <div class="task-content">
-      <div class="task-name">${label}</div>
-      <div class="task-name-en">${en}</div>
-      ${done ? `<div class="task-time">✓ Pukul ${time}</div>` : ''}
+    <div class="pack-head">Pack List</div>`;
+    SAT_PACK.forEach((item,i)=>{
+      const k=`pk_6_${i}`;const done=!!pack[k];
+      html+=`<div class="pack-item ${done?'done':''}" onclick="togPack('${k}')">
+        <div class="pack-dot">${done?'✓':''}</div><span>${item}</span>
+      </div>`;
+    });
+  } else {
+    html+=`<div class="empty-msg"><div class="ei">🏠</div><div>Tiada sekolah hari ini<br><span style="font-size:.73rem;color:var(--muted)">No school today</span></div></div>`;
+  }
+  html+=`</div></div>`;
+
+  // ACTIVITIES
+  const acts=ACTS[helperDay]||[];
+  html+=`<div class="info-card activity">
+    <div class="info-card-hd">
+      <div><div class="info-card-title">⚡ Aktiviti Haris</div><div class="info-card-sub">Hari ini · take note</div></div>
     </div>
-    ${isAdhoc ? '<span class="task-reminder-badge">Tambahan</span>' : ''}
-  </div>`;
-}
-
-function toggleTask(taskId) {
-  const state = getTaskState();
-  if (state[taskId]) delete state[taskId];
-  else {
-    const now = new Date();
-    state[taskId] = now.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
+    <div class="info-card-body">`;
+  if(acts.length){
+    acts.forEach(a=>{
+      html+=`<div class="act-item">
+        <div class="act-time">${a.t}</div>
+        <div class="act-dot">●</div>
+        <div>${a.l}</div>
+      </div>`;
+    });
+  } else {
+    html+=`<div class="empty-msg"><div class="ei">😴</div><div>Tiada aktiviti hari ini<br><span style="font-size:.73rem;color:var(--muted)">No activities today</span></div></div>`;
   }
-  saveTaskState(state);
-  const adhoc = getAdhocTasks();
-  const at = adhoc.find(a=>a.id===taskId);
-  if (at) { at.done = !!state[taskId]; saveAdhocTasks(adhoc); }
-  renderHelperContent();
+  html+=`</div></div>`;
+
+  document.getElementById('helperRight').innerHTML=html;
 }
 
-function updateHelperProgress(done, total) {
-  const pct = total ? Math.round(done/total*100) : 0;
-  document.getElementById('helperProgLabel').textContent = `${done} / ${total} tugas`;
-  document.getElementById('helperProgPct').textContent = pct + '%';
-  document.getElementById('helperProgBar').style.width = pct + '%';
-  const b = document.getElementById('helperDoneBanner');
-  if (total > 0 && done === total) b.classList.add('visible');
-  else b.classList.remove('visible');
-}
-
-/* ══════════════════════════════════════════
-   ADMIN INIT
-══════════════════════════════════════════ */
-async function initAdmin() {
-  document.getElementById('admin-day-pill').textContent = DAYS_ID[getToday()];
-  document.getElementById('admin-date-text').textContent = formatDate();
-  document.getElementById('customTaskDay').value = getToday();
-  document.getElementById('libModalDay').value = getToday();
-  renderScheduleGrid();
-  populateRoomSelect();
-  renderLibrary();
-  renderPendingList();
-  setLoading('adminLoadBar', true);
-  hideError('adminError');
-  try {
-    await loadSupabaseData();
-    buildDayFilters();
-    renderEditorTab('daily');
-  } catch(e) {
-    showError('adminError', '⚠ Tidak dapat terhubung ke Supabase. Edit tugas tidak tersedia.');
-  } finally {
-    setLoading('adminLoadBar', false);
+function togTask(key){
+  const s=getChecked();
+  if(s[key]){delete s[key];delete s[key+'_t'];}
+  else{
+    s[key]=true;
+    const now=new Date();
+    s[key+'_t']=now.toLocaleTimeString('ms-MY',{hour:'2-digit',minute:'2-digit'});
   }
+  setChecked(s);
+  renderHelper();
+}
+function togPack(k){const s=getPack();s[k]=!s[k];setPack(s);renderRight();}
+
+function updateProgress(){
+  const chk=getChecked();
+  const dc=DEEP[helperDay];
+  const dDone=DAILY.filter(t=>chk['d_'+t.id]).length;
+  const dcDone=dc?dc.tasks.filter((_,i)=>chk[`dc_${helperDay}_${i}`]).length:0;
+  const dcT=dc?dc.tasks.length:0;
+  const total=DAILY.length+dcT;
+  const done=dDone+dcDone;
+  const pct=total?Math.round(done/total*100):0;
+  document.getElementById('progLabel').textContent=`${done} / ${total} tugas selesai`;
+  document.getElementById('progPct').textContent=pct+'%';
+  document.getElementById('progFill').style.width=pct+'%';
+  const allDone=total>0&&done===total;
+  document.getElementById('doneBanner').classList.toggle('visible',allDone);
 }
 
-/* ══════════════════════════════════════════
-   SCHEDULE GRID
-══════════════════════════════════════════ */
-function renderScheduleGrid() {
-  const sched = getSchedule();
-  const grid = document.getElementById('scheduleGrid');
-  grid.innerHTML = ROOMS.map(room => {
-    const days = sched[room.id] || [];
-    return `<div class="room-schedule-card">
-      <div class="rsc-header">
-        <span class="rsc-icon">${room.icon}</span>
-        <div><div class="rsc-name">${room.name}</div><div class="rsc-name-en">${room.en}</div></div>
+/* ── ADMIN ── */
+function aTab(btn,panel){
+  document.querySelectorAll('.asm-tab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.admin-panel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-'+panel).classList.add('active');
+  if(panel==='review') renderReview();
+}
+function renderSchedGrid(){
+  const sched=getSched();
+  document.getElementById('schedGrid').innerHTML=ROOMS.map(r=>{
+    const days=sched[r.id]||[];
+    return `<div class="sched-card">
+      <div class="sched-card-hd">
+        <span style="font-size:1.15rem">${r.icon}</span>
+        <div><div class="sched-room">${r.name}</div><div class="sched-en">${r.en}</div></div>
       </div>
-      <div class="day-btns">
-        ${DAYS_SHORT.map((d,i)=>`<button class="day-btn ${days.includes(i)?'on':''}" onclick="toggleDay('${room.id}',${i},this)">${d}</button>`).join('')}
+      <div class="day-toggles">
+        ${DAYS_SHORT.map((d,i)=>`<button class="day-tog ${days.includes(i)?'on':''}" onclick="togDay('${r.id}',${i},this)">${d}</button>`).join('')}
       </div>
-      <div class="preset-btns">
-        <button class="preset-btn" onclick="setPreset('${room.id}',[1,2,3,4,5])">Sen–Jum</button>
-        <button class="preset-btn" onclick="setPreset('${room.id}',[6,0])">Sab–Min</button>
-        <button class="preset-btn" onclick="setPreset('${room.id}',[0,1,2,3,4,5,6])">Semua</button>
-        <button class="preset-btn" onclick="setPreset('${room.id}',[])">Hapus</button>
+      <div class="preset-row">
+        <button class="preset" onclick="setPreset('${r.id}',[1,2,3,4,5])">Isn–Jum</button>
+        <button class="preset" onclick="setPreset('${r.id}',[0,6])">H/Minggu</button>
+        <button class="preset" onclick="setPreset('${r.id}',[0,1,2,3,4,5,6])">Setiap hari</button>
+        <button class="preset" onclick="setPreset('${r.id}',[])">Padam</button>
       </div>
     </div>`;
   }).join('');
 }
-
-function toggleDay(roomId, day, btn) {
-  const sched = getSchedule();
-  if (!sched[roomId]) sched[roomId] = [];
-  const idx = sched[roomId].indexOf(day);
-  if (idx>=0) sched[roomId].splice(idx,1); else sched[roomId].push(day);
-  saveSchedule(sched);
-  btn.classList.toggle('on');
+function togDay(rid,day,btn){
+  const s=getSched();if(!s[rid])s[rid]=[];
+  const i=s[rid].indexOf(day);if(i>=0)s[rid].splice(i,1);else s[rid].push(day);
+  saveSched(s);btn.classList.toggle('on');
 }
+function setPreset(rid,days){const s=getSched();s[rid]=[...days];saveSched(s);renderSchedGrid();}
 
-function setPreset(roomId, days) {
-  const sched = getSchedule();
-  sched[roomId] = [...days];
-  saveSchedule(sched);
-  renderScheduleGrid();
-}
-
-/* ══════════════════════════════════════════
-   TASK EDITOR
-══════════════════════════════════════════ */
-function buildDayFilters() {
-  // Deep clean day filter (0=Mon…6=Sun)
-  const dcFilter = document.getElementById('dcDayFilter');
-  if (dcFilter) {
-    dcFilter.innerHTML = DAYS_ID.map((d,i)=>`
-      <button class="day-filter-btn ${adminEditorDay.deepclean===i?'active':''}" onclick="setEditorDay('deepclean',${i})">${d}</button>
-    `).join('');
+function renderReview(){
+  const today=todayJS();const chk=getChecked();const sched=getSched();
+  const dc=DEEP[today];
+  let cards='';
+  // Daily
+  const dD=DAILY.filter(t=>chk['d_'+t.id]).length;
+  const dCls=dD===DAILY.length?'full':dD>0?'part':'none';
+  cards+=rCard('📋','Tugas Harian',dD,DAILY.length,dCls,DAILY.map(t=>({l:t.lbl,t:chk['d_'+t.id+'_t']||''})));
+  // Deep clean
+  if(dc){
+    const dcD=dc.tasks.filter((_,i)=>chk[`dc_${today}_${i}`]).length;
+    const dcCls=dcD===dc.tasks.length?'full':dcD>0?'part':'none';
+    cards+=rCard('✨','Bersih Mendalam',dcD,dc.tasks.length,dcCls,dc.tasks.map((t,i)=>({l:t,t:chk[`dc_${today}_${i}_t`]||''})));
   }
-  // School filter Mon-Fri only
-  const scFilter = document.getElementById('schoolDayFilter');
-  if (scFilter) {
-    scFilter.innerHTML = ['Senin','Selasa','Rabu','Kamis','Jumat'].map((d,i)=>`
-      <button class="day-filter-btn ${adminEditorDay.school===i?'active':''}" onclick="setEditorDay('school',${i})">${d}</button>
-    `).join('');
-  }
+  // Room cleaning
+  ROOMS.filter(r=>(sched[r.id]||[]).includes(today)).forEach(r=>{
+    const d=r.tasks.filter(t=>chk[t.id]).length;
+    const cls=d===r.tasks.length?'full':d>0?'part':'none';
+    cards+=rCard(r.icon,r.name,d,r.tasks.length,cls,r.tasks.map(t=>({l:t.lbl,t:chk[t.id+'_t']||''})));
+  });
+  document.getElementById('reviewGrid').innerHTML=cards||'<p style="color:var(--muted);font-size:.8rem">Tiada data hari ini.</p>';
 }
-
-function setEditorDay(type, day) {
-  adminEditorDay[type] = day;
-  buildDayFilters();
-  renderEditorTab(editorTab);
-}
-
-function renderEditorTab(tab) {
-  if (tab === 'daily') renderDailyEditor();
-  else if (tab === 'deepclean') renderDeepEditor();
-  else if (tab === 'school') renderSchoolEditor();
-}
-
-function editorItemHTML(task, table, fields) {
-  return `<div class="task-editor-item ${task.active===false?'inactive':''}" id="eitem-${task.id}">
-    <div class="task-editor-drag">⠿</div>
-    <div class="task-editor-fields">
-      ${fields.map(f=>`
-        <div class="task-editor-field">
-          <span class="field-lang">${f.lang}</span>
-          <input class="inline-input" value="${(task[f.key]||'').replace(/"/g,'&quot;')}" 
-            onblur="saveFieldEdit('${table}',${task.id},'${f.key}',this.value)" />
-        </div>
-      `).join('')}
-    </div>
-    <div class="task-editor-actions">
-      <button class="icon-btn toggle-active ${task.active===false?'off':''}" title="${task.active!==false?'Nonaktifkan':'Aktifkan'}"
-        onclick="toggleActive('${table}',${task.id},${task.active!==false})">
-        ${task.active!==false?'👁':'🙈'}
-      </button>
-      <button class="icon-btn danger" title="Hapus" onclick="deleteTask('${table}',${task.id})">✕</button>
-    </div>
+function rCard(icon,name,done,total,cls,tasks){
+  return `<div class="r-card">
+    <div class="r-card-hd"><span class="r-icon">${icon}</span><span class="r-name">${name}</span><span class="r-prog ${cls}">${done}/${total}</span></div>
+    ${tasks.map(t=>`<div class="r-row"><div class="rdot ${t.t?'done':'pending'}"></div><div class="r-lbl">${t.l}</div>${t.t?`<div class="r-t">${t.t}</div>`:''}</div>`).join('')}
   </div>`;
 }
-
-function renderDailyEditor() {
-  const el = document.getElementById('editorDailyList');
-  if (!el) return;
-  const tasks = DB.daily;
-  if (!tasks.length) { el.innerHTML = '<p style="font-size:.78rem;color:var(--muted);padding:12px">Tidak ada data · No data loaded</p>'; return; }
-  el.innerHTML = tasks.map(t => editorItemHTML(t, 'daily_tasks', [
-    {lang:'ID', key:'bahasa'},
-    {lang:'EN', key:'english'},
-  ])).join('');
+function resetAll(){
+  if(!confirm('Reset semua tugas hari ini?'))return;
+  setChecked({});setPack({});
+  if(currentUser==='helper')renderHelper();else renderReview();
+  toast('↺ Semua tugas di-reset');
 }
 
-function renderDeepEditor() {
-  const el = document.getElementById('editorDeepList');
-  if (!el) return;
-  const day = adminEditorDay.deepclean;
-  // Convert day from JS (0=Sun) to DB (0=Mon)
-  // DB day_index: 0=Mon,1=Tue,...,6=Sun; JS: 0=Sun,...,6=Sat
-  // We'll show DB day_index directly (0=Mon)
-  const tasks = DB.clean.filter(t => t.day_index === day);
-  if (!tasks.length) { el.innerHTML = '<p style="font-size:.78rem;color:var(--muted);padding:12px">Tidak ada tugas untuk hari ini. Tambah di bawah.</p>'; return; }
-  el.innerHTML = tasks.map(t => editorItemHTML(t, 'deep_clean', [
-    {lang:'ID', key:'bahasa'},
-    {lang:'EN', key:'english'},
-    {lang:'Area', key:'area_bahasa'},
-    {lang:'🚽', key:'toilet_label'},
-  ])).join('');
-}
-
-function renderSchoolEditor() {
-  const el = document.getElementById('editorSchoolList');
-  if (!el) return;
-  const day = adminEditorDay.school;
-  const tasks = DB.school.filter(t => t.day_index === day);
-  if (!tasks.length) { el.innerHTML = '<p style="font-size:.78rem;color:var(--muted);padding:12px">Tidak ada item untuk hari ini.</p>'; return; }
-  el.innerHTML = tasks.map(t => editorItemHTML(t, 'school_prep', [
-    {lang:'ID', key:'item_bahasa'},
-    {lang:'EN', key:'item_english'},
-    {lang:'Uni', key:'uniform_bahasa'},
-  ])).join('');
-}
-
-async function saveFieldEdit(table, id, field, value) {
-  try {
-    await sbUpdate(table, id, { [field]: value });
-    // Update local DB
-    const tableKey = table === 'daily_tasks' ? 'daily' : table === 'deep_clean' ? 'clean' : 'school';
-    const item = DB[tableKey].find(t=>t.id===id);
-    if (item) item[field] = value;
-    showSaved();
-  } catch(e) {
-    showToast('⚠ Gagal menyimpan. Cek koneksi.');
-  }
-}
-
-async function toggleActive(table, id, currentActive) {
-  try {
-    await sbUpdate(table, id, { active: !currentActive });
-    const tableKey = table === 'daily_tasks' ? 'daily' : table === 'deep_clean' ? 'clean' : 'school';
-    const item = DB[tableKey].find(t=>t.id===id);
-    if (item) item.active = !currentActive;
-    renderEditorTab(editorTab);
-    showSaved();
-  } catch(e) { showToast('⚠ Gagal. Cek koneksi.'); }
-}
-
-async function deleteTask(table, id) {
-  if (!confirm('Hapus tugas ini? Tidak dapat dibatalkan.')) return;
-  try {
-    await sbDelete(table, id);
-    const tableKey = table === 'daily_tasks' ? 'daily' : table === 'deep_clean' ? 'clean' : 'school';
-    DB[tableKey] = DB[tableKey].filter(t=>t.id!==id);
-    renderEditorTab(editorTab);
-    showToast('✓ Tugas dihapus');
-  } catch(e) { showToast('⚠ Gagal menghapus. Cek koneksi.'); }
-}
-
-async function addDailyTask() {
-  const bahasa = document.getElementById('newDailyId').value.trim();
-  const english = document.getElementById('newDailyEn').value.trim();
-  if (!bahasa) { showToast('⚠ Masukkan nama tugas'); return; }
-  const maxOrder = DB.daily.reduce((m,t)=>Math.max(m,t.sort_order||0),0);
-  try {
-    const result = await sbInsert('daily_tasks', { bahasa, english: english||bahasa, sort_order: maxOrder+1, active: true });
-    if (result && result[0]) DB.daily.push(result[0]);
-    document.getElementById('newDailyId').value = '';
-    document.getElementById('newDailyEn').value = '';
-    renderDailyEditor();
-    showToast('✓ Tugas ditambahkan');
-  } catch(e) { showToast('⚠ Gagal menambah. Pastikan RLS write policy sudah aktif di Supabase.'); console.error(e); }
-}
-
-async function addDeepTask() {
-  const bahasa = document.getElementById('newDeepId').value.trim();
-  const english = document.getElementById('newDeepEn').value.trim();
-  const area_bahasa = document.getElementById('newDeepArea').value.trim();
-  const area_english = document.getElementById('newDeepAreaEn').value.trim();
-  const toilet_label = document.getElementById('newDeepToilet').value.trim();
-  const day_index = parseInt(document.getElementById('newDeepDay').value);
-  if (!bahasa || !area_bahasa) { showToast('⚠ Masukkan nama tugas & area'); return; }
-  const maxOrder = DB.clean.filter(t=>t.day_index===day_index).reduce((m,t)=>Math.max(m,t.sort_order||0),0);
-  try {
-    const result = await sbInsert('deep_clean', { bahasa, english: english||bahasa, area_bahasa, area_english: area_english||area_bahasa, toilet_label: toilet_label||'-', day_index, sort_order: maxOrder+1, active: true });
-    if (result && result[0]) { DB.clean.push(result[0]); adminEditorDay.deepclean = day_index; buildDayFilters(); }
-    ['newDeepId','newDeepEn','newDeepArea','newDeepAreaEn','newDeepToilet'].forEach(id=>document.getElementById(id).value='');
-    renderDeepEditor();
-    showToast('✓ Tugas ditambahkan');
-  } catch(e) { showToast('⚠ Gagal menambah. Cek RLS policy.'); console.error(e); }
-}
-
-async function addSchoolTask() {
-  const item_bahasa = document.getElementById('newSchoolId').value.trim();
-  const item_english = document.getElementById('newSchoolEn').value.trim();
-  const day_index = parseInt(document.getElementById('newSchoolDay').value);
-  const is_swim_kit_item = document.getElementById('newSchoolSwim').value === 'true';
-  if (!item_bahasa) { showToast('⚠ Masukkan nama item'); return; }
-  const existing = DB.school.find(t=>t.day_index===day_index);
-  const uniform_bahasa = existing ? existing.uniform_bahasa : 'Baju Seragam';
-  const uniform_english = existing ? existing.uniform_english : 'School Uniform';
-  const maxOrder = DB.school.filter(t=>t.day_index===day_index).reduce((m,t)=>Math.max(m,t.sort_order||0),0);
-  try {
-    const result = await sbInsert('school_prep', { item_bahasa, item_english: item_english||item_bahasa, day_index, is_swim_kit_item, uniform_bahasa, uniform_english, has_swim_kit: is_swim_kit_item, sort_order: maxOrder+1, active: true });
-    if (result && result[0]) { DB.school.push(result[0]); adminEditorDay.school = day_index; buildDayFilters(); }
-    document.getElementById('newSchoolId').value = '';
-    document.getElementById('newSchoolEn').value = '';
-    renderSchoolEditor();
-    showToast('✓ Item ditambahkan');
-  } catch(e) { showToast('⚠ Gagal menambah. Cek RLS policy.'); console.error(e); }
-}
-
-/* ══════════════════════════════════════════
-   AD-HOC TASKS
-══════════════════════════════════════════ */
-function populateRoomSelect() {
-  document.getElementById('customTaskRoom').innerHTML = ROOMS.map(r=>`<option value="${r.id}">${r.icon} ${r.name}</option>`).join('');
-}
-
-function renderLibrary() {
-  const filterEl = document.getElementById('libFilter');
-  const listEl = document.getElementById('libList');
-  filterEl.innerHTML = `<button class="lib-filter-btn ${libFilter==='all'?'active':''}" onclick="setLibFilter('all')">Semua</button>` +
-    ROOMS.map(r=>`<button class="lib-filter-btn ${libFilter===r.id?'active':''}" onclick="setLibFilter('${r.id}')">${r.icon} ${r.name}</button>`).join('');
-  const rooms = libFilter === 'all' ? ROOMS : ROOMS.filter(r=>r.id===libFilter);
-  listEl.innerHTML = '';
-  rooms.forEach(room => {
-    room.tasks.forEach(task => {
-      const item = document.createElement('div');
-      item.className = 'lib-item';
-      item.innerHTML = `<span style="font-size:.9rem">${room.icon}</span>
-        <div class="lib-item-text"><div class="lib-item-name">${task.label}</div><div class="lib-item-en">${task.en}</div></div>
-        <button class="lib-add-btn" onclick="openLibModal('${room.id}','${task.id}',event)">+ Hari</button>`;
-      listEl.appendChild(item);
+/* ── INIT ── */
+(function(){
+  if(!localStorage.getItem('jh2_sched')){
+    const d={};
+    ROOMS.forEach(r=>{
+      if(['lobby','rt','db'].includes(r.id))d[r.id]=[1,2,3,4,5];
+      else if(r.id==='km')d[r.id]=[1,2,3,4,5,6,0];
+      else if(r.id==='balkon')d[r.id]=[6];
+      else d[r.id]=[1,3,5];
     });
-  });
-}
-
-function setLibFilter(id) { libFilter = id; renderLibrary(); }
-
-function openLibModal(roomId, taskId, e) {
-  e.stopPropagation();
-  const room = ROOMS.find(r=>r.id===roomId);
-  const task = room.tasks.find(t=>t.id===taskId);
-  pendingLibTask = { roomId, taskId, label: task.label, en: task.en };
-  document.getElementById('libModalTaskName').textContent = task.label;
-  document.getElementById('libModalTaskEn').textContent = task.en;
-  document.getElementById('libModalDay').value = getToday();
-  document.getElementById('libDayModal').classList.add('open');
-}
-
-function closeLibModal() { document.getElementById('libDayModal').classList.remove('open'); pendingLibTask = null; }
-
-function confirmLibTask() {
-  if (!pendingLibTask) return;
-  const day = parseInt(document.getElementById('libModalDay').value);
-  const adhoc = getAdhocTasks();
-  adhoc.push({ id:'adhoc_'+Date.now(), taskId: pendingLibTask.taskId, roomId: pendingLibTask.roomId, label: pendingLibTask.label, en: pendingLibTask.en, day, isCustom: false, done: false });
-  saveAdhocTasks(adhoc);
-  closeLibModal();
-  renderPendingList();
-  showToast('✓ Tugas ditambahkan ke ' + DAYS_ID[day]);
-}
-
-function addCustomTask() {
-  const label = document.getElementById('customTaskId').value.trim();
-  const en = document.getElementById('customTaskEn').value.trim();
-  const roomId = document.getElementById('customTaskRoom').value;
-  const day = parseInt(document.getElementById('customTaskDay').value);
-  if (!label) { showToast('⚠ Masukkan nama tugas'); return; }
-  const adhoc = getAdhocTasks();
-  adhoc.push({ id:'adhoc_'+Date.now(), taskId:'custom_'+Date.now(), roomId, label, en: en||label, day, isCustom: true, done: false });
-  saveAdhocTasks(adhoc);
-  document.getElementById('customTaskId').value = '';
-  document.getElementById('customTaskEn').value = '';
-  renderPendingList();
-  showToast('✓ Tugas kustom ditambahkan');
-}
-
-function renderPendingList() {
-  const adhoc = getAdhocTasks();
-  const el = document.getElementById('pendingList');
-  if (!adhoc.length) { el.innerHTML = '<p style="font-size:.76rem;color:var(--muted);text-align:center;padding:14px 0">Belum ada tugas tambahan</p>'; return; }
-  el.innerHTML = adhoc.map(t=>`
-    <div class="pending-item ${t.done?'done-item':''}">
-      <div class="pending-item-text">
-        <div class="pending-item-name">${t.label}</div>
-        <div class="pending-item-meta">${DAYS_ID[t.day]} · ${ROOMS.find(r=>r.id===t.roomId)?.name||'Kustom'} ${t.done?'✓':''}</div>
-      </div>
-      <button class="pending-remove" onclick="removeAdhoc('${t.id}')">✕</button>
-    </div>`).join('');
-}
-
-function removeAdhoc(id) {
-  saveAdhocTasks(getAdhocTasks().filter(t=>t.id!==id));
-  renderPendingList();
-  showToast('Tugas dihapus');
-}
-
-/* ══════════════════════════════════════════
-   REVIEW
-══════════════════════════════════════════ */
-function renderReview() {
-  const today = getToday();
-  const sched = getSchedule();
-  const taskState = getTaskState();
-  const adhoc = getAdhocTasks().filter(t=>t.day===today);
-  const todayRooms = ROOMS.filter(r=>(sched[r.id]||[]).includes(today));
-  const dailyActive = DB.daily.filter(t=>t.active);
-  // DB day_index for deep clean: 0=Mon, JS today: 0=Sun. Convert:
-  const dbDayIndex = today === 0 ? 6 : today - 1;
-  const deepActive = DB.clean.filter(t=>t.active && t.day_index===dbDayIndex);
-  const schoolActive = today >= 1 && today <= 5 ? DB.school.filter(t=>t.active && t.day_index===today-1) : [];
-
-  const el = document.getElementById('reviewContent');
-  let html = '<div class="review-grid">';
-
-  // Daily tasks review
-  if (dailyActive.length) {
-    const doneCount = dailyActive.filter(t=>taskState['daily_'+t.id]).length;
-    const cls = doneCount===dailyActive.length?'complete':doneCount>0?'partial':'none';
-    html += reviewCard('📋','Tugas Harian','Daily Tasks',doneCount,dailyActive.length,cls,
-      dailyActive.map(t=>({label:t.bahasa,time:taskState['daily_'+t.id]||''})));
+    lss('jh2_sched',d);
   }
-
-  // Deep clean review
-  if (deepActive.length) {
-    const doneCount = deepActive.filter(t=>taskState['deep_'+t.id]).length;
-    const cls = doneCount===deepActive.length?'complete':doneCount>0?'partial':'none';
-    html += reviewCard('✨','Bersih Mendalam','Deep Clean',doneCount,deepActive.length,cls,
-      deepActive.map(t=>({label:t.bahasa,time:taskState['deep_'+t.id]||''})));
-  }
-
-  // School prep review
-  if (schoolActive.length) {
-    const doneCount = schoolActive.filter(t=>taskState['school_'+t.id]).length;
-    const cls = doneCount===schoolActive.length?'complete':doneCount>0?'partial':'none';
-    html += reviewCard('🎒','Persiapan Sekolah','School Prep',doneCount,schoolActive.length,cls,
-      schoolActive.map(t=>({label:t.item_bahasa,time:taskState['school_'+t.id]||''})));
-  }
-
-  // Room cleaning review
-  todayRooms.forEach(room => {
-    const roomAdhoc = adhoc.filter(a=>a.roomId===room.id);
-    const allTasks = [...room.tasks, ...roomAdhoc.map(a=>({id:a.id,label:a.label,en:a.en}))];
-    const doneCount = allTasks.filter(t=>taskState[t.id]).length;
-    const cls = doneCount===allTasks.length?'complete':doneCount>0?'partial':'none';
-    html += reviewCard(room.icon,room.name,room.en,doneCount,allTasks.length,cls,
-      allTasks.map(t=>({label:t.label||t.bahasa,time:taskState[t.id]||''})));
-  });
-
-  const standalone = adhoc.filter(a=>!todayRooms.some(r=>r.id===a.roomId));
-  if (standalone.length) {
-    const doneCount = standalone.filter(a=>taskState[a.id]).length;
-    const cls = doneCount===standalone.length?'complete':doneCount>0?'partial':'none';
-    html += reviewCard('📌','Tugas Tambahan','Ad-hoc',doneCount,standalone.length,cls,
-      standalone.map(t=>({label:t.label,time:taskState[t.id]||''})));
-  }
-
-  if (!todayRooms.length && !dailyActive.length && !deepActive.length && !schoolActive.length) {
-    html += `<div class="empty-state" style="grid-column:1/-1"><div class="empty-state-icon">📅</div><h3>Tidak ada data hari ini</h3><p>Pastikan Supabase terhubung & jadwal sudah diset.</p></div>`;
-  }
-
-  html += '</div>';
-  el.innerHTML = html;
-}
-
-function reviewCard(icon, name, nameEn, done, total, cls, tasks) {
-  return `<div class="review-card">
-    <div class="review-card-header">
-      <span style="font-size:1.1rem">${icon}</span>
-      <div><div style="font-weight:600;font-size:.85rem">${name}</div><div style="font-size:.7rem;color:var(--muted)">${nameEn}</div></div>
-      <span class="review-progress ${cls}">${done}/${total}</span>
-    </div>
-    <div class="review-task-list">
-      ${tasks.map(t=>`<div class="review-task-item">
-        <div class="review-dot ${t.time?'done':'pending'}"></div>
-        <div class="review-task-name">${t.label}</div>
-        ${t.time?`<div class="review-task-time">${t.time}</div>`:''}
-      </div>`).join('')}
-    </div>
-  </div>`;
-}
-
-function resetAllTasks() {
-  if (!confirm('Reset semua tugas hari ini?')) return;
-  saveTaskState({});
-  saveAdhocTasks(getAdhocTasks().map(t=>({...t,done:false})));
-  renderReview();
-  showToast('↺ Semua tugas di-reset');
-}
-
-/* ══════════════════════════════════════════
-   INIT — auto-reset on new day
-══════════════════════════════════════════ */
-(function() {
-  // Default schedule on first load
-  if (!localStorage.getItem('jh_schedule')) {
-    const def = {};
-    ROOMS.forEach(r => {
-      if (['lobby','rt','db','dk'].includes(r.id)) def[r.id] = [1,2,3,4,5];
-      else if (r.id === 'km') def[r.id] = [1,2,3,4,5,6,0];
-      else if (r.id === 'balkon') def[r.id] = [6];
-      else def[r.id] = [1,3,5];
-    });
-    lsSet('jh_schedule', def);
-  }
-  // Reset tasks on new day
-  const stored = ls('jh_tasks', null);
-  if (stored && stored.date !== getTodayKey()) {
-    saveTaskState({});
-    saveAdhocTasks(ls('jh_adhoc',[]).map(t=>({...t,done:false})));
-  }
+  const s=ls('jh2_chk',null);
+  if(s&&s.date!==todayKey()){setChecked({});setPack({});}
 })();
 </script>
-
-<!-- SQL UPGRADE NOTE (run once in Supabase SQL Editor):
-ALTER TABLE daily_tasks ENABLE ROW LEVEL SECURITY;
-ALTER TABLE deep_clean   ENABLE ROW LEVEL SECURITY;
-ALTER TABLE school_prep  ENABLE ROW LEVEL SECURITY;
-
-DROP POLICY IF EXISTS "Public write daily_tasks" ON daily_tasks;
-DROP POLICY IF EXISTS "Public write deep_clean"  ON deep_clean;
-DROP POLICY IF EXISTS "Public write school_prep"  ON school_prep;
-
-CREATE POLICY "Public write daily_tasks" ON daily_tasks FOR ALL USING (TRUE) WITH CHECK (TRUE);
-CREATE POLICY "Public write deep_clean"  ON deep_clean  FOR ALL USING (TRUE) WITH CHECK (TRUE);
-CREATE POLICY "Public write school_prep" ON school_prep FOR ALL USING (TRUE) WITH CHECK (TRUE);
--->
 </body>
 </html>
