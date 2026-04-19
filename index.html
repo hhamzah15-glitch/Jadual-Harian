@@ -15,7 +15,7 @@
   --blue:#1B5E8C; --blue-dim:#DBE9F5; --blue-text:#134872;
   --purple:#6040A0; --purple-dim:#ECE6F8; --purple-text:#4A3080;
   --amber:#A87010; --amber-dim:#FAF0D8; --amber-text:#7A5008;
-  --teal:#107080; --teal-dim:#D8EEF2; --teal-text:#0A5060;
+  --red:#A02020; --red-dim:#FAF0EE;
   --r:14px; --r-sm:9px;
   --sh:0 1px 3px rgba(26,20,16,.07), 0 2px 10px rgba(26,20,16,.06);
   --sh-md:0 4px 20px rgba(26,20,16,.10);
@@ -24,7 +24,7 @@
 html,body{height:100%;}
 body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--dark);min-height:100dvh;-webkit-font-smoothing:antialiased;}
 
-/* ── LOGIN ── */
+/* LOGIN */
 #login{min-height:100dvh;background:var(--dark2);display:flex;align-items:center;justify-content:center;padding:32px 20px;}
 #login.hidden{display:none;}
 .lw{width:100%;max-width:380px;}
@@ -40,11 +40,9 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .l-card h3{color:#FDFAF6;font-size:.95rem;font-weight:600;}
 .l-card p{color:var(--muted);font-size:.73rem;margin-top:2px;}
 
-/* ── APP SHELL ── */
+/* APP SHELL */
 #app{display:none;min-height:100dvh;flex-direction:column;}
 #app.on{display:flex;}
-
-/* top bar */
 .bar{background:var(--dark2);padding:14px 24px 0;flex-shrink:0;position:sticky;top:0;z-index:100;}
 .bar-in{max-width:1080px;margin:0 auto;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
 .bar-brand h1{font-family:'DM Serif Display',serif;font-size:clamp(1.15rem,3vw,1.55rem);color:#FDFAF6;line-height:1;}
@@ -58,16 +56,12 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .role-pill.a{background:rgba(181,96,10,.2);color:#F0A060;}
 .btn-sw{background:transparent;border:1px solid rgba(255,255,255,.1);color:var(--muted);font-family:inherit;font-size:.7rem;padding:5px 11px;border-radius:7px;cursor:pointer;transition:all .15s;}
 .btn-sw:hover{border-color:rgba(255,255,255,.28);color:#FDFAF6;}
-
-/* day strip */
 .dstrip-wrap{background:var(--dark2);padding:8px 24px 13px;flex-shrink:0;}
 .dstrip{display:flex;gap:5px;max-width:1080px;margin:0 auto;overflow-x:auto;scrollbar-width:none;}
 .dstrip::-webkit-scrollbar{display:none;}
 .dp-btn{flex-shrink:0;padding:5px 14px;border-radius:20px;border:1.5px solid rgba(255,255,255,.1);background:transparent;color:var(--muted);font-family:inherit;font-size:.72rem;font-weight:600;cursor:pointer;transition:all .14s;}
 .dp-btn.today{border-color:var(--accent);color:var(--accent);}
 .dp-btn.sel{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 3px 10px rgba(181,96,10,.28);}
-
-/* progress */
 .prog-wrap{background:var(--dark2);padding:0 24px 12px;flex-shrink:0;}
 .prog-in{max-width:1080px;margin:0 auto;}
 .prog-row{display:flex;justify-content:space-between;margin-bottom:5px;}
@@ -75,27 +69,19 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .prog-pct{font-size:.68rem;font-weight:700;color:#FDFAF6;}
 .prog-track{background:rgba(255,255,255,.08);border-radius:20px;height:4px;overflow:hidden;}
 .prog-fill{height:100%;background:var(--green);border-radius:20px;transition:width .4s ease;}
-
-/* main */
 .main{flex:1;overflow-y:auto;}
 .page{display:none;}
 .page.active{display:block;}
 
-/* ── HELPER PAGE ── */
+/* HELPER */
 .hp{max-width:1080px;margin:0 auto;padding:20px 20px 52px;}
-
-/* done banner */
 .done-banner{display:none;background:var(--green);color:#fff;border-radius:var(--r);padding:16px 20px;text-align:center;margin-bottom:18px;box-shadow:var(--sh-md);animation:pop .3s ease;}
 @keyframes pop{from{transform:scale(.96);opacity:0}to{transform:scale(1);opacity:1}}
 .done-banner.on{display:block;}
 .done-banner h3{font-family:'DM Serif Display',serif;font-size:1.2rem;}
 .done-banner p{font-size:.76rem;opacity:.85;margin-top:3px;}
-
-/* grid */
 .hgrid{display:grid;grid-template-columns:1fr 310px;gap:20px;align-items:start;}
 @media(max-width:760px){.hgrid{grid-template-columns:1fr;}}
-
-/* section label */
 .slabel{display:flex;align-items:center;gap:9px;margin-bottom:11px;}
 .slabel-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0;}
 .slabel h2{font-family:'DM Serif Display',serif;font-size:.98rem;line-height:1;}
@@ -104,8 +90,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .ct-done{background:var(--green-dim);color:var(--green-text);}
 .ct-part{background:var(--accent-dim);color:var(--accent-text);}
 .ct-none{background:var(--border);color:var(--mid);}
-
-/* task card */
 .tcard{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:3px 4px;box-shadow:var(--sh);margin-bottom:22px;}
 .grp-head{font-size:.61rem;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);padding:8px 9px 5px;display:flex;align-items:center;gap:7px;}
 .grp-head::after{content:'';flex:1;height:1px;background:var(--border);}
@@ -120,11 +104,8 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .trow.done .cb svg{display:block;}
 .tlbl{font-size:.84rem;font-weight:500;line-height:1.4;}
 .ttime{font-size:.64rem;color:var(--green-text);font-weight:700;margin-top:3px;}
-
-/* ── DEEP CLEAN CARD ── */
 .dc-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);margin-bottom:22px;}
-.dc-hd{padding:12px 15px;background:linear-gradient(135deg,var(--purple-dim),#F2EEF9);border-bottom:1.5px solid #DDD8EE;display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
-.dc-hd-left{}
+.dc-hd{padding:12px 15px;background:linear-gradient(135deg,var(--purple-dim),#F2EEF9);border-bottom:1.5px solid #DDD8EE;}
 .dc-badge{display:inline-block;background:var(--purple);color:#fff;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.7px;padding:2px 8px;border-radius:20px;margin-bottom:5px;}
 .dc-day-name{font-family:'DM Serif Display',serif;font-size:.95rem;color:var(--dark);}
 .dc-day-sub{font-size:.68rem;color:var(--mid);margin-top:1px;}
@@ -132,8 +113,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .dc-item{display:flex;align-items:center;gap:9px;padding:7px 0;border-bottom:1px solid var(--bg);font-size:.82rem;font-weight:500;}
 .dc-item:last-child{border-bottom:none;}
 .dc-dot{width:6px;height:6px;border-radius:50%;background:var(--purple);flex-shrink:0;}
-
-/* ── RIGHT PANEL ── */
 .rstack{display:flex;flex-direction:column;gap:14px;}
 .info-card{border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);}
 .ic-hd{padding:11px 14px;}
@@ -144,54 +123,90 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .info-card.school .ic-title{color:var(--blue-text);}
 .info-card.act .ic-hd{background:var(--amber-dim);}
 .info-card.act .ic-title{color:var(--amber-text);}
-
-/* uniform */
 .uni-row{display:flex;align-items:center;gap:9px;padding:8px 11px;background:var(--blue-dim);border-radius:var(--r-sm);margin-bottom:10px;}
 .uni-icon{font-size:1.1rem;}
 .uni-lbl{font-size:.61rem;color:var(--blue-text);font-weight:700;text-transform:uppercase;letter-spacing:.7px;}
 .uni-name{font-weight:700;font-size:.84rem;}
-
-/* pack list */
 .pack-hd{font-size:.61rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--mid);margin-bottom:6px;}
 .pack-item{display:flex;align-items:center;gap:7px;padding:6px 0;border-bottom:1px solid var(--bg);font-size:.79rem;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all .12s;}
 .pack-item:last-child{border-bottom:none;}
 .pack-item.done{color:var(--muted);text-decoration:line-through;}
-.pdot{width:16px;height:16px;border-radius:4px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.62rem;transition:all .14s;}
+.pdot{width:16px;height:16px;border-radius:4px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.62rem;transition:all .14px;}
 .pack-item.done .pdot{background:var(--green);border-color:var(--green);color:#fff;}
-
-/* swim kit */
 .swim-lbl{font-size:.61rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--blue-text);margin:10px 0 6px;display:flex;align-items:center;gap:6px;}
 .swim-lbl::after{content:'';flex:1;height:1px;background:var(--blue-dim);}
 .swim-box{font-size:.76rem;color:var(--mid);line-height:1.55;padding:8px 10px;background:var(--blue-dim);border-radius:8px;}
-
-/* activities */
 .act-item{display:flex;align-items:flex-start;gap:8px;padding:7px 0;border-bottom:1px solid var(--bg);font-size:.8rem;}
 .act-item:last-child{border-bottom:none;}
 .act-time{font-size:.65rem;font-weight:700;color:var(--amber-text);flex-shrink:0;padding-top:2px;min-width:42px;}
 .act-dot{color:var(--amber);font-size:.58rem;padding-top:4px;flex-shrink:0;}
-.act-txt{}
-
-/* empty */
 .empty{text-align:center;padding:16px 10px;color:var(--muted);font-size:.76rem;}
 .empty .ei{font-size:1.4rem;margin-bottom:4px;}
 
-/* ── ADMIN PAGE ── */
+/* ═══ ADMIN ═══ */
 .ap{max-width:1080px;margin:0 auto;padding:22px 20px 52px;}
-.adm-tabs{display:flex;gap:6px;margin-bottom:18px;}
-.atab{font-size:.73rem;font-weight:600;font-family:inherit;padding:6px 13px;border-radius:20px;border:1.5px solid var(--border);background:var(--card);color:var(--mid);cursor:pointer;transition:all .13s;}
+.adm-tabs{display:flex;gap:6px;margin-bottom:20px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;}
+.adm-tabs::-webkit-scrollbar{display:none;}
+.atab{flex-shrink:0;font-size:.73rem;font-weight:600;font-family:inherit;padding:7px 14px;border-radius:20px;border:1.5px solid var(--border);background:var(--card);color:var(--mid);cursor:pointer;transition:all .13s;}
 .atab.on{background:var(--dark);border-color:var(--dark);color:#fff;}
 .apanel{display:none;}
 .apanel.on{display:block;}
-.sec-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px;flex-wrap:wrap;gap:8px;}
-.sec-hd-t{font-family:'DM Serif Display',serif;font-size:1.1rem;}
-.sec-hd-s{font-size:.7rem;color:var(--muted);margin-top:2px;}
+.sec-hd{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;}
+.sec-hd-t{font-family:'DM Serif Display',serif;font-size:1.12rem;}
+.sec-hd-s{font-size:.7rem;color:var(--muted);margin-top:3px;}
 
-/* schedule grid */
+/* ── shared editor elements ── */
+.e-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;margin-bottom:12px;}
+.e-row{display:flex;align-items:center;gap:10px;padding:10px 13px;border-bottom:1px solid var(--border);}
+.e-row:last-child{border-bottom:none;}
+.e-row.disabled{opacity:.45;}
+.e-lbl{flex:1;font-size:.84rem;font-weight:500;min-width:0;}
+.e-input{flex:1;font-family:inherit;font-size:.84rem;font-weight:500;border:none;background:transparent;color:var(--dark);padding:2px 4px;border-radius:5px;min-width:0;}
+.e-input:focus{outline:none;background:var(--bg);}
+.e-actions{display:flex;gap:5px;flex-shrink:0;}
+.icon-btn{width:28px;height:28px;border-radius:7px;border:1.5px solid var(--border);background:#fff;display:flex;align-items:center;justify-content:center;font-size:.8rem;cursor:pointer;transition:all .13s;flex-shrink:0;}
+.icon-btn:hover{border-color:var(--mid);}
+.icon-btn.del:hover{background:var(--red-dim);border-color:var(--red);color:var(--red);}
+.icon-btn.tog-off{opacity:.4;}
+.icon-btn.tog-off:hover{opacity:1;border-color:var(--green);color:var(--green);}
+
+/* add-item form */
+.add-form{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+.add-input{flex:1;min-width:160px;font-family:inherit;font-size:.82rem;padding:8px 11px;border:1.5px solid var(--border);border-radius:var(--r-sm);background:#fff;color:var(--dark);}
+.add-input:focus{outline:none;border-color:var(--accent);}
+.add-btn{font-family:inherit;font-size:.78rem;font-weight:700;padding:8px 14px;border:none;border-radius:var(--r-sm);background:var(--accent);color:#fff;cursor:pointer;white-space:nowrap;transition:all .13s;}
+.add-btn:hover{background:var(--accent-text);}
+.add-btn:disabled{opacity:.4;cursor:not-allowed;}
+
+/* day-picker tabs inside panels */
+.day-picker{display:flex;gap:5px;margin-bottom:14px;overflow-x:auto;scrollbar-width:none;}
+.day-picker::-webkit-scrollbar{display:none;}
+.dpk{flex-shrink:0;font-size:.71rem;font-weight:600;font-family:inherit;padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);background:var(--card);color:var(--mid);cursor:pointer;transition:all .13s;}
+.dpk.on{background:var(--purple);border-color:var(--purple);color:#fff;}
+.dpk.today-mark{border-color:var(--accent);}
+
+/* activity toggle rows */
+.act-tog-row{display:flex;align-items:center;gap:10px;padding:10px 13px;border-bottom:1px solid var(--border);}
+.act-tog-row:last-child{border-bottom:none;}
+.act-tog-time{font-size:.7rem;font-weight:700;color:var(--amber-text);flex-shrink:0;min-width:44px;}
+.act-tog-lbl{flex:1;font-size:.83rem;}
+.act-tog-lbl.off{text-decoration:line-through;color:var(--muted);}
+.week-note{font-size:.71rem;color:var(--muted);background:var(--amber-dim);border-radius:8px;padding:7px 11px;margin-bottom:12px;}
+.week-note strong{color:var(--amber-text);}
+
+/* toggle switch */
+.tog-sw{position:relative;width:36px;height:20px;flex-shrink:0;}
+.tog-sw input{opacity:0;width:0;height:0;position:absolute;}
+.tog-sw-track{position:absolute;inset:0;background:var(--border);border-radius:20px;cursor:pointer;transition:background .2s;}
+.tog-sw input:checked+.tog-sw-track{background:var(--green);}
+.tog-sw-track::after{content:'';position:absolute;width:14px;height:14px;border-radius:50%;background:#fff;top:3px;left:3px;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2);}
+.tog-sw input:checked+.tog-sw-track::after{transform:translateX(16px);}
+
+/* room schedule */
 .sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(225px,1fr));gap:11px;}
 .scard{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:13px;box-shadow:var(--sh);}
 .scard-hd{display:flex;align-items:center;gap:8px;margin-bottom:11px;}
-.sr{font-weight:600;font-size:.84rem;}
-.se{font-size:.66rem;color:var(--muted);}
+.sr{font-weight:600;font-size:.84rem;} .se{font-size:.66rem;color:var(--muted);}
 .dtogs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px;}
 .dtog{width:29px;height:29px;border-radius:6px;border:1.5px solid var(--border);background:#fff;font-size:.65rem;font-weight:700;font-family:inherit;cursor:pointer;color:var(--mid);transition:all .13s;}
 .dtog.on{background:var(--accent);border-color:var(--accent);color:#fff;}
@@ -199,12 +214,11 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .pre{font-size:.63rem;font-weight:600;font-family:inherit;padding:2px 7px;border-radius:5px;border:1px solid var(--border);background:#fff;color:var(--mid);cursor:pointer;transition:all .12s;}
 .pre:hover{border-color:var(--accent);color:var(--accent);}
 
-/* review grid */
+/* review */
 .rgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(225px,1fr));gap:11px;}
 .rcard{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:13px;box-shadow:var(--sh);}
 .rcard-hd{display:flex;align-items:center;gap:7px;margin-bottom:10px;}
-.ricon{font-size:.95rem;}
-.rname{font-weight:600;font-size:.82rem;flex:1;}
+.ricon{font-size:.95rem;} .rname{font-weight:600;font-size:.82rem;flex:1;}
 .rprog{font-size:.67rem;font-weight:700;padding:2px 8px;border-radius:20px;flex-shrink:0;}
 .rprog.full{background:var(--green-dim);color:var(--green-text);}
 .rprog.part{background:var(--accent-dim);color:var(--accent-text);}
@@ -214,10 +228,9 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .rdot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
 .rdot.done{background:var(--green);}
 .rdot.pend{background:var(--border);border:1.5px solid var(--muted);}
-.rlbl{flex:1;}
-.rt2{font-size:.64rem;color:var(--green-text);font-weight:700;}
-.btn-rst{display:inline-flex;align-items:center;gap:5px;font-size:.73rem;font-weight:600;font-family:inherit;padding:6px 12px;border-radius:8px;border:1.5px solid #F0C8C4;background:#FAF0EE;color:#A03020;cursor:pointer;transition:all .13s;}
-.btn-rst:hover{background:#A03020;color:#fff;border-color:#A03020;}
+.rlbl{flex:1;} .rt2{font-size:.64rem;color:var(--green-text);font-weight:700;}
+.btn-rst{display:inline-flex;align-items:center;gap:5px;font-size:.73rem;font-weight:600;font-family:inherit;padding:6px 12px;border-radius:8px;border:1.5px solid #F0C8C4;background:var(--red-dim);color:var(--red);cursor:pointer;transition:all .13s;}
+.btn-rst:hover{background:var(--red);color:#fff;border-color:var(--red);}
 
 /* toast */
 .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(14px);background:var(--dark);color:#FDFAF6;font-size:.77rem;font-weight:600;padding:9px 20px;border-radius:30px;box-shadow:var(--sh-md);opacity:0;pointer-events:none;white-space:nowrap;transition:all .26s;z-index:9999;}
@@ -242,7 +255,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
     </div>
     <div class="l-card" onclick="enter('a')">
       <div class="l-icon a">🏠</div>
-      <div><h3>Pemilik Rumah</h3><p>Jadual & pantau kemajuan · Admin</p></div>
+      <div><h3>Pemilik Rumah</h3><p>Edit tugas & pantau kemajuan · Admin</p></div>
     </div>
   </div>
 </div>
@@ -263,13 +276,10 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
         <button class="btn-sw" onclick="goLogin()">← Tukar</button>
       </div>
     </div>
-    <!-- day strip (helper only) -->
     <div id="dstripWrap" style="display:none">
       <div class="dstrip" id="dstrip"></div>
     </div>
   </div>
-
-  <!-- progress (helper only) -->
   <div class="prog-wrap" id="progWrap" style="display:none">
     <div class="prog-in">
       <div class="prog-row">
@@ -279,8 +289,8 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
       <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
     </div>
   </div>
-
   <div class="main">
+
     <!-- HELPER PAGE -->
     <div class="page" id="pg-h">
       <div class="hp">
@@ -300,15 +310,65 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
     <div class="page" id="pg-a">
       <div class="ap">
         <div class="adm-tabs">
-          <button class="atab on" onclick="aTab(this,'sched')">📅 Jadual Ruangan</button>
-          <button class="atab" onclick="aTab(this,'review')">📋 Pantau Hari Ini</button>
+          <button class="atab on"  onclick="aTab(this,'daily')">📋 Tugas Harian</button>
+          <button class="atab"     onclick="aTab(this,'deep')">✨ Bersih Mendalam</button>
+          <button class="atab"     onclick="aTab(this,'acts')">⚡ Aktiviti & Sekolah</button>
+          <button class="atab"     onclick="aTab(this,'sched')">📅 Jadual Ruangan</button>
+          <button class="atab"     onclick="aTab(this,'review')">👁 Pantau Hari Ini</button>
         </div>
-        <div class="apanel on" id="ap-sched">
+
+        <!-- ① DAILY TASKS EDITOR -->
+        <div class="apanel on" id="ap-daily">
           <div class="sec-hd">
-            <div><div class="sec-hd-t">Jadual Kebersihan Mingguan</div><div class="sec-hd-s">Set hari bersih bagi setiap ruangan</div></div>
+            <div>
+              <div class="sec-hd-t">Tugas Harian</div>
+              <div class="sec-hd-s">Klik teks untuk edit terus · Padam atau nyahaktif mana-mana tugas · Tambah tugas baru di bawah</div>
+            </div>
+          </div>
+          <div id="dailyEditorList"></div>
+          <div class="add-form">
+            <input class="add-input" id="newDailyInput" placeholder="Nama tugas baru..." />
+            <button class="add-btn" onclick="addDailyTask()">+ Tambah</button>
+          </div>
+        </div>
+
+        <!-- ② DEEP CLEAN EDITOR -->
+        <div class="apanel" id="ap-deep">
+          <div class="sec-hd">
+            <div>
+              <div class="sec-hd-t">Bersih Mendalam</div>
+              <div class="sec-hd-s">Pilih hari · edit, tambah atau buang kawasan bersih mendalam</div>
+            </div>
+          </div>
+          <div class="day-picker" id="deepDayPicker"></div>
+          <div id="deepEditorList"></div>
+          <div class="add-form">
+            <input class="add-input" id="newDeepInput" placeholder="Kawasan / area baru..." />
+            <button class="add-btn" onclick="addDeepItem()">+ Tambah</button>
+          </div>
+        </div>
+
+        <!-- ③ ACTIVITIES & SCHOOL EDITOR -->
+        <div class="apanel" id="ap-acts">
+          <div class="sec-hd">
+            <div>
+              <div class="sec-hd-t">Aktiviti & Sekolah</div>
+              <div class="sec-hd-s">Pilih hari · togol aktiviti on/off untuk minggu ini sahaja</div>
+            </div>
+          </div>
+          <div class="day-picker" id="actsDayPicker"></div>
+          <div id="actsEditorContent"></div>
+        </div>
+
+        <!-- ④ ROOM SCHEDULE -->
+        <div class="apanel" id="ap-sched">
+          <div class="sec-hd">
+            <div><div class="sec-hd-t">Jadual Ruangan</div><div class="sec-hd-s">Set hari bersih bagi setiap ruangan</div></div>
           </div>
           <div class="sgrid" id="sgrid"></div>
         </div>
+
+        <!-- ⑤ REVIEW -->
         <div class="apanel" id="ap-review">
           <div class="sec-hd">
             <div><div class="sec-hd-t">Pantau Hari Ini</div><div class="sec-hd-s">Kemajuan tugas helper secara langsung</div></div>
@@ -316,6 +376,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
           </div>
           <div class="rgrid" id="rgrid"></div>
         </div>
+
       </div>
     </div>
   </div>
@@ -324,13 +385,10 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 <div class="toast" id="toast"></div>
 
 <script>
-/* ════════════════════════════════════════
-   DATA — from Final sheet only
-════════════════════════════════════════ */
-
-// Daily tasks (Setiap Hari), grouped
-const DAILY = [
-  // Pagi
+/* ═══════════════════════════════════════════
+   DEFAULT DATA  (Final sheet only)
+═══════════════════════════════════════════ */
+const DEFAULT_DAILY = [
   {id:'d01',g:'Pagi',lbl:'Laundry jika perlu — cuci, gosok'},
   {id:'d02',g:'Pagi',lbl:'Buka pintu balcony, tingkap bilik'},
   {id:'d03',g:'Pagi',lbl:'Vacuum karpet'},
@@ -338,28 +396,23 @@ const DAILY = [
   {id:'d05',g:'Pagi',lbl:'Mop'},
   {id:'d06',g:'Pagi',lbl:'Sapu balcony'},
   {id:'d07',g:'Pagi',lbl:'Siram pokok depan belakang'},
-  // Living room / Hallway
   {id:'d08',g:'Ruang Tamu & Lorong',lbl:'Living room — lap'},
   {id:'d09',g:'Ruang Tamu & Lorong',lbl:'Lap butang lift, panel besi'},
   {id:'d10',g:'Ruang Tamu & Lorong',lbl:'Lap cermin, switch lampu'},
-  // Bedroom
   {id:'d11',g:'Bilik Tidur',lbl:'Sapu'},
   {id:'d12',g:'Bilik Tidur',lbl:'Lap'},
   {id:'d13',g:'Bilik Tidur',lbl:'Kemas katil'},
   {id:'d14',g:'Bilik Tidur',lbl:'Lap switch'},
   {id:'d15',g:'Bilik Tidur',lbl:'Simpan buku'},
-  // Dapur kering
   {id:'d16',g:'Dapur Kering',lbl:'Lap'},
   {id:'d17',g:'Dapur Kering',lbl:'Lap sliding door'},
   {id:'d18',g:'Dapur Kering',lbl:'Lap switch'},
-  // Tandas
   {id:'d19',g:'Tandas',lbl:'Buang sampah'},
   {id:'d20',g:'Tandas',lbl:'Lap sinki, cermin'},
   {id:'d21',g:'Tandas',lbl:'Lap handle pintu, switch lampu'},
   {id:'d22',g:'Tandas',lbl:'Lap flush'},
   {id:'d23',g:'Tandas',lbl:'Tukar kain lap tangan (living room)'},
   {id:'d24',g:'Tandas',lbl:'Lap switch'},
-  // Petang
   {id:'d25',g:'Petang',lbl:'Tutup tingkap bilik, pintu balcony'},
   {id:'d26',g:'Petang',lbl:'Siram pokok'},
   {id:'d27',g:'Petang',lbl:'Masak'},
@@ -369,335 +422,447 @@ const DAILY = [
   {id:'d31',g:'Petang',lbl:'Buang sampah'},
 ];
 
-// Deep clean — area labels only, per JS day (0=Sun,1=Mon,...,6=Sat)
-const DEEP = {
-  1: ['Bedroom — master', 'Master toilet'],
-  2: ['Bedroom — Haris', 'Haris toilet'],
-  3: ['Office', 'Office toilet', 'Hallway', 'Lap kipas satu rumah (5 siling + 2 dinding bilik)'],
-  4: ['Wet Kitchen', 'Toilet living room'],
-  5: ['Fridge', 'Cuci balcony', 'Master toilet'],
-  6: ['Kitchen Luar', 'Office toilet', 'Sofa', 'Leather Polish', 'Sliding doors', 'Windows'],
-  0: ['Kitchen belakang', 'Toilet living room'],
+// Deep clean areas per JS day (0=Sun…6=Sat)
+const DEFAULT_DEEP = {
+  1:['Bedroom — master','Master toilet'],
+  2:['Bedroom — Haris','Haris toilet'],
+  3:['Office','Office toilet','Hallway','Lap kipas satu rumah (5 siling + 2 dinding bilik)'],
+  4:['Wet Kitchen','Toilet living room'],
+  5:['Fridge','Cuci balcony','Master toilet'],
+  6:['Kitchen Luar','Office toilet','Sofa','Leather Polish','Sliding doors','Windows'],
+  0:['Kitchen belakang','Toilet living room'],
 };
 
-// School prep per JS day. null = no school.
-const SCHOOL = {
-  1: { uniform:'Baju Uniform', pack:['Snack pagi','Water bottle'], swim:null },
-  2: { uniform:'Baju PE (Sukan)', pack:['iPad','Snack pagi','Water bottle'],
-       swim:'Baju renang · towel · topi · goggles · slipper · seluar dalam (beg plastik asing)' },
-  3: { uniform:'Baju Uniform', pack:['iPad','Snack pagi','Water bottle'], swim:null },
-  4: { uniform:'Baju PE (Sukan)', pack:['iPad','Snack pagi','Water bottle'], swim:null },
-  5: { uniform:'Baju Uniform', pack:['Snack pagi','Water bottle'],
-       swim:'Baju renang · towel · topi · goggles · slipper · seluar dalam (beg plastik asing)' },
-  6: null, // Saturday — Badminton only, no pack list
-  0: null, // Sunday — no school
+// School per JS day (1–5 = Mon–Fri). null = no school.
+const DEFAULT_SCHOOL = {
+  1:{uniform:'Baju Uniform',pack:['Snack pagi','Water bottle'],swim:null},
+  2:{uniform:'Baju PE (Sukan)',pack:['iPad','Snack pagi','Water bottle'],
+     swim:'Baju renang · towel · topi · goggles · slipper · seluar dalam (beg plastik asing)'},
+  3:{uniform:'Baju Uniform',pack:['iPad','Snack pagi','Water bottle'],swim:null},
+  4:{uniform:'Baju PE (Sukan)',pack:['iPad','Snack pagi','Water bottle'],swim:null},
+  5:{uniform:'Baju Uniform',pack:['Snack pagi','Water bottle'],
+     swim:'Baju renang · towel · topi · goggles · slipper · seluar dalam (beg plastik asing)'},
+  6:null, 0:null,
 };
 
-// Haris activities per JS day
-const ACTS = {
-  1: [{t:'Petang',l:'Sekolah — Swimming CCA'}, {t:'5pm',l:'Mengaji online'}],
-  2: [{t:'Petang',l:'Swimming DSA'}],
-  3: [{t:'Petang',l:'Swimming kit DSA'}],
-  4: [{t:'Petang',l:'Ahlan'}],
-  5: [{t:'2pm',l:'Math CCA'}, {t:'3:45pm',l:'Bahasa'}, {t:'Petang',l:'Snack untuk Haris'}],
-  6: [],
-  0: [],
+// Activities per JS day. Each item: {id, t (time label), l (label)}
+const DEFAULT_ACTS = {
+  1:[{id:'a1a',t:'Petang',l:'Sekolah — Swimming CCA'},{id:'a1b',t:'5pm',l:'Mengaji online'}],
+  2:[{id:'a2a',t:'Petang',l:'Swimming DSA'}],
+  3:[{id:'a3a',t:'Petang',l:'Swimming kit DSA'}],
+  4:[{id:'a4a',t:'Petang',l:'Ahlan'}],
+  5:[{id:'a5a',t:'2pm',l:'Math CCA'},{id:'a5b',t:'3:45pm',l:'Bahasa'},{id:'a5c',t:'Petang',l:'Snack untuk Haris'}],
+  6:[], 0:[],
 };
 
-// Rooms for admin schedule + review
-const ROOMS = [
+const ROOMS=[
   {id:'lobby',icon:'🚪',name:'Lobby & Lorong',en:'Lift Lobby & Hallway',tasks:[
-    {id:'rl1',lbl:'Sapu lantai lobby & lorong'},
-    {id:'rl2',lbl:'Mop lantai lobby & lorong'},
-    {id:'rl3',lbl:'Lap pintu lift & panel butang'},
+    {id:'rl1',lbl:'Sapu lantai lobby & lorong'},{id:'rl2',lbl:'Mop lantai lobby & lorong'},{id:'rl3',lbl:'Lap pintu lift & panel butang'},
   ]},
   {id:'rt',icon:'🛋️',name:'Ruang Tamu',en:'Living Room',tasks:[
-    {id:'rt1',lbl:'Kemas bantal & selimut sofa'},
-    {id:'rt2',lbl:'Lap TV, konsol & rak'},
-    {id:'rt3',lbl:'Vacuum / sapu lantai'},
-    {id:'rt4',lbl:'Mop lantai ruang tamu'},
+    {id:'rt1',lbl:'Kemas bantal & selimut sofa'},{id:'rt2',lbl:'Lap TV, konsol & rak'},{id:'rt3',lbl:'Vacuum / sapu lantai'},{id:'rt4',lbl:'Mop lantai ruang tamu'},
   ]},
   {id:'kb1',icon:'🛏️',name:'Bilik Tidur Utama',en:'Master Bedroom',tasks:[
-    {id:'kb11',lbl:'Kemas / tukar sprei'},
-    {id:'kb12',lbl:'Vacuum / sapu lantai'},
-    {id:'kb13',lbl:'Mop lantai bilik'},
+    {id:'kb11',lbl:'Kemas / tukar sprei'},{id:'kb12',lbl:'Vacuum / sapu lantai'},{id:'kb13',lbl:'Mop lantai bilik'},
   ]},
   {id:'kb2',icon:'🛏️',name:"Bilik Haris",en:"Haris' Bedroom",tasks:[
-    {id:'kb21',lbl:'Kemas / tukar sprei'},
-    {id:'kb22',lbl:'Vacuum / sapu lantai'},
-    {id:'kb23',lbl:'Mop lantai bilik'},
+    {id:'kb21',lbl:'Kemas / tukar sprei'},{id:'kb22',lbl:'Vacuum / sapu lantai'},{id:'kb23',lbl:'Mop lantai bilik'},
   ]},
   {id:'km',icon:'🚿',name:'Semua Tandas',en:'All Bathrooms',tasks:[
-    {id:'km1',lbl:'Scrub & bilas toilet'},
-    {id:'km2',lbl:'Bersihkan sinki, kran & cermin'},
-    {id:'km3',lbl:'Bersihkan shower / tub'},
-    {id:'km4',lbl:'Mop lantai tandas'},
+    {id:'km1',lbl:'Scrub & bilas toilet'},{id:'km2',lbl:'Bersihkan sinki, kran & cermin'},{id:'km3',lbl:'Bersihkan shower / tub'},{id:'km4',lbl:'Mop lantai tandas'},
   ]},
   {id:'db',icon:'🍳',name:'Dapur Basah',en:'Wet Kitchen',tasks:[
-    {id:'db1',lbl:'Cuci pinggan & periuk'},
-    {id:'db2',lbl:'Lap kompor & backsplash'},
-    {id:'db3',lbl:'Sapu & mop lantai dapur'},
+    {id:'db1',lbl:'Cuci pinggan & periuk'},{id:'db2',lbl:'Lap kompor & backsplash'},{id:'db3',lbl:'Sapu & mop lantai dapur'},
   ]},
   {id:'bk',icon:'🌿',name:'Balkoni',en:'Balcony',tasks:[
-    {id:'bk1',lbl:'Sapu balkoni'},
-    {id:'bk2',lbl:'Mop balkoni'},
-    {id:'bk3',lbl:'Lap perabot & railing'},
+    {id:'bk1',lbl:'Sapu balkoni'},{id:'bk2',lbl:'Mop balkoni'},{id:'bk3',lbl:'Lap perabot & railing'},
   ]},
 ];
 
-const DAYS = ['Ahad','Isnin','Selasa','Rabu','Khamis','Jumaat','Sabtu'];
-const DAYS_S = ['Ahd','Isn','Sel','Rab','Kha','Jum','Sab'];
+const DAYS=['Ahad','Isnin','Selasa','Rabu','Khamis','Jumaat','Sabtu'];
+const DAYS_S=['Ahd','Isn','Sel','Rab','Kha','Jum','Sab'];
 
-/* ════════════════════════════════════════
-   STATE
-════════════════════════════════════════ */
-let role = null, hDay = new Date().getDay();
+/* ═══════════════════════════════════════════
+   STORAGE  — all editable data lives here
+═══════════════════════════════════════════ */
+let role=null, hDay=new Date().getDay(), deepEdDay=1, actsEdDay=1;
 
-function todayN(){ return new Date().getDay(); }
-function todayK(){ const d=new Date(); return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`; }
-function fmtDate(){ return new Date().toLocaleDateString('ms-MY',{weekday:'long',day:'numeric',month:'long',year:'numeric'}); }
+function todayN(){return new Date().getDay();}
+function todayK(){const d=new Date();return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;}
+function fmtDate(){return new Date().toLocaleDateString('ms-MY',{weekday:'long',day:'numeric',month:'long',year:'numeric'});}
+function ls(k,df){try{const v=localStorage.getItem(k);return v?JSON.parse(v):df;}catch{return df;}}
+function lss(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch{}}
 
-function ls(k,df){ try{ const v=localStorage.getItem(k); return v?JSON.parse(v):df; }catch{ return df; } }
-function lss(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch{} }
+// Live editable task lists (cloned from defaults on first load)
+function getDailyTasks(){return ls('jh_daily', DEFAULT_DAILY.map(t=>({...t,active:true})));}
+function saveDailyTasks(a){lss('jh_daily',a);}
+function getDeep(){return ls('jh_deep', DEFAULT_DEEP);}
+function saveDeep(d){lss('jh_deep',d);}
 
-function getChk(){ const s=ls('jh_chk',null); return (s&&s.date===todayK())?s.state:{}; }
-function setChk(s){ lss('jh_chk',{date:todayK(),state:s}); }
-function getPack(){ const s=ls('jh_pack',null); return (s&&s.date===todayK())?s.state:{}; }
-function setPack(s){ lss('jh_pack',{date:todayK(),state:s}); }
-function getSched(){ const d={}; ROOMS.forEach(r=>d[r.id]=[]); return ls('jh_sched',d); }
-function saveSched(s){ lss('jh_sched',s); }
+// Activities: stored with per-item active flags, week-level overrides
+function getActsBase(){return ls('jh_acts_base', JSON.parse(JSON.stringify(DEFAULT_ACTS)));}
+function saveActsBase(a){lss('jh_acts_base',a);}
+// Week override: {weekKey: {actId: false}} — false = disabled this week
+function weekKey(){const d=new Date();const jan=new Date(d.getFullYear(),0,1);return `w${Math.ceil(((d-jan)/86400000+jan.getDay()+1)/7)}-${d.getFullYear()}`;}
+function getWeekOverrides(){return ls('jh_week_ov',{});}
+function saveWeekOverrides(o){lss('jh_week_ov',o);}
+function isActDisabledThisWeek(id){const o=getWeekOverrides();const wk=weekKey();return !!(o[wk]&&o[wk][id]===false);}
+function setActWeekOverride(id,disabled){
+  const o=getWeekOverrides(); const wk=weekKey();
+  if(!o[wk])o[wk]={};
+  if(disabled)o[wk][id]=false; else delete o[wk][id];
+  saveWeekOverrides(o);
+}
 
-function toast(m){ const t=document.getElementById('toast'); t.textContent=m; t.classList.add('on'); setTimeout(()=>t.classList.remove('on'),2100); }
+// Completion state & pack
+function getChk(){const s=ls('jh_chk',null);return (s&&s.date===todayK())?s.state:{};}
+function setChk(s){lss('jh_chk',{date:todayK(),state:s});}
+function getPack(){const s=ls('jh_pack',null);return (s&&s.date===todayK())?s.state:{};}
+function setPack(s){lss('jh_pack',{date:todayK(),state:s});}
+function getSched(){const d={};ROOMS.forEach(r=>d[r.id]=[]);return ls('jh_sched',d);}
+function saveSched(s){lss('jh_sched',s);}
 
-function ckSvg(){ return `<svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`; }
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),2100);}
+function ckSvg(){return `<svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4L4 7.5L10 1" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;}
 
-/* ════════════════════════════════════════
+/* ═══════════════════════════════════════════
    LOGIN / ROUTING
-════════════════════════════════════════ */
+═══════════════════════════════════════════ */
 function enter(r){
   role=r;
   document.getElementById('login').classList.add('hidden');
   document.getElementById('app').classList.add('on');
-  document.getElementById('topDay').textContent = DAYS[todayN()];
-  document.getElementById('topDate').textContent = fmtDate();
-  const rp = document.getElementById('rolePill');
-  rp.className = 'role-pill '+r;
-  rp.textContent = r==='h' ? 'Helper' : 'Admin';
+  document.getElementById('topDay').textContent=DAYS[todayN()];
+  document.getElementById('topDate').textContent=fmtDate();
+  const rp=document.getElementById('rolePill');
+  rp.className='role-pill '+r; rp.textContent=r==='h'?'Helper':'Admin';
   if(r==='h'){
     document.getElementById('dstripWrap').style.display='';
     document.getElementById('progWrap').style.display='';
-    hDay = todayN();
-    buildDstrip();
+    hDay=todayN(); buildDstrip();
     document.getElementById('pg-h').classList.add('active');
     renderHelper();
   } else {
     document.getElementById('pg-a').classList.add('active');
-    renderSched();
+    renderDailyEditor(); buildDeepDayPicker(); buildActsDayPicker(); renderSched();
   }
 }
-
 function goLogin(){
   document.getElementById('app').classList.remove('on');
-  document.getElementById('pg-h').classList.remove('active');
-  document.getElementById('pg-a').classList.remove('active');
+  ['pg-h','pg-a'].forEach(id=>document.getElementById(id).classList.remove('active'));
   document.getElementById('dstripWrap').style.display='none';
   document.getElementById('progWrap').style.display='none';
   document.getElementById('login').classList.remove('hidden');
   role=null;
 }
 
-/* ════════════════════════════════════════
-   DAY STRIP
-════════════════════════════════════════ */
+/* ═══════════════════════════════════════════
+   HELPER — DAY STRIP
+═══════════════════════════════════════════ */
 function buildDstrip(){
   const td=todayN();
-  document.getElementById('dstrip').innerHTML = DAYS.map((d,i)=>
+  document.getElementById('dstrip').innerHTML=DAYS.map((d,i)=>
     `<button class="dp-btn ${i===td?'today':''} ${i===hDay?'sel':''}" onclick="pickDay(${i})">${d}</button>`
   ).join('');
 }
-function pickDay(d){ hDay=d; buildDstrip(); renderHelper(); }
+function pickDay(d){hDay=d;buildDstrip();renderHelper();}
 
-/* ════════════════════════════════════════
-   HELPER — LEFT COLUMN
-   (Daily tasks + Deep clean)
-════════════════════════════════════════ */
-function renderHelper(){ renderLeft(); renderRight(); updateProg(); }
+/* ═══════════════════════════════════════════
+   HELPER — RENDER
+═══════════════════════════════════════════ */
+function renderHelper(){renderLeft();renderRight();updateProg();}
 
 function renderLeft(){
-  const chk = getChk();
-  let h = '';
-
-  /* ── Daily tasks ── */
-  const dDone = DAILY.filter(t=>chk['d_'+t.id]).length;
-  const dTot  = DAILY.length;
-  const dCls  = dDone===dTot?'ct-done':dDone>0?'ct-part':'ct-none';
-
-  h += `<div class="slabel">
+  const chk=getChk(), tasks=getDailyTasks().filter(t=>t.active!==false);
+  let h='';
+  const dDone=tasks.filter(t=>chk['d_'+t.id]).length, dTot=tasks.length;
+  h+=`<div class="slabel">
     <div class="slabel-icon" style="background:var(--accent-dim)">📋</div>
     <div><h2>Tugas Harian</h2><p>Setiap hari · dilakukan sepenuhnya</p></div>
-    <span class="slabel-ct ${dCls}">${dDone}/${dTot}</span>
+    <span class="slabel-ct ${dDone===dTot?'ct-done':dDone>0?'ct-part':'ct-none'}">${dDone}/${dTot}</span>
   </div><div class="tcard">`;
-
-  let grp = null;
-  DAILY.forEach(t => {
-    if(t.g !== grp){ grp=t.g; h+=`<div class="grp-head">${t.g}</div>`; }
-    const done = !!chk['d_'+t.id];
-    const time = chk['d_'+t.id+'_t']||'';
-    h += `<div class="trow ${done?'done':''}" onclick="togTask('d_${t.id}')">
+  let grp=null;
+  tasks.forEach(t=>{
+    if(t.g!==grp){grp=t.g;h+=`<div class="grp-head">${t.g}</div>`;}
+    const done=!!chk['d_'+t.id], time=chk['d_'+t.id+'_t']||'';
+    h+=`<div class="trow ${done?'done':''}" onclick="togTask('d_${t.id}')">
       <div class="cb">${done?ckSvg():''}</div>
-      <div style="flex:1;min-width:0">
-        <div class="tlbl">${t.lbl}</div>
-        ${done&&time?`<div class="ttime">✓ Pukul ${time}</div>`:''}
-      </div>
+      <div style="flex:1;min-width:0"><div class="tlbl">${t.lbl}</div>${done&&time?`<div class="ttime">✓ Pukul ${time}</div>`:''}</div>
     </div>`;
   });
-  h += `</div>`;
+  h+=`</div>`;
 
-  /* ── Deep clean ── */
-  const dc = DEEP[hDay];
-  if(dc && dc.length){
-    h += `<div class="slabel" style="margin-top:26px">
+  const dc=getDeep()[hDay];
+  if(dc&&dc.length){
+    h+=`<div class="slabel" style="margin-top:26px">
       <div class="slabel-icon" style="background:var(--purple-dim)">✨</div>
       <div><h2>Bersih Mendalam</h2><p>Fokus tambahan hari ini</p></div>
     </div>
     <div class="dc-card">
-      <div class="dc-hd">
-        <div>
-          <span class="dc-badge">Hari Ini</span>
-          <div class="dc-day-name">${DAYS[hDay]}</div>
-          <div class="dc-day-sub">Deep clean focus areas</div>
-        </div>
+      <div class="dc-hd"><span class="dc-badge">Hari Ini</span>
+        <div class="dc-day-name">${DAYS[hDay]}</div>
+        <div class="dc-day-sub">Deep clean focus areas</div>
       </div>
-      <div class="dc-body">
-        ${dc.map(item=>`<div class="dc-item"><div class="dc-dot"></div><span>${item}</span></div>`).join('')}
-      </div>
+      <div class="dc-body">${dc.map(item=>`<div class="dc-item"><div class="dc-dot"></div><span>${item}</span></div>`).join('')}</div>
     </div>`;
   }
-
-  document.getElementById('hLeft').innerHTML = h;
+  document.getElementById('hLeft').innerHTML=h;
 }
 
-/* ════════════════════════════════════════
-   HELPER — RIGHT COLUMN
-   (School prep + Activities)
-════════════════════════════════════════ */
 function renderRight(){
-  const pack = getPack();
-  let h = '';
+  const pack=getPack();
+  const actsBase=getActsBase();
+  let h='';
 
-  /* ── School prep ── */
-  const sc = SCHOOL[hDay];
-  h += `<div class="info-card school">
-    <div class="ic-hd"><div class="ic-title">🎒 Persiapan Sekolah</div><div class="ic-sub">School Prep · Haris</div></div>
-    <div class="ic-body">`;
-
+  // School
+  const sc=DEFAULT_SCHOOL[hDay];
+  h+=`<div class="info-card school"><div class="ic-hd"><div class="ic-title">🎒 Persiapan Sekolah</div><div class="ic-sub">School Prep · Haris</div></div><div class="ic-body">`;
   if(sc){
-    // Weekday school
-    h += `<div class="uni-row">
-      <div class="uni-icon">👔</div>
-      <div>
-        <div class="uni-lbl">Seragam Hari Ini</div>
-        <div class="uni-name">${sc.uniform}</div>
-      </div>
-    </div>
+    h+=`<div class="uni-row"><div class="uni-icon">👔</div><div><div class="uni-lbl">Seragam Hari Ini</div><div class="uni-name">${sc.uniform}</div></div></div>
     <div class="pack-hd">Pack List</div>`;
     sc.pack.forEach((item,i)=>{
-      const k=`pk_${hDay}_${i}`; const done=!!pack[k];
-      h+=`<div class="pack-item ${done?'done':''}" onclick="togPack('${k}')">
-        <div class="pdot">${done?'✓':''}</div><span>${item}</span>
-      </div>`;
+      const k=`pk_${hDay}_${i}`,done=!!pack[k];
+      h+=`<div class="pack-item ${done?'done':''}" onclick="togPack('${k}')"><div class="pdot">${done?'✓':''}</div><span>${item}</span></div>`;
     });
-    if(sc.swim){
-      h+=`<div class="swim-lbl">🏊 Swimming Kit</div>
-        <div class="swim-box">${sc.swim}</div>`;
-    }
+    if(sc.swim)h+=`<div class="swim-lbl">🏊 Swimming Kit</div><div class="swim-box">${sc.swim}</div>`;
   } else if(hDay===6){
-    // Saturday — Badminton
-    h+=`<div class="uni-row" style="background:var(--amber-dim)">
-      <div class="uni-icon">🏸</div>
-      <div>
-        <div class="uni-lbl" style="color:var(--amber-text)">8:30am</div>
-        <div class="uni-name">Badminton</div>
-      </div>
-    </div>`;
+    h+=`<div class="uni-row" style="background:var(--amber-dim)"><div class="uni-icon">🏸</div><div><div class="uni-lbl" style="color:var(--amber-text)">8:30am</div><div class="uni-name">Badminton</div></div></div>`;
   } else {
-    h+=`<div class="empty"><div class="ei">🏠</div><div>Tiada sekolah hari ini<br><span style="font-size:.7rem">No school today</span></div></div>`;
-  }
-
-  h += `</div></div>`;
-
-  /* ── Activities ── */
-  const acts = ACTS[hDay]||[];
-  h += `<div class="info-card act">
-    <div class="ic-hd"><div class="ic-title">⚡ Aktiviti Haris</div><div class="ic-sub">Ambil perhatian hari ini</div></div>
-    <div class="ic-body">`;
-  if(acts.length){
-    acts.forEach(a=>{
-      h+=`<div class="act-item">
-        <div class="act-time">${a.t}</div>
-        <div class="act-dot">●</div>
-        <div class="act-txt">${a.l}</div>
-      </div>`;
-    });
-  } else {
-    h+=`<div class="empty"><div class="ei">😌</div><div>Tiada aktiviti hari ini<br><span style="font-size:.7rem">No activities today</span></div></div>`;
+    h+=`<div class="empty"><div class="ei">🏠</div><div>Tiada sekolah hari ini</div></div>`;
   }
   h+=`</div></div>`;
 
-  document.getElementById('hRight').innerHTML = h;
-}
-
-/* ════════════════════════════════════════
-   TOGGLE & PROGRESS
-════════════════════════════════════════ */
-function togTask(key){
-  const s = getChk();
-  if(s[key]){ delete s[key]; delete s[key+'_t']; }
-  else {
-    s[key]=true;
-    const n=new Date();
-    s[key+'_t']=n.toLocaleTimeString('ms-MY',{hour:'2-digit',minute:'2-digit'});
+  // Activities — filter out week-disabled ones
+  const allActs=(actsBase[hDay]||[]).filter(a=>!isActDisabledThisWeek(a.id));
+  h+=`<div class="info-card act"><div class="ic-hd"><div class="ic-title">⚡ Aktiviti Haris</div><div class="ic-sub">Ambil perhatian hari ini</div></div><div class="ic-body">`;
+  if(allActs.length){
+    allActs.forEach(a=>{
+      h+=`<div class="act-item"><div class="act-time">${a.t}</div><div class="act-dot">●</div><div>${a.l}</div></div>`;
+    });
+  } else {
+    h+=`<div class="empty"><div class="ei">😌</div><div>Tiada aktiviti hari ini</div></div>`;
   }
-  setChk(s);
-  renderHelper();
+  h+=`</div></div>`;
+  document.getElementById('hRight').innerHTML=h;
 }
 
-function togPack(k){ const s=getPack(); s[k]=!s[k]; setPack(s); renderRight(); }
+function togTask(key){
+  const s=getChk();
+  if(s[key]){delete s[key];delete s[key+'_t'];}
+  else{s[key]=true;const n=new Date();s[key+'_t']=n.toLocaleTimeString('ms-MY',{hour:'2-digit',minute:'2-digit'});}
+  setChk(s); renderHelper();
+}
+function togPack(k){const s=getPack();s[k]=!s[k];setPack(s);renderRight();}
 
 function updateProg(){
-  const chk = getChk();
-  const done = DAILY.filter(t=>chk['d_'+t.id]).length;
-  const tot  = DAILY.length;
-  const pct  = tot ? Math.round(done/tot*100) : 0;
-  document.getElementById('progLbl').textContent = `${done} / ${tot} tugas harian selesai`;
-  document.getElementById('progPct').textContent = pct+'%';
-  document.getElementById('progFill').style.width = pct+'%';
-  document.getElementById('doneBanner').classList.toggle('on', tot>0 && done===tot);
+  const chk=getChk(), tasks=getDailyTasks().filter(t=>t.active!==false);
+  const done=tasks.filter(t=>chk['d_'+t.id]).length, tot=tasks.length;
+  const pct=tot?Math.round(done/tot*100):0;
+  document.getElementById('progLbl').textContent=`${done} / ${tot} tugas harian selesai`;
+  document.getElementById('progPct').textContent=pct+'%';
+  document.getElementById('progFill').style.width=pct+'%';
+  document.getElementById('doneBanner').classList.toggle('on',tot>0&&done===tot);
 }
 
-/* ════════════════════════════════════════
-   ADMIN — SCHEDULE
-════════════════════════════════════════ */
-function aTab(btn, panel){
+/* ═══════════════════════════════════════════
+   ADMIN — TAB ROUTING
+═══════════════════════════════════════════ */
+function aTab(btn,panel){
   document.querySelectorAll('.atab').forEach(b=>b.classList.remove('on'));
   document.querySelectorAll('.apanel').forEach(p=>p.classList.remove('on'));
   btn.classList.add('on');
   document.getElementById('ap-'+panel).classList.add('on');
   if(panel==='review') renderReview();
+  if(panel==='deep') renderDeepEditor();
+  if(panel==='acts') renderActsEditor();
 }
 
+/* ═══════════════════════════════════════════
+   ADMIN ① — DAILY TASK EDITOR
+═══════════════════════════════════════════ */
+function renderDailyEditor(){
+  const tasks=getDailyTasks();
+  let h='<div class="e-card">';
+  let grp=null;
+  tasks.forEach((t,i)=>{
+    const active=t.active!==false;
+    if(t.g!==grp){
+      if(grp!==null)h+=`</div><div class="e-card">`;
+      grp=t.g;
+      h+=`<div style="font-size:.61rem;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);padding:9px 13px 6px;border-bottom:1px solid var(--border)">${t.g}</div>`;
+    }
+    h+=`<div class="e-row ${active?'':'disabled'}" id="erow-${t.id}">
+      <input class="e-input" value="${escH(t.lbl)}" onblur="saveDailyLabel('${t.id}',this.value)" onfocus="this.select()" />
+      <div class="e-actions">
+        <button class="icon-btn ${active?'':'tog-off'}" title="${active?'Nyahaktif':'Aktif semula'}" onclick="togDailyActive('${t.id}')">${active?'👁':'🙈'}</button>
+        <button class="icon-btn del" title="Padam" onclick="delDailyTask('${t.id}')">✕</button>
+      </div>
+    </div>`;
+  });
+  h+=`</div>`;
+  document.getElementById('dailyEditorList').innerHTML=h;
+}
+
+function saveDailyLabel(id,val){
+  if(!val.trim())return;
+  const tasks=getDailyTasks();
+  const t=tasks.find(x=>x.id===id); if(t){t.lbl=val.trim();saveDailyTasks(tasks);}
+  toast('✓ Disimpan');
+}
+
+function togDailyActive(id){
+  const tasks=getDailyTasks();
+  const t=tasks.find(x=>x.id===id); if(!t)return;
+  t.active=t.active===false?true:false;
+  saveDailyTasks(tasks); renderDailyEditor();
+  toast(t.active?'✓ Tugas diaktifkan':'Tugas dinyahaktifkan');
+}
+
+function delDailyTask(id){
+  if(!confirm('Padam tugas ini secara kekal?'))return;
+  const tasks=getDailyTasks().filter(x=>x.id!==id);
+  saveDailyTasks(tasks); renderDailyEditor(); toast('Tugas dipadam');
+}
+
+function addDailyTask(){
+  const inp=document.getElementById('newDailyInput');
+  const lbl=inp.value.trim(); if(!lbl)return;
+  const tasks=getDailyTasks();
+  // Find last group to append under same group as last task
+  const lastGrp=tasks.length?tasks[tasks.length-1].g:'Petang';
+  tasks.push({id:'d_'+Date.now(),g:lastGrp,lbl,active:true});
+  saveDailyTasks(tasks); inp.value=''; renderDailyEditor(); toast('✓ Tugas ditambah');
+}
+
+/* ═══════════════════════════════════════════
+   ADMIN ② — DEEP CLEAN EDITOR
+═══════════════════════════════════════════ */
+function buildDeepDayPicker(){
+  const td=todayN();
+  document.getElementById('deepDayPicker').innerHTML=DAYS.map((d,i)=>
+    `<button class="dpk ${i===deepEdDay?'on':''} ${i===td?'today-mark':''}" onclick="pickDeepDay(${i})">${d}</button>`
+  ).join('');
+}
+function pickDeepDay(d){deepEdDay=d;buildDeepDayPicker();renderDeepEditor();}
+
+function renderDeepEditor(){
+  const deep=getDeep();
+  const items=deep[deepEdDay]||[];
+  let h='';
+  if(items.length){
+    h+='<div class="e-card">';
+    items.forEach((item,i)=>{
+      h+=`<div class="e-row">
+        <input class="e-input" value="${escH(item)}" onblur="saveDeepItem(${deepEdDay},${i},this.value)" onfocus="this.select()" />
+        <div class="e-actions">
+          <button class="icon-btn del" title="Padam" onclick="delDeepItem(${deepEdDay},${i})">✕</button>
+        </div>
+      </div>`;
+    });
+    h+='</div>';
+  } else {
+    h=`<div style="font-size:.8rem;color:var(--muted);padding:12px 0">Tiada kawasan untuk hari ini. Tambah di bawah.</div>`;
+  }
+  document.getElementById('deepEditorList').innerHTML=h;
+}
+
+function saveDeepItem(day,idx,val){
+  if(!val.trim())return;
+  const deep=getDeep(); deep[day][idx]=val.trim(); saveDeep(deep); toast('✓ Disimpan');
+}
+function delDeepItem(day,idx){
+  const deep=getDeep(); deep[day].splice(idx,1); saveDeep(deep); renderDeepEditor(); toast('Item dipadam');
+}
+function addDeepItem(){
+  const inp=document.getElementById('newDeepInput');
+  const val=inp.value.trim(); if(!val)return;
+  const deep=getDeep(); if(!deep[deepEdDay])deep[deepEdDay]=[];
+  deep[deepEdDay].push(val); saveDeep(deep); inp.value=''; renderDeepEditor(); toast('✓ Item ditambah');
+}
+
+/* ═══════════════════════════════════════════
+   ADMIN ③ — ACTIVITIES & SCHOOL EDITOR
+═══════════════════════════════════════════ */
+function buildActsDayPicker(){
+  const td=todayN();
+  document.getElementById('actsDayPicker').innerHTML=DAYS.map((d,i)=>
+    `<button class="dpk ${i===actsEdDay?'on':''} ${i===td?'today-mark':''}" onclick="pickActsDay(${i})">${d}</button>`
+  ).join('');
+}
+function pickActsDay(d){actsEdDay=d;buildActsDayPicker();renderActsEditor();}
+
+function renderActsEditor(){
+  const actsBase=getActsBase();
+  const acts=actsBase[actsEdDay]||[];
+  const sc=DEFAULT_SCHOOL[actsEdDay];
+  let h='';
+
+  // Activities section
+  h+=`<div style="font-family:'DM Serif Display',serif;font-size:1rem;margin-bottom:8px">⚡ Aktiviti Haris — ${DAYS[actsEdDay]}</div>`;
+  h+=`<div class="week-note"><strong>Togol minggu ini sahaja.</strong> Perubahan akan kembali semula minggu depan secara automatik.</div>`;
+
+  if(acts.length){
+    h+='<div class="e-card" style="margin-bottom:20px">';
+    acts.forEach(a=>{
+      const disabledThisWeek=isActDisabledThisWeek(a.id);
+      h+=`<div class="act-tog-row">
+        <div class="act-tog-time">${a.t}</div>
+        <div class="act-tog-lbl ${disabledThisWeek?'off':''}">${a.l}</div>
+        <label class="tog-sw" title="${disabledThisWeek?'Aktifkan minggu ini':'Nyahaktif minggu ini'}">
+          <input type="checkbox" ${disabledThisWeek?'':'checked'} onchange="togActWeek('${a.id}',!this.checked)" />
+          <div class="tog-sw-track"></div>
+        </label>
+      </div>`;
+    });
+    h+='</div>';
+  } else {
+    h+=`<div style="font-size:.8rem;color:var(--muted);padding:8px 0 20px">Tiada aktiviti untuk hari ini.</div>`;
+  }
+
+  // School section
+  h+=`<div style="font-family:'DM Serif Display',serif;font-size:1rem;margin-bottom:8px">🎒 Sekolah — ${DAYS[actsEdDay]}</div>`;
+  if(sc){
+    h+=`<div class="e-card" style="margin-bottom:8px">
+      <div class="e-row" style="background:var(--blue-dim)">
+        <div style="font-size:.68rem;font-weight:700;color:var(--blue-text);flex:1">👔 Seragam: ${sc.uniform}</div>
+      </div>`;
+    sc.pack.forEach(item=>{
+      h+=`<div class="e-row"><div class="e-lbl">${item}</div></div>`;
+    });
+    if(sc.swim){
+      h+=`<div class="e-row" style="background:var(--blue-dim)">
+        <div style="font-size:.75rem;color:var(--blue-text);flex:1">🏊 Swimming kit: ${sc.swim}</div>
+      </div>`;
+    }
+    h+='</div>';
+    h+=`<div style="font-size:.71rem;color:var(--muted)">Untuk edit uniform atau pack list sekolah, kemaskini data di dalam kod. Hubungi admin teknikal.</div>`;
+  } else if(actsEdDay===6){
+    h+=`<div style="font-size:.82rem;color:var(--mid);padding:8px 0">🏸 Sabtu — Badminton 8:30am. Tiada pack list.</div>`;
+  } else {
+    h+=`<div style="font-size:.82rem;color:var(--muted);padding:8px 0">Tiada sekolah hari ini.</div>`;
+  }
+
+  document.getElementById('actsEditorContent').innerHTML=h;
+}
+
+function togActWeek(id, disable){
+  setActWeekOverride(id, disable);
+  renderActsEditor();
+  toast(disable?'Aktiviti dinyahaktif minggu ini':'Aktiviti diaktifkan semula');
+}
+
+/* ═══════════════════════════════════════════
+   ADMIN ④ — ROOM SCHEDULE
+═══════════════════════════════════════════ */
 function renderSched(){
-  const sched = getSched();
-  document.getElementById('sgrid').innerHTML = ROOMS.map(r=>{
-    const days = sched[r.id]||[];
+  const sched=getSched();
+  document.getElementById('sgrid').innerHTML=ROOMS.map(r=>{
+    const days=sched[r.id]||[];
     return `<div class="scard">
-      <div class="scard-hd">
-        <span style="font-size:1.1rem">${r.icon}</span>
+      <div class="scard-hd"><span style="font-size:1.1rem">${r.icon}</span>
         <div><div class="sr">${r.name}</div><div class="se">${r.en}</div></div>
       </div>
-      <div class="dtogs">
-        ${DAYS_S.map((d,i)=>`<button class="dtog ${days.includes(i)?'on':''}" onclick="togDay('${r.id}',${i},this)">${d}</button>`).join('')}
-      </div>
+      <div class="dtogs">${DAYS_S.map((d,i)=>`<button class="dtog ${days.includes(i)?'on':''}" onclick="togDay('${r.id}',${i},this)">${d}</button>`).join('')}</div>
       <div class="prow">
         <button class="pre" onclick="setPre('${r.id}',[1,2,3,4,5])">Isn–Jum</button>
         <button class="pre" onclick="setPre('${r.id}',[0,6])">H/mggu</button>
@@ -707,84 +872,69 @@ function renderSched(){
     </div>`;
   }).join('');
 }
-
 function togDay(rid,day,btn){
-  const s=getSched(); if(!s[rid])s[rid]=[];
-  const i=s[rid].indexOf(day);
-  if(i>=0)s[rid].splice(i,1); else s[rid].push(day);
-  saveSched(s); btn.classList.toggle('on');
+  const s=getSched();if(!s[rid])s[rid]=[];
+  const i=s[rid].indexOf(day);if(i>=0)s[rid].splice(i,1);else s[rid].push(day);
+  saveSched(s);btn.classList.toggle('on');
 }
-function setPre(rid,days){ const s=getSched(); s[rid]=[...days]; saveSched(s); renderSched(); }
+function setPre(rid,days){const s=getSched();s[rid]=[...days];saveSched(s);renderSched();}
 
-/* ════════════════════════════════════════
-   ADMIN — REVIEW
-════════════════════════════════════════ */
+/* ═══════════════════════════════════════════
+   ADMIN ⑤ — REVIEW
+═══════════════════════════════════════════ */
 function renderReview(){
-  const today=todayN(), chk=getChk(), sched=getSched();
+  const today=todayN(),chk=getChk(),sched=getSched();
+  const tasks=getDailyTasks().filter(t=>t.active!==false);
   let cards='';
-
-  // Daily tasks
-  const dD=DAILY.filter(t=>chk['d_'+t.id]).length;
-  const dCls=dD===DAILY.length?'full':dD>0?'part':'none';
-  cards+=mkCard('📋','Tugas Harian',dD,DAILY.length,dCls,
-    DAILY.map(t=>({l:t.lbl,t:chk['d_'+t.id+'_t']||''})));
-
-  // Deep clean — shown as info only (no ticking), so show all as "awaiting"
-  const dc=DEEP[today];
+  const dD=tasks.filter(t=>chk['d_'+t.id]).length;
+  const dCls=dD===tasks.length?'full':dD>0?'part':'none';
+  cards+=mkRCard('📋','Tugas Harian',dD,tasks.length,dCls,tasks.map(t=>({l:t.lbl,t:chk['d_'+t.id+'_t']||''})));
+  const dc=getDeep()[today];
   if(dc&&dc.length){
-    cards+=`<div class="rcard">
-      <div class="rcard-hd"><span class="ricon">✨</span><span class="rname">Bersih Mendalam</span><span class="rprog none">${dc.length} area</span></div>
+    cards+=`<div class="rcard"><div class="rcard-hd"><span class="ricon">✨</span><span class="rname">Bersih Mendalam</span><span class="rprog none">${dc.length} kawasan</span></div>
       ${dc.map(item=>`<div class="rrow"><div class="rdot pend"></div><div class="rlbl">${item}</div></div>`).join('')}
     </div>`;
   }
-
-  // Room cleaning
   ROOMS.filter(r=>(sched[r.id]||[]).includes(today)).forEach(r=>{
     const d=r.tasks.filter(t=>chk[t.id]).length;
     const cls=d===r.tasks.length?'full':d>0?'part':'none';
-    cards+=mkCard(r.icon,r.name,d,r.tasks.length,cls,
-      r.tasks.map(t=>({l:t.lbl,t:chk[t.id+'_t']||''})));
+    cards+=mkRCard(r.icon,r.name,d,r.tasks.length,cls,r.tasks.map(t=>({l:t.lbl,t:chk[t.id+'_t']||''})));
   });
-
-  document.getElementById('rgrid').innerHTML = cards || `<p style="color:var(--muted);font-size:.8rem">Tiada jadual ruangan hari ini.</p>`;
+  document.getElementById('rgrid').innerHTML=cards||`<p style="color:var(--muted);font-size:.8rem">Tiada jadual ruangan hari ini.</p>`;
 }
-
-function mkCard(icon,name,done,tot,cls,tasks){
-  return `<div class="rcard">
-    <div class="rcard-hd"><span class="ricon">${icon}</span><span class="rname">${name}</span><span class="rprog ${cls}">${done}/${tot}</span></div>
-    ${tasks.map(t=>`<div class="rrow">
-      <div class="rdot ${t.t?'done':'pend'}"></div>
-      <div class="rlbl">${t.l}</div>
-      ${t.t?`<div class="rt2">${t.t}</div>`:''}
-    </div>`).join('')}
+function mkRCard(icon,name,done,tot,cls,tasks){
+  return `<div class="rcard"><div class="rcard-hd"><span class="ricon">${icon}</span><span class="rname">${name}</span><span class="rprog ${cls}">${done}/${tot}</span></div>
+    ${tasks.map(t=>`<div class="rrow"><div class="rdot ${t.t?'done':'pend'}"></div><div class="rlbl">${t.l}</div>${t.t?`<div class="rt2">${t.t}</div>`:''}</div>`).join('')}
   </div>`;
 }
-
 function resetAll(){
   if(!confirm('Reset semua tugas hari ini?'))return;
-  setChk({}); setPack({});
-  if(role==='h') renderHelper(); else renderReview();
+  setChk({});setPack({});
+  if(role==='h')renderHelper();else renderReview();
   toast('↺ Semua tugas di-reset');
 }
 
-/* ════════════════════════════════════════
+/* ═══════════════════════════════════════════
+   UTILS
+═══════════════════════════════════════════ */
+function escH(s){return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');}
+
+/* ═══════════════════════════════════════════
    INIT
-════════════════════════════════════════ */
+═══════════════════════════════════════════ */
 (function(){
-  // Default schedule first load
   if(!localStorage.getItem('jh_sched')){
     const d={};
     ROOMS.forEach(r=>{
-      if(['lobby','rt','db'].includes(r.id)) d[r.id]=[1,2,3,4,5];
-      else if(r.id==='km') d[r.id]=[0,1,2,3,4,5,6];
-      else if(r.id==='bk') d[r.id]=[6];
+      if(['lobby','rt','db'].includes(r.id))d[r.id]=[1,2,3,4,5];
+      else if(r.id==='km')d[r.id]=[0,1,2,3,4,5,6];
+      else if(r.id==='bk')d[r.id]=[6];
       else d[r.id]=[1,3,5];
     });
     lss('jh_sched',d);
   }
-  // Auto-reset on new day
   const s=ls('jh_chk',null);
-  if(s&&s.date!==todayK()){ setChk({}); setPack({}); }
+  if(s&&s.date!==todayK()){setChk({});setPack({});}
 })();
 </script>
 </body>
