@@ -203,7 +203,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .tog-sw input:checked+.tog-sw-track::after{transform:translateX(16px);}
 
 /* room schedule */
-.sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(225px,1fr));gap:11px;}
+
 .scard{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);padding:13px;box-shadow:var(--sh);}
 .scard-hd{display:flex;align-items:center;gap:8px;margin-bottom:11px;}
 .sr{font-weight:600;font-size:.84rem;} .se{font-size:.66rem;color:var(--muted);}
@@ -231,6 +231,51 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .rlbl{flex:1;} .rt2{font-size:.64rem;color:var(--green-text);font-weight:700;}
 .btn-rst{display:inline-flex;align-items:center;gap:5px;font-size:.73rem;font-weight:600;font-family:inherit;padding:6px 12px;border-radius:8px;border:1.5px solid #F0C8C4;background:var(--red-dim);color:var(--red);cursor:pointer;transition:all .13s;}
 .btn-rst:hover{background:var(--red);color:#fff;border-color:var(--red);}
+
+/* ═══ WEEKLY PLANNER ═══ */
+.planner-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;align-items:start;}
+@media(max-width:900px){.planner-grid{grid-template-columns:repeat(4,1fr);}}
+@media(max-width:540px){.planner-grid{grid-template-columns:repeat(2,1fr);}}
+
+.pday-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);transition:border-color .15s;}
+.pday-card.is-today{border-color:var(--accent);}
+.pday-card.drag-over{border-color:var(--purple);background:var(--purple-dim);}
+
+.pday-hd{padding:8px 10px 7px;display:flex;align-items:center;justify-content:space-between;}
+.pday-hd.is-today{background:var(--accent);color:#fff;}
+.pday-hd.is-today .pday-name{color:#fff;}
+.pday-hd.is-today .pday-date{color:rgba(255,255,255,.75);}
+.pday-name{font-weight:700;font-size:.78rem;}
+.pday-date{font-size:.62rem;color:var(--muted);}
+
+/* School badge in planner */
+.pday-school{padding:5px 8px;font-size:.67rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:5px;color:var(--blue-text);background:var(--blue-dim);}
+.pday-school.no-school{color:var(--muted);background:transparent;}
+
+/* Deep clean chips */
+.pday-section{padding:7px 8px;}
+.pday-section-lbl{font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.9px;color:var(--muted);margin-bottom:5px;display:flex;align-items:center;justify-content:space-between;}
+.dc-chip{display:flex;align-items:center;gap:5px;background:var(--purple-dim);border:1px solid #D8D0F0;border-radius:6px;padding:4px 7px;margin-bottom:4px;font-size:.72rem;font-weight:500;color:var(--purple-text);cursor:grab;transition:all .13s;}
+.dc-chip:hover{background:#DDD6F5;border-color:var(--purple);}
+.dc-chip.dragging{opacity:.4;cursor:grabbing;}
+.dc-chip-drag{font-size:.65rem;color:var(--purple);opacity:.6;flex-shrink:0;}
+.dc-chip-lbl{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.dc-chip-del{flex-shrink:0;font-size:.65rem;color:var(--purple);opacity:.5;cursor:pointer;padding:1px 3px;border-radius:3px;}
+.dc-chip-del:hover{opacity:1;background:rgba(96,64,160,.12);}
+.dc-drop-hint{font-size:.67rem;color:var(--muted);text-align:center;padding:6px 4px;border:1.5px dashed var(--border);border-radius:6px;margin-bottom:4px;}
+
+/* Activity pills in planner */
+.act-pill{display:flex;align-items:center;gap:5px;background:var(--amber-dim);border:1px solid #EED8A0;border-radius:6px;padding:4px 7px;margin-bottom:4px;font-size:.7rem;color:var(--amber-text);}
+.act-pill.disabled{opacity:.35;text-decoration:line-through;}
+.act-pill-time{font-weight:700;flex-shrink:0;font-size:.63rem;}
+.act-pill-tog{flex-shrink:0;width:22px;height:13px;position:relative;cursor:pointer;}
+.act-pill-tog input{opacity:0;width:0;height:0;position:absolute;}
+.apt-track{position:absolute;inset:0;background:var(--border);border-radius:20px;cursor:pointer;transition:background .18s;}
+.act-pill-tog input:checked+.apt-track{background:var(--green);}
+.apt-track::after{content:'';position:absolute;width:9px;height:9px;border-radius:50%;background:#fff;top:2px;left:2px;transition:transform .18s;}
+.act-pill-tog input:checked+.apt-track::after{transform:translateX(9px);}
+
+.pday-empty{font-size:.68rem;color:var(--muted);padding:6px 8px 8px;font-style:italic;}
 
 /* toast */
 .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(14px);background:var(--dark);color:#FDFAF6;font-size:.77rem;font-weight:600;padding:9px 20px;border-radius:30px;box-shadow:var(--sh-md);opacity:0;pointer-events:none;white-space:nowrap;transition:all .26s;z-index:9999;}
@@ -313,7 +358,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
           <button class="atab on"  onclick="aTab(this,'daily')">📋 Tugas Harian</button>
           <button class="atab"     onclick="aTab(this,'deep')">✨ Bersih Mendalam</button>
           <button class="atab"     onclick="aTab(this,'acts')">⚡ Aktiviti & Sekolah</button>
-          <button class="atab"     onclick="aTab(this,'sched')">📅 Jadual Ruangan</button>
+          <button class="atab"     onclick="aTab(this,'planner')">📆 Perancang Minggu</button>
           <button class="atab"     onclick="aTab(this,'review')">👁 Pantau Hari Ini</button>
         </div>
 
@@ -360,12 +405,16 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
           <div id="actsEditorContent"></div>
         </div>
 
-        <!-- ④ ROOM SCHEDULE -->
-        <div class="apanel" id="ap-sched">
+        <!-- ④ WEEKLY PLANNER -->
+        <div class="apanel" id="ap-planner">
           <div class="sec-hd">
-            <div><div class="sec-hd-t">Jadual Ruangan</div><div class="sec-hd-s">Set hari bersih bagi setiap ruangan</div></div>
+            <div>
+              <div class="sec-hd-t">Perancang Minggu</div>
+              <div class="sec-hd-s">Gambaran keseluruhan minggu · seret kawasan bersih mendalam antara hari · togol aktiviti</div>
+            </div>
+            <div id="plannerWeekLabel" style="font-size:.72rem;color:var(--muted);font-weight:600;align-self:center"></div>
           </div>
-          <div class="sgrid" id="sgrid"></div>
+          <div class="planner-grid" id="plannerGrid"></div>
         </div>
 
         <!-- ⑤ REVIEW -->
@@ -544,7 +593,7 @@ function enter(r){
     renderHelper();
   } else {
     document.getElementById('pg-a').classList.add('active');
-    renderDailyEditor(); buildDeepDayPicker(); buildActsDayPicker(); renderSched();
+    renderDailyEditor(); buildDeepDayPicker(); buildActsDayPicker();
   }
 }
 function goLogin(){
@@ -672,9 +721,10 @@ function aTab(btn,panel){
   document.querySelectorAll('.apanel').forEach(p=>p.classList.remove('on'));
   btn.classList.add('on');
   document.getElementById('ap-'+panel).classList.add('on');
-  if(panel==='review') renderReview();
-  if(panel==='deep') renderDeepEditor();
-  if(panel==='acts') renderActsEditor();
+  if(panel==='review')  renderReview();
+  if(panel==='deep')    renderDeepEditor();
+  if(panel==='acts')    renderActsEditor();
+  if(panel==='planner') renderPlanner();
 }
 
 /* ═══════════════════════════════════════════
@@ -852,32 +902,142 @@ function togActWeek(id, disable){
 }
 
 /* ═══════════════════════════════════════════
-   ADMIN ④ — ROOM SCHEDULE
+   ADMIN ④ — WEEKLY PLANNER
 ═══════════════════════════════════════════ */
-function renderSched(){
-  const sched=getSched();
-  document.getElementById('sgrid').innerHTML=ROOMS.map(r=>{
-    const days=sched[r.id]||[];
-    return `<div class="scard">
-      <div class="scard-hd"><span style="font-size:1.1rem">${r.icon}</span>
-        <div><div class="sr">${r.name}</div><div class="se">${r.en}</div></div>
-      </div>
-      <div class="dtogs">${DAYS_S.map((d,i)=>`<button class="dtog ${days.includes(i)?'on':''}" onclick="togDay('${r.id}',${i},this)">${d}</button>`).join('')}</div>
-      <div class="prow">
-        <button class="pre" onclick="setPre('${r.id}',[1,2,3,4,5])">Isn–Jum</button>
-        <button class="pre" onclick="setPre('${r.id}',[0,6])">H/mggu</button>
-        <button class="pre" onclick="setPre('${r.id}',[0,1,2,3,4,5,6])">Setiap hari</button>
-        <button class="pre" onclick="setPre('${r.id}',[])">Padam</button>
-      </div>
-    </div>`;
-  }).join('');
+let dragSrcDay=null, dragSrcIdx=null;
+
+function renderPlanner(){
+  const today=todayN();
+  const deep=getDeep();
+  const actsBase=getActsBase();
+  const d=new Date();
+  // Week label
+  const mon=new Date(d); mon.setDate(d.getDate()-(d.getDay()===0?6:d.getDay()-1));
+  const sun=new Date(mon); sun.setDate(mon.getDate()+6);
+  document.getElementById('plannerWeekLabel').textContent=
+    `${mon.toLocaleDateString('ms-MY',{day:'numeric',month:'short'})} – ${sun.toLocaleDateString('ms-MY',{day:'numeric',month:'short',year:'numeric'})}`;
+
+  const grid=document.getElementById('plannerGrid');
+  grid.innerHTML='';
+
+  // Render Mon(1)…Sun(0) in week order
+  const order=[1,2,3,4,5,6,0];
+  order.forEach(jsDay=>{
+    const isToday=jsDay===today;
+    const sc=DEFAULT_SCHOOL[jsDay];
+    const dcItems=deep[jsDay]||[];
+    const acts=actsBase[jsDay]||[];
+
+    const card=document.createElement('div');
+    card.className=`pday-card${isToday?' is-today':''}`;
+    card.dataset.day=jsDay;
+
+    // Header
+    const hd=document.createElement('div');
+    hd.className=`pday-hd${isToday?' is-today':''}`;
+    hd.innerHTML=`<span class="pday-name">${DAYS[jsDay]}</span>${isToday?'<span style="font-size:.6rem;background:rgba(255,255,255,.25);padding:2px 6px;border-radius:10px">Hari Ini</span>':''}`;
+    card.appendChild(hd);
+
+    // School badge
+    const sch=document.createElement('div');
+    if(sc){
+      sch.className='pday-school';
+      sch.innerHTML=`<span>👔</span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${sc.uniform}${sc.swim?' 🏊':''}</span>`;
+    } else if(jsDay===6){
+      sch.className='pday-school';
+      sch.innerHTML=`<span>🏸</span><span>Badminton</span>`;
+    } else {
+      sch.className='pday-school no-school';
+      sch.innerHTML=`<span>🏠</span><span>No school</span>`;
+    }
+    card.appendChild(sch);
+
+    // Deep clean section
+    const dcSec=document.createElement('div');
+    dcSec.className='pday-section';
+    dcSec.innerHTML=`<div class="pday-section-lbl"><span>✨ Bersih</span><button onclick="openAddDeepInline(${jsDay})" style="background:none;border:none;cursor:pointer;font-size:.7rem;color:var(--purple);font-weight:700;padding:0">+</button></div>`;
+
+    // Drop zone
+    dcSec.addEventListener('dragover',e=>{e.preventDefault();card.classList.add('drag-over');});
+    dcSec.addEventListener('dragleave',()=>card.classList.remove('drag-over'));
+    dcSec.addEventListener('drop',e=>{
+      e.preventDefault(); card.classList.remove('drag-over');
+      if(dragSrcDay===null||dragSrcIdx===null)return;
+      if(dragSrcDay===jsDay)return;
+      const d2=getDeep();
+      const [moved]=d2[dragSrcDay].splice(dragSrcIdx,1);
+      if(!d2[jsDay])d2[jsDay]=[];
+      d2[jsDay].push(moved);
+      saveDeep(d2); dragSrcDay=null; dragSrcIdx=null; renderPlanner();
+      toast(`↔ Dialihkan ke ${DAYS[jsDay]}`);
+    });
+
+    if(dcItems.length){
+      dcItems.forEach((item,i)=>{
+        const chip=document.createElement('div');
+        chip.className='dc-chip';
+        chip.draggable=true;
+        chip.innerHTML=`<span class="dc-chip-drag">⠿</span><span class="dc-chip-lbl" title="${escH(item)}">${item}</span><span class="dc-chip-del" onclick="delDeepFromPlanner(${jsDay},${i})" title="Padam">✕</span>`;
+        chip.addEventListener('dragstart',()=>{dragSrcDay=jsDay;dragSrcIdx=i;chip.classList.add('dragging');});
+        chip.addEventListener('dragend',()=>chip.classList.remove('dragging'));
+        dcSec.appendChild(chip);
+      });
+    } else {
+      dcSec.innerHTML+=`<div class="dc-drop-hint">Tiada · seret ke sini</div>`;
+    }
+    card.appendChild(dcSec);
+
+    // Activities section
+    if(acts.length){
+      const actSec=document.createElement('div');
+      actSec.className='pday-section';
+      actSec.style.borderTop='1px solid var(--border)';
+      actSec.innerHTML=`<div class="pday-section-lbl"><span>⚡ Aktiviti</span><span style="font-size:.58rem;color:var(--muted)">minggu ini</span></div>`;
+      acts.forEach(a=>{
+        const disabled=isActDisabledThisWeek(a.id);
+        const pill=document.createElement('div');
+        pill.className=`act-pill${disabled?' disabled':''}`;
+        pill.innerHTML=`<span class="act-pill-time">${a.t}</span>
+          <span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.68rem">${a.l}</span>
+          <label class="act-pill-tog" title="${disabled?'Aktifkan':'Nyahaktif'} minggu ini">
+            <input type="checkbox" ${disabled?'':'checked'} onchange="togActWeekPlanner('${a.id}',!this.checked,this)" />
+            <div class="apt-track"></div>
+          </label>`;
+        actSec.appendChild(pill);
+      });
+      card.appendChild(actSec);
+    }
+
+    grid.appendChild(card);
+  });
 }
-function togDay(rid,day,btn){
-  const s=getSched();if(!s[rid])s[rid]=[];
-  const i=s[rid].indexOf(day);if(i>=0)s[rid].splice(i,1);else s[rid].push(day);
-  saveSched(s);btn.classList.toggle('on');
+
+function togActWeekPlanner(id,disable,chkEl){
+  setActWeekOverride(id,disable);
+  // Update pill appearance without full re-render
+  const pill=chkEl.closest('.act-pill');
+  if(pill) pill.classList.toggle('disabled',disable);
+  toast(disable?'Aktiviti dinyahaktif minggu ini':'Aktiviti diaktifkan semula');
+  // Also refresh helper if open
+  if(role==='h') renderRight();
 }
-function setPre(rid,days){const s=getSched();s[rid]=[...days];saveSched(s);renderSched();}
+
+function delDeepFromPlanner(day,idx){
+  const d=getDeep(); d[day].splice(idx,1); saveDeep(d);
+  renderPlanner();
+  // sync deep editor if visible
+  renderDeepEditor();
+  toast('Item dipadam');
+}
+
+function openAddDeepInline(day){
+  const val=prompt(`Tambah kawasan bersih mendalam untuk ${DAYS[day]}:`);
+  if(!val||!val.trim())return;
+  const d=getDeep(); if(!d[day])d[day]=[];
+  d[day].push(val.trim()); saveDeep(d);
+  renderPlanner(); renderDeepEditor();
+  toast(`✓ Ditambah ke ${DAYS[day]}`);
+}
 
 /* ═══════════════════════════════════════════
    ADMIN ⑤ — REVIEW
